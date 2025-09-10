@@ -8,6 +8,7 @@ import { useLayoutEffect } from 'react'
 import { Platform, View } from 'react-native'
 import { Pressable, ScrollView } from 'react-native-gesture-handler'
 import { SafeAreaView } from 'react-native-safe-area-context'
+import { stripHtml } from 'string-strip-html'
 
 import { useActiveServer } from '~/components/activeServer'
 import { BookMetaLink } from '~/components/book'
@@ -113,6 +114,7 @@ export default function Screen() {
 	})
 
 	const router = useRouter()
+	const colors = useColors()
 
 	// TODO: prefetch, see https://github.com/candlefinance/faster-image/issues/73
 	// useEffect(() => {
@@ -153,8 +155,6 @@ export default function Screen() {
 	const seriesVolume = book.metadata?.volume
 
 	const noMetadata = !description && !seriesName && !genres && !characters
-
-	const colors = useColors()
 
 	const publisher = book.metadata?.publisher
 	const writers = book.metadata?.writers?.join(', ')
@@ -279,7 +279,11 @@ export default function Screen() {
 
 						{seriesName && book.seriesPosition != null && (
 							<Text className="text-center text-base text-foreground-muted">
-								{book.seriesPosition} of {book.series.mediaCount} in {seriesName}
+								{book.seriesPosition}
+								{book.seriesPosition > book.series.mediaCount
+									? null
+									: ` of ${book.series.mediaCount} `}
+								in {seriesName}
 							</Text>
 						)}
 					</View>
@@ -376,7 +380,12 @@ export default function Screen() {
 								? [<InfoRow key="noMetadata" label="No metadata available" value="" />]
 								: []),
 							...(description
-								? [<BookDescription key="description" description={description} />]
+								? [
+										<BookDescription
+											key="description"
+											description={stripHtml(description).result}
+										/>,
+									]
 								: []),
 							...(seriesName ? [<InfoRow key="series" label="Series" value={seriesName} />] : []),
 							...(seriesPosition

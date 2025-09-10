@@ -22,6 +22,7 @@ use crate::{
 		},
 		series::SeriesLoader,
 	},
+	object::epub::Epub,
 	pagination::{CursorPagination, CursorPaginationInfo, PaginatedResponse, Pagination},
 };
 
@@ -62,6 +63,21 @@ impl Media {
 
 #[ComplexObject]
 impl Media {
+	/// If the media is an epub, this will return the parsed epub data from the file
+	async fn ebook(&self) -> Result<Option<Epub>> {
+		if self.model.extension.to_lowercase() != "epub" {
+			return Ok(None);
+		}
+
+		let model = media::MediaIdentSelect {
+			id: self.model.id.clone(),
+			path: self.model.path.clone(),
+		};
+
+		Epub::try_from(model).map(Some)
+	}
+
+	/// Whether the media is marked as a favorite by the current user
 	async fn is_favorite(&self, ctx: &Context<'_>) -> Result<bool> {
 		let AuthContext { user, .. } = ctx.data::<AuthContext>()?;
 		let loader = ctx.data::<DataLoader<FavoritesLoader>>()?;
@@ -76,6 +92,7 @@ impl Media {
 		Ok(is_favorite.unwrap_or(false))
 	}
 
+	/// The tags associated with the media
 	async fn tags(&self, ctx: &Context<'_>) -> Result<Vec<Tag>> {
 		let conn = ctx.data::<CoreContext>()?.conn.as_ref();
 		let model = tag::Entity::find_for_media_id(&self.model.id.clone())
@@ -84,6 +101,7 @@ impl Media {
 		Ok(model.into_iter().map(Tag::from).collect())
 	}
 
+	/// The series the media belongs to
 	async fn series(&self, ctx: &Context<'_>) -> Result<Series> {
 		let loader = ctx.data::<DataLoader<SeriesLoader>>()?;
 

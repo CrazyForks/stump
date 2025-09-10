@@ -958,8 +958,13 @@ type Media {
 	"The timestamp of when the media was **soft** deleted. This will act like a trash bin."
 	deletedAt: DateTime
 	metadata: MediaMetadata
+	"If the media is an epub, this will return the parsed epub data from the file"
+	ebook: Epub
+	"Whether the media is marked as a favorite by the current user"
 	isFavorite: Boolean!
+	"The tags associated with the media"
 	tags: [Tag!]!
+	"The series the media belongs to"
 	series: Series!
 	libraryId: String!
 	library: Library!

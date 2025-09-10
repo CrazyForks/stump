@@ -1,3 +1,4 @@
+import { BadgeQuestionMark, LucideIcon } from 'lucide-react-native'
 import { forwardRef, Fragment } from 'react'
 import { Platform, Pressable, View } from 'react-native'
 
@@ -6,7 +7,6 @@ import { cn } from '~/lib/utils'
 
 import { Text } from '../ui'
 import { Icon } from '../ui/icon'
-import { BadgeQuestionMark, LucideIcon } from 'lucide-react-native'
 
 type Props = {
 	icon: keyof typeof icons

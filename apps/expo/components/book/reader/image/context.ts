@@ -11,7 +11,7 @@ export type EbookReaderBookRef = {
 	id: string
 	extension: string
 	name: string
-}
+} & Pick<QueryData, 'ebook' | 'thumbnail' | 'metadata'>
 
 export type ImageBasedBookPageRef = {
 	height: number

@@ -38,8 +38,9 @@ export const activelyReadingDirectory = (serverID: string) =>
 
 export async function ensureDirectoryExists(path = baseDirectory) {
 	const info = await FileSystem.getInfoAsync(path)
+	console.log({ info, path })
 	if (!info.exists) {
-		await FileSystem.makeDirectoryAsync(path)
+		await FileSystem.makeDirectoryAsync(path, { intermediates: true })
 	}
 }
 

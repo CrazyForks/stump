@@ -976,6 +976,8 @@ export type Media = {
   createdAt: Scalars['DateTime']['output'];
   /** The timestamp of when the media was **soft** deleted. This will act like a trash bin. */
   deletedAt?: Maybe<Scalars['DateTime']['output']>;
+  /** If the media is an epub, this will return the parsed epub data from the file */
+  ebook?: Maybe<Epub>;
   /** The extension of the media file, excluding the leading period */
   extension: Scalars['String']['output'];
   /**
@@ -985,6 +987,7 @@ export type Media = {
   hash?: Maybe<Scalars['String']['output']>;
   /** The unique identifier for the media */
   id: Scalars['String']['output'];
+  /** Whether the media is marked as a favorite by the current user */
   isFavorite: Scalars['Boolean']['output'];
   /**
    * A hash of the media file that adheres to the KoReader hash algorithm. This is used to identify
@@ -1021,6 +1024,7 @@ export type Media = {
    * metatadata, if available, and fallback to the name derived from the file name
    */
   resolvedName: Scalars['String']['output'];
+  /** The series the media belongs to */
   series: Series;
   /**
    * The unique identifier of the series that the media belongs to. While this is nullable, it is
@@ -1035,6 +1039,7 @@ export type Media = {
    * if it is available on disk)
    */
   status: FileStatus;
+  /** The tags associated with the media */
   tags: Array<Tag>;
   /**
    * A reference to the thumbnail image for the media. This will be a fully
@@ -3312,7 +3317,7 @@ export type BookReadScreenQueryVariables = Exact<{
 }>;
 
 
-export type BookReadScreenQuery = { __typename?: 'Query', mediaById?: { __typename?: 'Media', id: string, pages: number, extension: string, name: string, readProgress?: { __typename?: 'ActiveReadingSession', percentageCompleted?: any | null, epubcfi?: string | null, page?: number | null, elapsedSeconds?: number | null } | null, libraryConfig: { __typename?: 'LibraryConfig', defaultReadingImageScaleFit: ReadingImageScaleFit, defaultReadingMode: ReadingMode, defaultReadingDir: ReadingDirection }, metadata?: { __typename?: 'MediaMetadata', pageAnalysis?: { __typename?: 'PageAnalysis', dimensions: Array<{ __typename?: 'PageDimension', height: number, width: number }> } | null } | null, nextInSeries: { __typename?: 'PaginatedMediaResponse', nodes: Array<{ __typename?: 'Media', id: string, name: string, thumbnail: { __typename?: 'ImageRef', url: string } }> } } | null };
+export type BookReadScreenQuery = { __typename?: 'Query', mediaById?: { __typename?: 'Media', id: string, pages: number, extension: string, name: string, thumbnail: { __typename?: 'ImageRef', url: string }, readProgress?: { __typename?: 'ActiveReadingSession', percentageCompleted?: any | null, epubcfi?: string | null, page?: number | null, elapsedSeconds?: number | null } | null, libraryConfig: { __typename?: 'LibraryConfig', defaultReadingImageScaleFit: ReadingImageScaleFit, defaultReadingMode: ReadingMode, defaultReadingDir: ReadingDirection }, metadata?: { __typename?: 'MediaMetadata', writers: Array<string>, publisher?: string | null, summary?: string | null, pageAnalysis?: { __typename?: 'PageAnalysis', dimensions: Array<{ __typename?: 'PageDimension', height: number, width: number }> } | null } | null, nextInSeries: { __typename?: 'PaginatedMediaResponse', nodes: Array<{ __typename?: 'Media', id: string, name: string, thumbnail: { __typename?: 'ImageRef', url: string } }> }, ebook?: { __typename?: 'Epub', toc: Array<string>, bookmarks: Array<{ __typename?: 'Bookmark', id: string, userId: string, epubcfi?: string | null, mediaId: string }>, spine: Array<{ __typename?: 'SpineItem', id?: string | null, idref: string, properties?: string | null, linear: boolean }> } | null } | null };
 
 export type UpdateReadProgressionMutationVariables = Exact<{
   id: Scalars['ID']['input'];
@@ -5131,6 +5136,9 @@ export const BookReadScreenDocument = new TypedDocumentString(`
     name: resolvedName
     pages
     extension
+    thumbnail {
+      url
+    }
     readProgress {
       percentageCompleted
       epubcfi
@@ -5143,6 +5151,9 @@ export const BookReadScreenDocument = new TypedDocumentString(`
       defaultReadingDir
     }
     metadata {
+      writers
+      publisher
+      summary
       pageAnalysis {
         dimensions {
           height
@@ -5158,6 +5169,21 @@ export const BookReadScreenDocument = new TypedDocumentString(`
           url
         }
       }
+    }
+    ebook {
+      bookmarks {
+        id
+        userId
+        epubcfi
+        mediaId
+      }
+      spine {
+        id
+        idref
+        properties
+        linear
+      }
+      toc
     }
   }
 }

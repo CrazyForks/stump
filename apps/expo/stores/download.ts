@@ -1,17 +1,22 @@
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import { useSDK } from '@stump/client'
-import { Library, Media, Series } from '@stump/sdk'
+import { MediaMetadata, SeriesMetadata } from '@stump/graphql'
 import * as FileSystem from 'expo-file-system'
 import { useCallback, useEffect } from 'react'
 import { create } from 'zustand'
 import { createJSONStorage, persist } from 'zustand/middleware'
+import { useActiveServer } from '~/components/activeServer'
 
 import { booksDirectory, ensureDirectoryExists } from '~/lib/filesystem'
 
 type UnsyncedReadProgress = {}
 
 type FileStumpRef = {
-	book: Pick<Media, 'id' | 'name' | 'metadata'>
+	book: {
+		id: string
+		name: string
+		metadata?: Partial<MediaMetadata>
+	}
 	seriesID: string
 }
 
@@ -24,10 +29,16 @@ type DownloadedFile = {
 	stumpRef?: FileStumpRef
 }
 
-type SeriesRef = Pick<Series, 'id' | 'name' | 'media'>
+type SeriesRef = {
+	id: string
+	name: string
+}
 type StumpSeriesRefMap = Record<string, SeriesRef>
 
-type LibraryRef = Pick<Library, 'id' | 'name'>
+type LibraryRef = {
+	id: string
+	name: string
+}
 type StumpLibraryRefMap = Record<string, LibraryRef>
 
 // A reference to a book that is currently being read. This will be used for widgets
@@ -99,52 +110,61 @@ export const useDownloadStore = create<DownloadStore>()(
 )
 
 type DownloadParams = {
-	url: string
-	expectedMime?: string
-	meta?: AddFileMeta
+	id: string
+	url?: string
+	extension: string
+	name: string
 }
 
 export function useDownload() {
-	const { files, addFile } = useDownloadStore()
+	const {
+		activeServer: { id: serverID },
+	} = useActiveServer()
 	const { sdk } = useSDK()
+	const { files, addFile } = useDownloadStore()
 
 	useEffect(() => {
-		ensureDirectoryExists()
+		ensureDirectoryExists(booksDirectory(serverID))
 	}, [])
 
 	const downloadBook = useCallback(
-		async (file: Omit<DownloadedFile, 'filename'>, { url, meta, expectedMime }: DownloadParams) => {
-			// TODO: Won't have id for all books
-			if (files.some((f) => f.id === file.id)) {
-				console.log('File already downloaded')
-				return
-			}
+		async ({ id, url, extension }: DownloadParams) => {
+			await ensureDirectoryExists(booksDirectory(serverID))
+			// let existingBook = files.find((f) => f.id === id && f.serverID === serverID)
+			// if (existingBook) {
+			// 	console.log('File already downloaded')
+			// 	return `${booksDirectory(serverID)}/${existingBook.filename}`
+			// }
 
-			const filename = `${file.id}${extFromMime(expectedMime || '')}`
-			const fileUri = `${booksDirectory(file.serverID)}/${filename}`
-			console.log('Downloading book', { file, url, fileUri })
+			const downloadUrl = url || sdk.media.downloadURL(id)
+			const filename = `${id}.${extension}`
+			const placementUrl = `${booksDirectory(serverID)}/${filename}`
+
+			console.log('Downloading book to:', placementUrl)
+
 			try {
-				const result = await FileSystem.downloadAsync(url, fileUri, {
+				const result = await FileSystem.downloadAsync(downloadUrl, placementUrl, {
 					headers: sdk.headers,
 				})
-				console.log('Download result', result)
 
 				if (result.status !== 200) {
-					return
+					console.error('Failed to download file, status code:', result.status)
+					return null
 				}
 
-				addFile(
-					{
-						...file,
-						filename,
-					},
-					meta,
-				)
+				addFile({
+					id,
+					filename,
+					serverID,
+				})
+
+				return result.uri
 			} catch (e) {
 				console.error('Error downloading book', e)
+				return null
 			}
 		},
-		[addFile, files, sdk],
+		[addFile, files, sdk, serverID],
 	)
 
 	return { downloadBook }

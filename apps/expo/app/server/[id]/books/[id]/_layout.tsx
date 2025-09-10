@@ -14,11 +14,23 @@ export default function Screen() {
 					headerTitle: '',
 					headerShown: Platform.OS === 'ios',
 					headerTransparent: true,
-					// headerLargeTitleStyle: {
-					// 	fontSize: 24,
-					// },
-					// headerLargeTitle: true,
 					headerBlurEffect: 'regular',
+				}}
+			/>
+
+			<Stack.Screen
+				name="ebook-settings"
+				options={{
+					presentation: 'modal',
+					headerShown: false,
+				}}
+			/>
+
+			<Stack.Screen
+				name="ebook-locations-modal"
+				options={{
+					presentation: 'modal',
+					headerShown: false,
 				}}
 			/>
 		</Stack>
