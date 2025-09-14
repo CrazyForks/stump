@@ -4,13 +4,22 @@ import BottomSheet, {
 	BottomSheetModal as BSModal,
 	BottomSheetModalProvider,
 	BottomSheetScrollView as BSScrollView,
+	type BottomSheetScrollViewMethods,
 	BottomSheetTextInput as BSTextInput,
 	BottomSheetView as BSView,
+	createBottomSheetScrollableComponent,
+	SCROLLABLE_TYPE,
 } from '@gorhom/bottom-sheet'
+import { BottomSheetScrollViewProps } from '@gorhom/bottom-sheet/lib/typescript/components/bottomSheetScrollable/types'
 import { BottomSheetTextInputProps } from '@gorhom/bottom-sheet/lib/typescript/components/bottomSheetTextInput'
 import { cssInterop } from 'nativewind'
-import React, { forwardRef, Fragment } from 'react'
+import React, { forwardRef, Fragment, memo } from 'react'
 import { View } from 'react-native'
+import {
+	KeyboardAwareScrollView,
+	KeyboardAwareScrollViewProps,
+} from 'react-native-keyboard-controller'
+import Reanimated from 'react-native-reanimated'
 
 import { cn } from '~/lib/utils'
 
@@ -41,6 +50,17 @@ const BottomSheetScrollView = cssInterop(BSScrollView, {
 	className: 'style',
 	// contentContainerclassName: 'contentContainerStyle',
 })
+
+const AnimatedScrollView =
+	// @ts-expect-error: Type of children mismatch, probably fine?
+	Reanimated.createAnimatedComponent<KeyboardAwareScrollViewProps>(KeyboardAwareScrollView)
+const BottomSheetScrollViewComponent = createBottomSheetScrollableComponent<
+	BottomSheetScrollViewMethods,
+	BottomSheetScrollViewProps
+>(SCROLLABLE_TYPE.SCROLLVIEW, AnimatedScrollView)
+const BottomSheetKeyboardAwareScrollView = memo(BottomSheetScrollViewComponent)
+
+BottomSheetKeyboardAwareScrollView.displayName = 'BottomSheetKeyboardAwareScrollView'
 
 const BottomSheetHandle: React.FC<BSHandleProps> = BSHandle
 
@@ -81,6 +101,7 @@ type TypedBottomSheet = typeof BottomSheet & {
 	Modal: typeof BottomSheetModal
 	Handle: typeof BottomSheetHandle
 	ScrollView: typeof BottomSheetScrollView
+	KeyboardAwareScrollView: typeof BottomSheetKeyboardAwareScrollView
 	View: typeof BottomSheetView
 	Trigger: typeof BottomSheetTrigger
 	Input: typeof BottomSheetTextInput
@@ -91,6 +112,7 @@ TypedBottomSheet.Provider = BottomSheetModalProvider
 TypedBottomSheet.Modal = BottomSheetModal
 TypedBottomSheet.Handle = BottomSheetHandle
 TypedBottomSheet.ScrollView = BottomSheetScrollView
+TypedBottomSheet.KeyboardAwareScrollView = BottomSheetKeyboardAwareScrollView
 TypedBottomSheet.View = BottomSheetView
 TypedBottomSheet.Trigger = BottomSheetTrigger
 TypedBottomSheet.Input = BottomSheetTextInput

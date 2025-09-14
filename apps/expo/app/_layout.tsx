@@ -8,11 +8,11 @@ import relativeTime from 'dayjs/plugin/relativeTime'
 import { Stack } from 'expo-router'
 import * as SplashScreen from 'expo-splash-screen'
 import LottieView from 'lottie-react-native'
-import { SystemBars } from 'react-native-edge-to-edge'
-
 import * as React from 'react'
 import { Platform, View } from 'react-native'
+import { SystemBars } from 'react-native-edge-to-edge'
 import { GestureHandlerRootView } from 'react-native-gesture-handler'
+import { KeyboardProvider } from 'react-native-keyboard-controller'
 
 import darkSplash from '~/assets/splash/dark.json'
 import lightSplash from '~/assets/splash/light.json'
@@ -104,64 +104,66 @@ export default function RootLayout() {
 		<GestureHandlerRootView style={{ flex: 1 }}>
 			<ThemeProvider value={isDarkColorScheme ? DARK_THEME : LIGHT_THEME}>
 				<BottomSheet.Provider>
-					{/* TODO: This pushes content when entering/exiting */}
-					{/* <StatusBar style={isDarkColorScheme ? 'light' : 'dark'} hidden={shouldHideStatusBar} /> */}
-					{/* Note: https://github.com/react-navigation/react-navigation/issues/12579 */}
-					<SystemBars style={isDarkColorScheme ? 'light' : 'dark'} hidden={shouldHideStatusBar} />
-					<Stack
-						// https://github.com/expo/expo/issues/15244 ?
-						// screenOptions={{
-						// 	statusBarHidden: shouldHideStatusBar,
-						// }}
-						screenOptions={{
-							animation: animationEnabled ? 'default' : 'none',
-						}}
-					>
-						<Stack.Screen
-							name="(tabs)"
-							options={{
-								headerShown: false,
+					<KeyboardProvider>
+						{/* TODO: This pushes content when entering/exiting */}
+						{/* <StatusBar style={isDarkColorScheme ? 'light' : 'dark'} hidden={shouldHideStatusBar} /> */}
+						{/* Note: https://github.com/react-navigation/react-navigation/issues/12579 */}
+						<SystemBars style={isDarkColorScheme ? 'light' : 'dark'} hidden={shouldHideStatusBar} />
+						<Stack
+							// https://github.com/expo/expo/issues/15244 ?
+							// screenOptions={{
+							// 	statusBarHidden: shouldHideStatusBar,
+							// }}
+							screenOptions={{
 								animation: animationEnabled ? 'default' : 'none',
 							}}
-						/>
-						<Stack.Screen
-							name="server/[id]"
-							options={{
-								headerShown: false,
-								animation: animationEnabled ? 'default' : 'none',
-							}}
-						/>
-						<Stack.Screen
-							name="server/[id]/(tabs)"
-							options={{
-								headerShown: false,
-								animation: animationEnabled ? 'default' : 'none',
-							}}
-						/>
-						<Stack.Screen
-							name="server/[id]/libraries/[id]"
-							options={{
-								headerShown: false,
-								animation: animationEnabled ? 'default' : 'none',
-							}}
-						/>
+						>
+							<Stack.Screen
+								name="(tabs)"
+								options={{
+									headerShown: false,
+									animation: animationEnabled ? 'default' : 'none',
+								}}
+							/>
+							<Stack.Screen
+								name="server/[id]"
+								options={{
+									headerShown: false,
+									animation: animationEnabled ? 'default' : 'none',
+								}}
+							/>
+							<Stack.Screen
+								name="server/[id]/(tabs)"
+								options={{
+									headerShown: false,
+									animation: animationEnabled ? 'default' : 'none',
+								}}
+							/>
+							<Stack.Screen
+								name="server/[id]/libraries/[id]"
+								options={{
+									headerShown: false,
+									animation: animationEnabled ? 'default' : 'none',
+								}}
+							/>
 
-						<Stack.Screen
-							name="server/[id]/books/[id]"
-							options={{
-								headerShown: false,
-								animation: animationEnabled ? 'default' : 'none',
-							}}
-						/>
-						<Stack.Screen
-							name="opds/[id]"
-							options={{
-								headerShown: false,
-								animation: animationEnabled ? 'default' : 'none',
-							}}
-						/>
-					</Stack>
-					<PortalHost />
+							<Stack.Screen
+								name="server/[id]/books/[id]"
+								options={{
+									headerShown: false,
+									animation: animationEnabled ? 'default' : 'none',
+								}}
+							/>
+							<Stack.Screen
+								name="opds/[id]"
+								options={{
+									headerShown: false,
+									animation: animationEnabled ? 'default' : 'none',
+								}}
+							/>
+						</Stack>
+						<PortalHost />
+					</KeyboardProvider>
 				</BottomSheet.Provider>
 			</ThemeProvider>
 		</GestureHandlerRootView>

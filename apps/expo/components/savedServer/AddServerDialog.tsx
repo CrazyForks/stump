@@ -88,7 +88,7 @@ export default function AddServerDialog() {
 					/>
 				)}
 			>
-				<BottomSheet.ScrollView className="flex-1 gap-4 bg-background p-6">
+				<BottomSheet.KeyboardAwareScrollView className="flex-1 gap-4 bg-background p-6">
 					<View
 						className="w-full gap-4"
 						style={{
@@ -103,7 +103,7 @@ export default function AddServerDialog() {
 							}}
 						/>
 					</View>
-				</BottomSheet.ScrollView>
+				</BottomSheet.KeyboardAwareScrollView>
 			</BottomSheet.Modal>
 		</View>
 	)
