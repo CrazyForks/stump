@@ -1,7 +1,8 @@
-import React from 'react'
-import { Button, Dialog, Text } from '../ui'
-import { SavedServer } from '~/stores/savedServer'
 import { View } from 'react-native'
+
+import { SavedServer } from '~/stores/savedServer'
+
+import { Button, Dialog, Text } from '../ui'
 
 type Props = {
 	deletingServer: SavedServer | null

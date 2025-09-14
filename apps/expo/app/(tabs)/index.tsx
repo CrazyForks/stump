@@ -66,6 +66,7 @@ export default function Screen() {
 	const onConfirmDelete = useCallback(() => {
 		if (deletingServer) {
 			deleteServer(deletingServer.id)
+			setDeletingServer(null)
 		}
 	}, [deletingServer, deleteServer])
 
