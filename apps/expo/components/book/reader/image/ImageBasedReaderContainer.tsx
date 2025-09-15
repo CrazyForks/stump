@@ -92,7 +92,7 @@ export default function ImageBasedReaderContainer({
 		secondPageSeparate,
 	])
 
-	const [currentPage, setCurrentPage] = useState(() => initialPage)
+	const [currentPage, setCurrentPage] = useState(initialPage)
 
 	const onPageChangedHandler = useCallback(
 		(page: number) => {

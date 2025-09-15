@@ -187,6 +187,7 @@ export default function Screen() {
 				NavigationBar.setVisibilityAsync('visible')
 				Promise.all([
 					queryClient.refetchQueries({ queryKey: ['bookById', bookID], exact: false }),
+					queryClient.refetchQueries({ queryKey: ['readBook', bookID], exact: false }),
 					queryClient.refetchQueries({ queryKey: ['continueReading'], exact: false }),
 					queryClient.refetchQueries({ queryKey: ['onDeck'], exact: false }),
 					queryClient.refetchQueries({ queryKey: ['recentlyAddedBooks'], exact: false }),
@@ -197,6 +198,8 @@ export default function Screen() {
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 		[],
 	)
+
+	const currentProgressPage = useMemo(() => book.readProgress?.page || 1, [book.readProgress?.page])
 
 	if (!book) return null
 
@@ -211,12 +214,10 @@ export default function Screen() {
 			/>
 		)
 	} else if (book.extension.match(ARCHIVE_EXTENSION) || book.extension.match(PDF_EXTENSION)) {
-		const currentProgressPage = book.readProgress?.page || 1
 		// const initialPage = restart ? 1 : currentProgressPage
-		const initialPage = currentProgressPage
 		return (
 			<ImageBasedReader
-				initialPage={initialPage}
+				initialPage={currentProgressPage}
 				book={book}
 				pageURL={(page: number) => sdk.media.bookPageURL(book.id, page)}
 				pageThumbnailURL={

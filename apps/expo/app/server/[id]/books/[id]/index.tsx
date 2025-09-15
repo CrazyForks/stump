@@ -113,6 +113,7 @@ export default function Screen() {
 	})
 
 	const router = useRouter()
+	const colors = useColors()
 
 	// TODO: prefetch, see https://github.com/candlefinance/faster-image/issues/73
 	// useEffect(() => {
@@ -153,8 +154,6 @@ export default function Screen() {
 	const seriesVolume = book.metadata?.volume
 
 	const noMetadata = !description && !seriesName && !genres && !characters
-
-	const colors = useColors()
 
 	const publisher = book.metadata?.publisher
 	const writers = book.metadata?.writers?.join(', ')

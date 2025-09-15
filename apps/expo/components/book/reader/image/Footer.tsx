@@ -401,6 +401,8 @@ export default function Footer() {
 
 	const renderGalleryItem = useCallback(
 		({ item, index }: { item: number[]; index: number }) => {
+			if (!item || !item.length) return null
+
 			const isCurrentPage = item.includes(currentPage - 1)
 			const isLandscape = item.some((page) => (imageSizes?.[page]?.ratio || 0) >= 1)
 
@@ -412,7 +414,7 @@ export default function Footer() {
 								translateY: isTablet ? -20 : -18,
 							},
 						]
-					: undefined
+					: []
 
 			return (
 				<Pressable onPress={() => onChangePage(index)}>
@@ -475,7 +477,7 @@ export default function Footer() {
 					ref={galleryRef}
 					data={pageSets ?? []}
 					inverted={readingDirection === ReadingDirection.Rtl}
-					keyExtractor={(item) => `gallery-${item.join('-')}`}
+					keyExtractor={(item) => `gallery-${item?.join('-')}`}
 					renderItem={renderGalleryItem}
 					contentContainerStyle={{ gap: 6, alignItems: 'flex-end' }}
 					getItemLayout={getItemLayout}
