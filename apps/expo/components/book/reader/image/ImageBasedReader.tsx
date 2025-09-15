@@ -1,6 +1,7 @@
 import { Zoomable } from '@likashefqet/react-native-image-zoom'
 import { useSDK } from '@stump/client'
 import { ReadingDirection, ReadingMode } from '@stump/graphql'
+import { STUMP_SAVE_BASIC_SESSION_HEADER } from '@stump/sdk/constants'
 import { ImageLoadEventData } from 'expo-image'
 import React, { useCallback, useEffect, useMemo, useRef } from 'react'
 import {
@@ -219,7 +220,7 @@ const Page = React.memo(
 	}: PageProps) => {
 		const { book, pageURL, flatListRef, setImageSizes } = useImageBasedReader()
 		const {
-			preferences: { tapSidesToNavigate, readingDirection, cachePolicy },
+			preferences: { tapSidesToNavigate, readingDirection },
 		} = useBookPreferences({ book })
 		const { isTablet } = useDisplay()
 		const { sdk } = useSDK()
@@ -317,9 +318,11 @@ const Page = React.memo(
 							source={{
 								uri: pageURL(pageIdx + 1),
 								headers: {
-									Authorization: sdk.authorizationHeader,
+									Authorization: sdk.authorizationHeader || '',
+									[STUMP_SAVE_BASIC_SESSION_HEADER]: 'false',
 								},
-								cachePolicy,
+								// FIXME: I can't remember why this was here or why its complaining
+								// cachePolicy,
 							}}
 							style={{
 								height: '100%',

@@ -38,6 +38,7 @@ export default function Screen() {
 
 			if (defaultServer) {
 				router.push({
+					// @ts-expect-error: I don't know why it's complaining about this
 					pathname: defaultServer.kind === 'stump' ? '/server/[id]' : '/opds/[id]',
 					params: { id: defaultServer.id },
 				})

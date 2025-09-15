@@ -45,11 +45,11 @@ export const query = graphql(`
 				writers
 				publisher
 				summary
-				pageAnalysis {
-					dimensions {
-						height
-						width
-					}
+			}
+			pageAnalysis {
+				dimensions {
+					height
+					width
 				}
 			}
 			nextInSeries(pagination: { cursor: { limit: 1 } }) {

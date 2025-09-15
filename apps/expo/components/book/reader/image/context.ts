@@ -26,7 +26,7 @@ export type NextInSeriesBookRef = {
 }
 
 export type IImageBasedReaderContext = {
-	flatListRef: React.RefObject<FlatList>
+	flatListRef: React.RefObject<FlatList | null>
 	book: ImageReaderBookRef
 	imageSizes?: Record<number, ImageBasedBookPageRef>
 	setImageSizes: React.Dispatch<React.SetStateAction<Record<number, ImageBasedBookPageRef>>>
@@ -36,6 +36,7 @@ export type IImageBasedReaderContext = {
 	currentPage?: number
 	onPageChanged?: (page: number) => void
 	resetTimer?: () => void
+	isOPDS?: boolean
 }
 
 export const ImageBasedReaderContext = createContext<IImageBasedReaderContext | null>(null)
