@@ -9,3 +9,4 @@ pub mod image_processor_options;
 pub mod ordering;
 pub mod page_dimension;
 pub mod permission_set;
+pub mod readium;

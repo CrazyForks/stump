@@ -1,72 +1,137 @@
 package expo.modules.readium
 
+import expo.modules.kotlin.functions.Coroutine
 import expo.modules.kotlin.modules.Module
 import expo.modules.kotlin.modules.ModuleDefinition
+import org.json.JSONObject
+import org.readium.r2.shared.extensions.toMap
+import org.readium.r2.shared.publication.Link
+import org.readium.r2.shared.publication.Locator
+import android.util.Log
+import java.net.URL
 
 class ReadiumModule : Module() {
-  // Each module class must implement the definition function. The definition consists of components
-  // that describes the module's functionality and behavior.
-  // See https://docs.expo.dev/modules/module-api for more details about available components.
   override fun definition() = ModuleDefinition {
-    // Sets the name of the module that JavaScript code will use to refer to the module. Takes a string as an argument.
-    // Can be inferred from module's class name, but it's recommended to set it explicitly for clarity.
-    // The module will be accessible from `requireNativeModule('Readium')` in JavaScript.
     Name("Readium")
 
-    // Defines event names that the module can send to JavaScript.
-    Events("onChange", "onPageChange", "onBookLoaded", "onLocatorChange", "onMiddleTouch", "onSelection", "onDoubleTouch", "onError")
-
-    // Async functions to match iOS implementation
-    AsyncFunction("extractArchive") { url: String, destination: String ->
-      // TODO: Make me plz
-      // For now, return success
-    }
-    
-    AsyncFunction("openPublication") { bookId: String, url: String ->
-      // TODO: Make me plz
-      // For now, return success
-    }
-    
-    AsyncFunction("getResource") { bookId: String, href: String ->
-      // TODO: Make me plz
-      // For now, return empty string
-      ""
-    }
-    
-    AsyncFunction("getPositions") { bookId: String ->
-      // TODO: Make me plz
-      // For now, return empty array
-      emptyList<Map<String, Any>>()
-    }
-    
-    AsyncFunction("locateLink") { bookId: String, href: String ->
-      // TODO: Make me plz
-      // For now, return empty map
-      emptyMap<String, Any>()
+    AsyncFunction("extractArchive") Coroutine { archiveUrl: String, extractedUrl: String ->
+      val context = appContext.reactContext ?: throw Exception("React context is null")
+      BookService.getInstance(context).extractArchive(URL(archiveUrl), URL(extractedUrl))
     }
 
-    // Enables the module to be used as a native view. Definition components that are accepted as part of
-    // the view definition: Prop, Events.
+    AsyncFunction("openPublication") Coroutine { bookId: String, publicationUri: String ->
+      val context = appContext.reactContext ?: throw Exception("React context is null")
+      val publication = BookService.getInstance(context).openPublication(bookId, URL(publicationUri))
+      // Return JSON manifest - for now return basic metadata
+      mapOf(
+        "metadata" to mapOf(
+          "title" to publication.metadata.title,
+          "author" to publication.metadata.authors.joinToString(", ") { it.name },
+          "publisher" to publication.metadata.publishers.joinToString(", ") { it.name },
+          "identifier" to (publication.metadata.identifier ?: ""),
+          "language" to (publication.metadata.languages.firstOrNull() ?: "en")
+        ),
+        "readingOrder" to publication.readingOrder.map { link ->
+          mapOf(
+            "href" to link.href,
+            "type" to link.type,
+            "title" to (link.title ?: "")
+          )
+        }
+      )
+    }
+
+    AsyncFunction("getResource") Coroutine { bookId: String, linkJson: Map<String, Any> ->
+      val context = appContext.reactContext ?: throw Exception("React context is null")
+      val linkJsonObj = JSONObject(linkJson)
+      val link = Link.fromJSON(linkJsonObj) ?: return@Coroutine null
+      BookService.getInstance(context).getResource(bookId, link)
+    }
+
+    AsyncFunction("getPositions") Coroutine { bookId: String ->
+      val context = appContext.reactContext ?: throw Exception("React context is null")
+      BookService.getInstance(context).getPositions(bookId)
+    }
+
+    AsyncFunction("locateLink") Coroutine { bookId: String, linkJson: Map<String, Any> ->
+      val context = appContext.reactContext ?: throw Exception("React context is null")
+      val linkJsonObj = JSONObject(linkJson)
+      val link = Link.fromJSON(linkJsonObj) ?: return@Coroutine null
+      BookService.getInstance(context).locateLink(bookId, link)
+    }
+
+    // TODO: Legacy functions - determine if needed
+    AsyncFunction("loadEPUB") Coroutine { url: String ->
+      try {
+        val context = appContext.reactContext ?: throw Exception("React context is null")
+        BookService.getInstance(context).openPublication("default", URL(url))
+        true
+      } catch (e: Exception) {
+        false
+      }
+    }
+
+    AsyncFunction("goToNextPage") { true }
+    AsyncFunction("goToPreviousPage") { true }
+    AsyncFunction("goToPage") { pageNumber: Int -> true }
+    AsyncFunction("getCurrentPage") { 1 }
+    AsyncFunction("getTotalPages") { 100 }
+    AsyncFunction("updateReaderConfig") { config: Map<String, Any> -> }
+
     View(ReadiumView::class) {
-      // Define props that match iOS implementation
-      Prop("bookId") { view: ReadiumView, bookId: String ->
-        view.setBookId(bookId)
+      Events("onLocatorChange", "onPageChange", "onBookLoaded", "onLayoutChange", "onMiddleTouch", "onSelection", "onDoubleTouch", "onError")
+
+      AsyncFunction("goToLocation") { view: ReadiumView, locatorJson: Map<String, Any> ->
+        view.goToLocation(locatorJson)
       }
-      
-      Prop("url") { view: ReadiumView, url: String ->
-        view.setUrl(url)
+
+      AsyncFunction("goForward") { view: ReadiumView ->
+        view.goForward()
       }
-      
-      Prop("locator") { view: ReadiumView, locator: Map<String, Any> ->
-        view.setLocator(locator)
+
+      AsyncFunction("goBackward") { view: ReadiumView ->
+        view.goBackward()
       }
-      
-      Prop("config") { view: ReadiumView, config: Map<String, Any> ->
-        view.setConfig(config)
+
+      Prop("bookId") { view: ReadiumView, prop: String ->
+        view.setBookId(prop)
       }
-      
-      // Defines events that the view can send to JavaScript.
-      Events("onLoad", "onPageChange", "onBookLoaded", "onLocatorChange", "onMiddleTouch", "onSelection", "onDoubleTouch", "onError")
+
+      Prop("locator") { view: ReadiumView, prop: Map<String, Any> ->
+        view.setLocator(prop)
+      }
+
+      Prop("initialLocator") { view: ReadiumView, prop: Map<String, Any> ->
+        view.setInitialLocator(prop)
+      }
+
+      Prop("url") { view: ReadiumView, prop: String ->
+        view.setUrl(prop)
+      }
+
+      Prop("colors") { view: ReadiumView, prop: Map<String, String> ->
+        view.setColors(prop)
+      }
+
+      Prop("fontSize") { view: ReadiumView, prop: Double ->
+        view.setFontSize(prop)
+      }
+
+      Prop("lineHeight") { view: ReadiumView, prop: Double ->
+        view.setLineHeight(prop)
+      }
+
+      Prop("fontFamily") { view: ReadiumView, prop: String ->
+        view.setFontFamily(prop)
+      }
+
+      Prop("readingDirection") { view: ReadiumView, prop: String ->
+        view.setReadingDirection(prop)
+      }
+
+      OnViewDidUpdateProps { view: ReadiumView ->
+        view.finalizeProps()
+      }
     }
   }
 }

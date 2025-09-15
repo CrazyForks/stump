@@ -5,7 +5,10 @@ use sea_orm::{
 	QuerySelect,
 };
 
-use crate::prefixer::{parse_query_to_model, parse_query_to_model_optional, Prefixer};
+use crate::{
+	prefixer::{parse_query_to_model, parse_query_to_model_optional, Prefixer},
+	shared::readium::ReadiumLocator,
+};
 
 use super::{registered_reading_device, user::AuthUser};
 
@@ -17,6 +20,8 @@ pub struct Model {
 	pub id: i32,
 	pub page: Option<i32>,
 	pub percentage_completed: Option<Decimal>,
+	#[sea_orm(column_type = "Json", nullable)]
+	pub locator: Option<ReadiumLocator>,
 	#[sea_orm(column_type = "Text", nullable)]
 	pub epubcfi: Option<String>,
 	#[sea_orm(column_type = "Text", nullable)]
