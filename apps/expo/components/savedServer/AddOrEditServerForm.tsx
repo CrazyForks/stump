@@ -21,15 +21,21 @@ import { cn } from '~/lib/utils'
 import { usePreferencesStore, useSavedServers } from '~/stores'
 import { SavedServerWithConfig } from '~/stores/savedServer'
 
-import { Button, Heading, Input, Label, Switch, Tabs, Text } from '../ui'
+import { BottomSheet, Button, Heading, Label, Switch, Tabs, Text } from '../ui'
 
 type Props = {
 	editingServer?: SavedServerWithConfig | null
 	onSubmit: (data: AddOrEditServerSchema) => void
 	onClose: () => void
+	onInputFocused?: (e: NativeSyntheticEvent<TextInputFocusEventData>) => void
 }
 
-export default function AddOrEditServerForm({ editingServer, onSubmit, onClose }: Props) {
+export default function AddOrEditServerForm({
+	editingServer,
+	onSubmit,
+	onClose,
+	onInputFocused,
+}: Props) {
 	const { savedServers, stumpEnabled } = useSavedServers()
 
 	const { control, handleSubmit, ...form } = useForm<AddOrEditServerSchema>({
@@ -126,7 +132,7 @@ export default function AddOrEditServerForm({ editingServer, onSubmit, onClose }
 					<Controller
 						control={control}
 						render={({ field: { onChange, onBlur, value } }) => (
-							<Input
+							<BottomSheet.Input
 								label="Username"
 								autoCorrect={false}
 								autoCapitalize="none"
@@ -135,6 +141,7 @@ export default function AddOrEditServerForm({ editingServer, onSubmit, onClose }
 								onChangeText={onChange}
 								value={value}
 								errorMessage={errors.basicUser?.message}
+								onFocus={onInputFocused}
 							/>
 						)}
 						name="basicUser"
@@ -143,7 +150,7 @@ export default function AddOrEditServerForm({ editingServer, onSubmit, onClose }
 					<Controller
 						control={control}
 						render={({ field: { onChange, onBlur, value } }) => (
-							<Input
+							<BottomSheet.Input
 								label="Password"
 								autoCorrect={false}
 								autoCapitalize="none"
@@ -153,6 +160,7 @@ export default function AddOrEditServerForm({ editingServer, onSubmit, onClose }
 								onChangeText={onChange}
 								value={value}
 								errorMessage={errors.basicPassword?.message}
+								onFocus={onInputFocused}
 							/>
 						)}
 						name="basicPassword"
@@ -164,7 +172,7 @@ export default function AddOrEditServerForm({ editingServer, onSubmit, onClose }
 				<Controller
 					control={control}
 					render={({ field: { onChange, onBlur, value } }) => (
-						<Input
+						<BottomSheet.Input
 							label="Token"
 							autoCorrect={false}
 							autoCapitalize="none"
@@ -174,6 +182,7 @@ export default function AddOrEditServerForm({ editingServer, onSubmit, onClose }
 							value={value}
 							errorMessage={errors.token?.message}
 							secureTextEntry
+							onFocus={onInputFocused}
 						/>
 					)}
 					name="token"
@@ -291,7 +300,7 @@ export default function AddOrEditServerForm({ editingServer, onSubmit, onClose }
 					required: true,
 				}}
 				render={({ field: { onChange, onBlur, value } }) => (
-					<Input
+					<BottomSheet.Input
 						label="Name"
 						autoCorrect={false}
 						autoCapitalize="none"
@@ -311,7 +320,7 @@ export default function AddOrEditServerForm({ editingServer, onSubmit, onClose }
 					required: true,
 				}}
 				render={({ field: { onChange, onBlur, value } }) => (
-					<Input
+					<BottomSheet.Input
 						label={kind === 'stump' ? 'URL' : 'Catalog URL'}
 						autoCorrect={false}
 						autoCapitalize="none"

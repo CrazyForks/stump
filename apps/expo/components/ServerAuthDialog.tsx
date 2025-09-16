@@ -11,7 +11,7 @@ import { z } from 'zod'
 
 import { useUserStore } from '~/stores'
 
-import { Button, Input, Text } from './ui'
+import { Button, Text } from './ui'
 import { BottomSheet } from './ui/bottom-sheet'
 
 type ServerAuthDialogProps = {
@@ -110,7 +110,7 @@ export default function ServerAuthDialog({ isOpen, onClose }: ServerAuthDialogPr
 							required: true,
 						}}
 						render={({ field: { onChange, onBlur, value } }) => (
-							<Input
+							<BottomSheet.Input
 								label="Username"
 								autoCorrect={false}
 								autoCapitalize="none"
@@ -130,7 +130,7 @@ export default function ServerAuthDialog({ isOpen, onClose }: ServerAuthDialogPr
 							required: true,
 						}}
 						render={({ field: { onChange, onBlur, value } }) => (
-							<Input
+							<BottomSheet.Input
 								label="Password"
 								secureTextEntry
 								autoCorrect={false}

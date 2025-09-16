@@ -52,7 +52,6 @@ const BottomSheetScrollView = cssInterop(BSScrollView, {
 })
 
 const AnimatedScrollView =
-	// @ts-expect-error: Type of children mismatch, probably fine?
 	Reanimated.createAnimatedComponent<KeyboardAwareScrollViewProps>(KeyboardAwareScrollView)
 const BottomSheetScrollViewComponent = createBottomSheetScrollableComponent<
 	BottomSheetScrollViewMethods,
@@ -68,14 +67,10 @@ const BottomSheetTextInput = forwardRef<
 	React.ComponentRef<typeof BSTextInput>,
 	BottomSheetTextInputProps & { label?: string; errorMessage?: string }
 >(({ label, errorMessage, ...rest }, ref) => {
-	const InputComponent = cssInterop(BSTextInput, {
-		className: 'style',
-	})
-
 	return (
 		<View className="w-full gap-1.5">
 			{label && <Text className="text-base font-medium text-foreground-muted">{label}</Text>}
-			<InputComponent
+			<BSTextInput
 				ref={ref}
 				{...rest}
 				className={cn(
