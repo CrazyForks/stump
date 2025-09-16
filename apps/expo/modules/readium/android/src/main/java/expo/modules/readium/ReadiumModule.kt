@@ -1,135 +1,146 @@
 package expo.modules.readium
 
+import android.graphics.Color
+import android.os.Build
+import androidx.annotation.RequiresApi
 import expo.modules.kotlin.functions.Coroutine
 import expo.modules.kotlin.modules.Module
 import expo.modules.kotlin.modules.ModuleDefinition
+import java.net.URL
+import java.util.Base64
 import org.json.JSONObject
 import org.readium.r2.shared.extensions.toMap
 import org.readium.r2.shared.publication.Link
 import org.readium.r2.shared.publication.Locator
+import org.readium.r2.shared.ExperimentalReadiumApi
 import android.util.Log
-import java.net.URL
+import org.readium.r2.navigator.preferences.FontFamily
 
 class ReadiumModule : Module() {
+    // Each module class must implement the definition function. The definition consists of
+    // components
+    // that describes the module's functionality and behavior.
+    // See https://docs.expo.dev/modules/module-api for more details about available components.
+  @RequiresApi(Build.VERSION_CODES.O)
+  @OptIn(ExperimentalReadiumApi::class)
   override fun definition() = ModuleDefinition {
+    val bookService = BookService(appContext.reactContext!!)
+
     Name("Readium")
 
-    AsyncFunction("extractArchive") Coroutine { archiveUrl: String, extractedUrl: String ->
-      val context = appContext.reactContext ?: throw Exception("React context is null")
-      BookService.getInstance(context).extractArchive(URL(archiveUrl), URL(extractedUrl))
+    AsyncFunction("extractArchive") Coroutine { archiveUrl: URL, extractedUrl: URL ->
+      bookService.extractArchive(archiveUrl, extractedUrl)
     }
 
-    AsyncFunction("openPublication") Coroutine { bookId: String, publicationUri: String ->
-      val context = appContext.reactContext ?: throw Exception("React context is null")
-      val publication = BookService.getInstance(context).openPublication(bookId, URL(publicationUri))
-      // Return JSON manifest - for now return basic metadata
-      mapOf(
-        "metadata" to mapOf(
-          "title" to publication.metadata.title,
-          "author" to publication.metadata.authors.joinToString(", ") { it.name },
-          "publisher" to publication.metadata.publishers.joinToString(", ") { it.name },
-          "identifier" to (publication.metadata.identifier ?: ""),
-          "language" to (publication.metadata.languages.firstOrNull() ?: "en")
-        ),
-        "readingOrder" to publication.readingOrder.map { link ->
-          mapOf(
-            "href" to link.href,
-            "type" to link.type,
-            "title" to (link.title ?: "")
-          )
-        }
-      )
+    AsyncFunction("openPublication") Coroutine { bookId: String, publicationUri: URL ->
+       return@Coroutine bookService.openPublication(bookId, publicationUri)
+                            .jsonManifest
     }
 
-    AsyncFunction("getResource") Coroutine { bookId: String, linkJson: Map<String, Any> ->
-      val context = appContext.reactContext ?: throw Exception("React context is null")
-      val linkJsonObj = JSONObject(linkJson)
-      val link = Link.fromJSON(linkJsonObj) ?: return@Coroutine null
-      BookService.getInstance(context).getResource(bookId, link)
+    AsyncFunction("getResource") Coroutine { bookId: String, linkMap: Map<String, Any> ->
+      val linkJson = JSONObject(linkMap)
+      val link = Link.fromJSON(linkJson) ?: return@Coroutine null
+      val resource = bookService.getResource(bookId, link)
+      if (link.type?.startsWith("image/") == true) {
+          val data = resource.read().getOrThrow()
+          return@Coroutine String(Base64.getEncoder().encode(data))
+      }
+      return@Coroutine resource.readAsString().getOrThrow()
     }
 
     AsyncFunction("getPositions") Coroutine { bookId: String ->
-      val context = appContext.reactContext ?: throw Exception("React context is null")
-      BookService.getInstance(context).getPositions(bookId)
+      val positions = bookService.getPositions(bookId)
+      return@Coroutine positions.map { it.toJSON().toMap() }
     }
 
-    AsyncFunction("locateLink") Coroutine { bookId: String, linkJson: Map<String, Any> ->
-      val context = appContext.reactContext ?: throw Exception("React context is null")
-      val linkJsonObj = JSONObject(linkJson)
-      val link = Link.fromJSON(linkJsonObj) ?: return@Coroutine null
-      BookService.getInstance(context).locateLink(bookId, link)
+    AsyncFunction("locateLink") { bookId: String, linkMap: Map<String, Any> ->
+      val linkJson = JSONObject(linkMap)
+      val link = Link.fromJSON(linkJson) ?: throw Exception("Failed to parse link from json")
+      val locator = bookService.locateLink(bookId, link)
+      return@AsyncFunction locator?.toJSON()?.toMap()
     }
 
-    // TODO: Legacy functions - determine if needed
-    AsyncFunction("loadEPUB") Coroutine { url: String ->
-      try {
-        val context = appContext.reactContext ?: throw Exception("React context is null")
-        BookService.getInstance(context).openPublication("default", URL(url))
-        true
-      } catch (e: Exception) {
-        false
-      }
+    AsyncFunction("goForward") { view: EPUBView ->
+      val navigator = view.navigator ?: return@AsyncFunction
+      navigator.goForward(animated = false)
     }
 
-    AsyncFunction("goToNextPage") { true }
-    AsyncFunction("goToPreviousPage") { true }
-    AsyncFunction("goToPage") { pageNumber: Int -> true }
-    AsyncFunction("getCurrentPage") { 1 }
-    AsyncFunction("getTotalPages") { 100 }
-    AsyncFunction("updateReaderConfig") { config: Map<String, Any> -> }
+    AsyncFunction("goBackward") { view: EPUBView ->
+      val navigator = view.navigator ?: return@AsyncFunction
+      navigator.goBackward(animated = false)
+    }
 
-    View(ReadiumView::class) {
+    AsyncFunction("goToLocation") { view: EPUBView, locatorMap: Map<String, Any> ->
+      val navigator = view.navigator ?: return@AsyncFunction
+      val jsonLocator = JSONObject(locatorMap)
+      val locator = Locator.fromJSON(jsonLocator) ?: throw Exception("Failed to parse locator from JSON")
+      navigator.go(locator, animated = false)
+    }
+
+    View(EPUBView::class) {
       Events("onLocatorChange", "onPageChange", "onBookLoaded", "onLayoutChange", "onMiddleTouch", "onSelection", "onDoubleTouch", "onError")
 
-      AsyncFunction("goToLocation") { view: ReadiumView, locatorJson: Map<String, Any> ->
-        view.goToLocation(locatorJson)
+      Prop("bookId") { view: EPUBView, prop: String ->
+        if (view.bookService == null) {
+          view.bookService = bookService
+        }
+        view.pendingProps.bookId = prop
       }
 
-      AsyncFunction("goForward") { view: ReadiumView ->
-        view.goForward()
+      AsyncFunction("goForward") { view: EPUBView ->
+        val navigator = view.navigator ?: return@AsyncFunction
+        navigator.goForward(animated = false)
       }
 
-      AsyncFunction("goBackward") { view: ReadiumView ->
-        view.goBackward()
+      AsyncFunction("goBackward") { view: EPUBView ->
+        val navigator = view.navigator ?: return@AsyncFunction
+        navigator.goBackward(animated = false)
       }
 
-      Prop("bookId") { view: ReadiumView, prop: String ->
-        view.setBookId(prop)
+      AsyncFunction("goToLocation") { view: EPUBView, locatorMap: Map<String, Any> ->
+          Log.d("ReadiumModule", "goToLocation called with locatorMap: $locatorMap")
+          val navigator = view.navigator ?: return@AsyncFunction
+          Log.d("ReadiumModule", "Navigator found: $navigator")
+          val jsonLocator = JSONObject(locatorMap)
+          Log.d("ReadiumModule", "JSON Locator: $jsonLocator")
+          val locator = Locator.fromJSON(jsonLocator) ?: throw Exception("Failed to parse locator from JSON")
+          Log.d("ReadiumModule", "Parsed Locator: $locator")
+          view.go(locator, animated = false)
       }
 
-      Prop("locator") { view: ReadiumView, prop: Map<String, Any> ->
-        view.setLocator(prop)
+      Prop("locator") { view: EPUBView, prop: Map<String, Any> ->
+        val locator = Locator.fromJSON(JSONObject(prop)) ?: return@Prop
+        view.pendingProps.locator = locator
       }
 
-      Prop("initialLocator") { view: ReadiumView, prop: Map<String, Any> ->
-        view.setInitialLocator(prop)
+      Prop("url") { view: EPUBView, prop: String ->
+        view.pendingProps.url = prop
       }
 
-      Prop("url") { view: ReadiumView, prop: String ->
-        view.setUrl(prop)
+      Prop("colors") { view: EPUBView, prop: Map<String, String> ->
+        val foregroundHex = prop["foreground"] ?: "#000000"
+        val backgroundHex = prop["background"] ?: "#FFFFFF"
+        view.pendingProps.foreground = Color.parseColor(foregroundHex)
+        view.pendingProps.background = Color.parseColor(backgroundHex)
       }
 
-      Prop("colors") { view: ReadiumView, prop: Map<String, String> ->
-        view.setColors(prop)
+      Prop("fontSize") { view: EPUBView, prop: Double ->
+        view.pendingProps.fontSize = prop / 16.0 // Normalize to scale
       }
 
-      Prop("fontSize") { view: ReadiumView, prop: Double ->
-        view.setFontSize(prop)
+      Prop("lineHeight") { view: EPUBView, prop: Double ->
+        view.pendingProps.lineHeight = prop
       }
 
-      Prop("lineHeight") { view: ReadiumView, prop: Double ->
-        view.setLineHeight(prop)
+      Prop("fontFamily") { view: EPUBView, prop: String ->
+        view.pendingProps.fontFamily = FontFamily(prop)
       }
 
-      Prop("fontFamily") { view: ReadiumView, prop: String ->
-        view.setFontFamily(prop)
+      Prop("readingDirection") { view: EPUBView, prop: String ->
+        view.pendingProps.readingDirection = prop
       }
 
-      Prop("readingDirection") { view: ReadiumView, prop: String ->
-        view.setReadingDirection(prop)
-      }
-
-      OnViewDidUpdateProps { view: ReadiumView ->
+      OnViewDidUpdateProps { view: EPUBView ->
         view.finalizeProps()
       }
     }

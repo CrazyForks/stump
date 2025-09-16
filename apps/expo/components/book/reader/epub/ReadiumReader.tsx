@@ -43,6 +43,7 @@ export default function ReadiumReader({
 	const { downloadBook } = useDownload()
 
 	const [localUri, setLocalUri] = useState<string | null>(null)
+	const [locator, setLocator] = useState<ReadiumLocator | undefined>(() => initialLocator)
 
 	const controlsVisible = useReaderStore((state) => state.showControls)
 	const setControlsVisible = useReaderStore((state) => state.setShowControls)
@@ -71,7 +72,7 @@ export default function ReadiumReader({
 				goToLocation: async (locator: ReadiumLocator) => {
 					const location = await locateLink(book.id, { href: '/' + locator.href })
 					if (location) {
-						readerRef.current?.goToLocation(location)
+						await readerRef.current?.goToLocation(location)
 					}
 				},
 				goForward: async () => {
@@ -130,8 +131,8 @@ export default function ReadiumReader({
 
 	const handleLocationChanged = useCallback(
 		(locator: ReadiumLocator) => {
-			// onLocationChanged(locator, locator.progress)
 			store.onLocationChange(locator)
+			setLocator(locator)
 
 			const totalProgression = locator.locations?.totalProgression
 
@@ -150,6 +151,7 @@ export default function ReadiumReader({
 		(event: {
 			nativeEvent: { cleared?: boolean; x?: number; y?: number; locator?: ReadiumLocator }
 		}) => {
+			// eslint-disable-next-line no-console
 			console.log('Text selection:', event.nativeEvent)
 		},
 		[],
@@ -176,7 +178,7 @@ export default function ReadiumReader({
 				ref={readerRef}
 				bookId={book.id}
 				url={localUri}
-				initialLocator={initialLocator}
+				locator={locator}
 				onBookLoaded={({ nativeEvent }) => handleBookLoaded(nativeEvent.bookMetadata)}
 				onLocatorChange={({ nativeEvent: locator }) => handleLocationChanged(locator)}
 				onMiddleTouch={handleMiddleTouch}

@@ -1,6 +1,7 @@
 package expo.modules.readium
 
 import android.content.Context
+import android.os.Build
 import org.readium.r2.shared.publication.Link
 import org.readium.r2.shared.publication.Locator
 import org.readium.r2.shared.publication.Publication
@@ -12,18 +13,9 @@ import java.io.File
 import java.net.URL
 import java.util.zip.ZipFile
 
-class BookService private constructor(private val context: Context) {
+class BookService(private val context: Context) {
 
-    companion object {
-        @Volatile
-        private var INSTANCE: BookService? = null
 
-        fun getInstance(context: Context): BookService {
-            return INSTANCE ?: synchronized(this) {
-                INSTANCE ?: BookService(context).also { INSTANCE = it }
-            }
-        }
-    }
 
     private val streamer: Streamer = Streamer(context)
     private val publications: MutableMap<String, Publication> = mutableMapOf()

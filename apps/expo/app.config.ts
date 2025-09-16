@@ -54,6 +54,7 @@ export default ({ config }: ConfigContext): ExpoConfig => {
 					faceIDPermission: 'Allow $(PRODUCT_NAME) to access your Face ID biometric data.',
 				},
 			],
+			['./plugins/withAndroidJetifier.ts'],
 			[
 				'./plugins/withPods.ts',
 				{

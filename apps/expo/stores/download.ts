@@ -1,12 +1,12 @@
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import { useSDK } from '@stump/client'
-import { MediaMetadata, SeriesMetadata } from '@stump/graphql'
+import { MediaMetadata } from '@stump/graphql'
 import * as FileSystem from 'expo-file-system'
 import { useCallback, useEffect } from 'react'
 import { create } from 'zustand'
 import { createJSONStorage, persist } from 'zustand/middleware'
-import { useActiveServer } from '~/components/activeServer'
 
+import { useActiveServer } from '~/components/activeServer'
 import { booksDirectory, ensureDirectoryExists } from '~/lib/filesystem'
 
 type UnsyncedReadProgress = {}
@@ -125,22 +125,21 @@ export function useDownload() {
 
 	useEffect(() => {
 		ensureDirectoryExists(booksDirectory(serverID))
-	}, [])
+	}, [serverID])
 
 	const downloadBook = useCallback(
 		async ({ id, url, extension }: DownloadParams) => {
 			await ensureDirectoryExists(booksDirectory(serverID))
-			// let existingBook = files.find((f) => f.id === id && f.serverID === serverID)
-			// if (existingBook) {
-			// 	console.log('File already downloaded')
-			// 	return `${booksDirectory(serverID)}/${existingBook.filename}`
-			// }
+			const existingBook = files.find((f) => f.id === id && f.serverID === serverID)
+			if (existingBook) {
+				return `${booksDirectory(serverID)}/${existingBook.filename}`
+			}
 
 			const downloadUrl = url || sdk.media.downloadURL(id)
 			const filename = `${id}.${extension}`
 			const placementUrl = `${booksDirectory(serverID)}/${filename}`
 
-			console.log('Downloading book to:', placementUrl)
+			// console.log('Downloading book to:', placementUrl)
 
 			try {
 				const result = await FileSystem.downloadAsync(downloadUrl, placementUrl, {
@@ -176,13 +175,4 @@ type UseServerDownloadsParams = {
 export const useServerDownloads = ({ id }: UseServerDownloadsParams) => {
 	const { files } = useDownloadStore((store) => ({ files: store.files }))
 	return files.filter((file) => file.serverID === id)
-}
-
-const extFromMime = (mime: string) => {
-	switch (mime) {
-		case 'application/epub+zip':
-			return '.epub'
-		default:
-			return ''
-	}
 }

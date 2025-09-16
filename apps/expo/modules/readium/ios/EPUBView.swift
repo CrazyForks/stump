@@ -58,7 +58,6 @@ public class EPUBView: ExpoView {
             return
         }
 
-        // Create default locator if none provided
         let defaultLocator = Locator(
             href: "",
             type: "application/xhtml+xml",
@@ -81,6 +80,7 @@ public class EPUBView: ExpoView {
         // If this is a new book or first initialization, load the publication
         if props!.bookId != oldProps?.bookId || props!.url != oldProps?.url || !isInitialized {
             Task {
+                // TODO: initializeNavigator like with Kt to initialize custom fonts
                 await loadPublication()
             }
             return

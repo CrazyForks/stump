@@ -163,13 +163,19 @@ const TableOfContentsListItem = ({ item }: { item: TableOfContentsItem }) => {
 	const router = useRouter()
 	const actions = useEpubLocationStore((store) => store.actions)
 
-	const handlePress = () => {
-		actions?.goToLocation({
+	const handlePress = async () => {
+		await actions?.goToLocation({
 			href: item.content,
 			type: 'application/xhtml+xml',
 			chapterTitle: item.label,
 		})
-		router.dismiss()
+
+		// This pushes the dismiss to the end of the call stack to try and
+		// avoid a crash which happens on Android if the dismiss occurs too
+		// closely after the readium navigation change
+		setTimeout(() => {
+			router.dismiss()
+		})
 	}
 
 	return (

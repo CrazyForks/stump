@@ -29,3 +29,7 @@ export async function getResource(bookId: string, href: string): Promise<string>
 export async function getPositions(bookId: string): Promise<unknown[]> {
 	return ReadiumModule.getPositions(bookId)
 }
+
+export async function goToLocation(bookId: string, locator: ReadiumLocator): Promise<void> {
+	return ReadiumModule.goToLocation(bookId, locator)
+}
