@@ -1,4 +1,4 @@
-import { Platform, View } from 'react-native'
+import { View } from 'react-native'
 import { ScrollView } from 'react-native-gesture-handler'
 
 import { ContactInformation, SupportInformation } from '~/components/appSettings'
@@ -14,7 +14,6 @@ import {
 } from '~/components/appSettings/preferences'
 import { StumpEnabled } from '~/components/appSettings/stump'
 import { Text } from '~/components/ui/text'
-import { cn } from '~/lib/utils'
 
 export default function Screen() {
 	return (
@@ -65,12 +64,3 @@ export default function Screen() {
 		</ScrollView>
 	)
 }
-
-const Divider = () => (
-	<View
-		className={cn('h-px w-full bg-edge')}
-		style={{
-			marginLeft: Platform.OS === 'android' ? 0 : 42,
-		}}
-	/>
-)
