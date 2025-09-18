@@ -86,8 +86,8 @@ impl MediaBuilder {
 		let path = pathbuf.as_path();
 
 		let FileParts {
-			file_name,
 			extension,
+			file_stem,
 			..
 		} = path.file_parts();
 		let path_str = path.to_str().unwrap_or_default().to_string();
@@ -127,7 +127,7 @@ impl MediaBuilder {
 
 		let media = media::ActiveModel {
 			id: Set(id),
-			name: Set(file_name),
+			name: Set(file_stem),
 			size: Set(size),
 			extension: Set(extension),
 			pages: Set(pages),
