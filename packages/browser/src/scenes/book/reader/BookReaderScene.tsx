@@ -34,6 +34,15 @@ export const BOOK_READER_SCENE_QUERY = graphql(`
 					width
 				}
 			}
+			nextInSeries(pagination: { cursor: { limit: 1 } }) {
+				nodes {
+					id
+					name: resolvedName
+					thumbnail {
+						url
+					}
+				}
+			}
 		}
 	}
 `)

@@ -3,6 +3,12 @@ import { createContext, useContext } from 'react'
 
 export type ImageReaderBookRef = NonNullable<BookReaderSceneQuery['mediaById']>
 
+export type NextInSeriesBookRef = {
+	id: string
+	name: string
+	thumbnailUrl: string
+}
+
 export type ImagePageDimensionRef = {
 	height: number
 	width: number

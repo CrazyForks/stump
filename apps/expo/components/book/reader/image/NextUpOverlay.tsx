@@ -1,19 +1,20 @@
+import { useSDK } from '@stump/client'
+import { useRouter } from 'expo-router'
 import { Fragment, useCallback, useEffect } from 'react'
+import { View } from 'react-native'
+import { Pressable } from 'react-native-gesture-handler'
 import LinearGradient from 'react-native-linear-gradient'
 import Animated, { useAnimatedStyle, useSharedValue, withTiming } from 'react-native-reanimated'
-import { cn } from '~/lib/utils'
-import { NextInSeriesBookRef } from './context'
-import { FasterImage } from '~/components/Image'
-import { useSDK } from '@stump/client'
-import { View } from 'react-native'
-import { useDisplay } from '~/lib/hooks'
-import { Button, Heading, icons, Label, Text } from '~/components/ui'
-import { useActiveServer } from '~/components/activeServer'
-import { useRouter } from 'expo-router'
-import { Pressable } from 'react-native-gesture-handler'
-import { COLORS } from '~/lib/constants'
-
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
+
+import { useActiveServer } from '~/components/activeServer'
+import { FasterImage } from '~/components/Image'
+import { Button, Heading, icons, Label, Text } from '~/components/ui'
+import { COLORS } from '~/lib/constants'
+import { useDisplay } from '~/lib/hooks'
+import { cn } from '~/lib/utils'
+
+import { NextInSeriesBookRef } from './context'
 
 const { X } = icons
 

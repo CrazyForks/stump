@@ -53,7 +53,7 @@ const pathsInternal = {
 	bookOverview: (id: string) => `/books/${id}`,
 	bookReader: (
 		id: string,
-		{ isEpub, isPdf, epubcfi, isAnimated, page, isStreaming, isIncognito }: BookReaderParams,
+		{ isEpub, isPdf, epubcfi, isAnimated, page, isStreaming, isIncognito }: BookReaderParams = {},
 	) => {
 		const baseUrl = pathsInternal.bookOverview(id)
 		const searchParams = new URLSearchParams()
@@ -148,7 +148,7 @@ export function usePaths() {
 		bookClubs: () => `${basePath}${pathsInternal.bookClubs()}`,
 		bookManagement: (id: string) => `${basePath}${pathsInternal.bookManagement(id)}`,
 		bookOverview: (id: string) => `${basePath}${pathsInternal.bookOverview(id)}`,
-		bookReader: (id: string, params: BookReaderParams) =>
+		bookReader: (id: string, params: BookReaderParams = {}) =>
 			`${basePath}${pathsInternal.bookReader(id, params)}`,
 		bookSearch: () => `${basePath}${pathsInternal.bookSearch()}`,
 		bookSearchWithFilter: (filters: MediaFilterInput) =>
