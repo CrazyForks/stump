@@ -6755,6 +6755,11 @@
     "@sigstore/core" "^1.1.0"
     "@sigstore/protobuf-specs" "^0.3.2"
 
+"@simbathesailor/use-what-changed@^2.0.0":
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/@simbathesailor/use-what-changed/-/use-what-changed-2.0.0.tgz#7f82d78f92c8588b5fadd702065dde93bd781403"
+  integrity sha512-ulBNrPSvfho9UN6zS2fii3AsdEcp2fMaKeqUZZeCNPaZbB6aXyTUhpEN9atjMAbu/eyK3AY8L4SYJUG62Ekocw==
+
 "@sinclair/typebox@^0.27.8":
   version "0.27.8"
   resolved "https://registry.npmjs.org/@sinclair/typebox/-/typebox-0.27.8.tgz"
@@ -25190,6 +25195,24 @@ string-length@^4.0.1:
   dependencies:
     char-regex "^1.0.2"
     strip-ansi "^6.0.0"
+
+string-strip-html@^13.4.13:
+  version "13.4.13"
+  resolved "https://registry.yarnpkg.com/string-strip-html/-/string-strip-html-13.4.13.tgz#414f7dc509e25c5dc3df99128d15ace547c54820"
+  integrity sha512-bth9qxlu/ZEJsy0MMlnrHYxtgW8VOvmhLMpcLh1oV5U0I3h4wBvHBTnZpB4o/V4/UepGNlaazdXS47C0WqyxFA==
+  dependencies:
+    "@types/lodash-es" "^4.17.12"
+    codsen-utils "^1.6.8"
+    html-entities "^2.6.0"
+    lodash-es "^4.17.21"
+    ranges-apply "^7.0.20"
+    ranges-push "^7.0.19"
+    string-left-right "^6.0.21"
+
+string-trim-spaces-only@^5.0.13:
+  version "5.0.13"
+  resolved "https://registry.yarnpkg.com/string-trim-spaces-only/-/string-trim-spaces-only-5.0.13.tgz#2c091309413f96114d7a90d5824aa4c86e7a312b"
+  integrity sha512-NGYfr+ZPkE8OKvrkEysuHPhgPifpe6fd0NfdXUlLVykaZxBDuNW+Ln2ja9dvaWlC69vqh6ZbEbOLbfiEDgomCQ==
 
 "string-width-cjs@npm:string-width@^4.2.0":
   version "4.2.3"

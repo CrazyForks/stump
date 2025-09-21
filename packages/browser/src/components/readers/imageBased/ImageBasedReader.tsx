@@ -129,7 +129,7 @@ export default function ImageBasedReader({ media, isIncognito, initialPage, onPr
 	 */
 	const handleChangePage = useCallback(
 		(newPage: number) => {
-			if (readingMode.startsWith('continuous')) {
+			if (readingMode !== ReadingMode.Paged) {
 				setCurrentPage(newPage)
 			} else {
 				setCurrentPage(newPage)
@@ -142,9 +142,13 @@ export default function ImageBasedReader({ media, isIncognito, initialPage, onPr
 	/**
 	 * A callback to get the URL of a page. This is *not* 0-indexed, so the first page is 1.
 	 */
-	const getPageUrl = (pageNumber: number) => sdk.media.bookPageURL(media.id, pageNumber)
+	const getPageUrl = useCallback(
+		(pageNumber: number) => sdk.media.bookPageURL(media.id, pageNumber),
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+		[media.id],
+	)
 
-	const lastPage = media.pages
+	const lastPage = useMemo(() => media.pages, [media.pages])
 	/**
 	 * The pages before and after the current page to preload. Any pages that are
 	 * less than 1 or greater than the total number of pages will be ignored.
@@ -225,7 +229,7 @@ export default function ImageBasedReader({ media, isIncognito, initialPage, onPr
 				currentPage,
 				imageSizes,
 				setCurrentPage: handleChangePage,
-				getPageUrl: (pageNumber) => sdk.media.bookPageURL(media.id, pageNumber),
+				getPageUrl,
 				setPageSize,
 				pageSets,
 				resetTimer: reset,
