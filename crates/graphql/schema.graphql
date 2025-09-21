@@ -12,6 +12,7 @@ type ActiveReadingSession {
 	id: Int!
 	page: Int
 	percentageCompleted: Decimal
+	locator: ReadiumLocator
 	epubcfi: String
 	koreaderProgress: String
 	startedAt: DateTime!
@@ -203,6 +204,7 @@ type BookClubSchedule {
 type Bookmark {
 	id: String!
 	previewContent: String
+	locator: ReadiumLocator
 	epubcfi: String
 	page: Int
 	mediaId: String!
@@ -211,7 +213,7 @@ type Bookmark {
 
 input BookmarkInput {
 	mediaId: String!
-	epubcfi: String!
+	locator: EpubProgressLocatorInput!
 	previewContent: String
 }
 
@@ -483,10 +485,15 @@ type Epub {
 }
 
 input EpubProgressInput {
-	epubcfi: String!
+	locator: EpubProgressLocatorInput!
 	percentage: Decimal
 	isComplete: Boolean
 	elapsedSeconds: Int
+}
+
+input EpubProgressLocatorInput @oneOf {
+	readium: ReadiumLocatorInput
+	epubcfi: String
 }
 
 """
@@ -1756,6 +1763,54 @@ enum ReadingStatus {
 	FINISHED
 	ABANDONED
 	NOT_STARTED
+}
+
+type ReadiumLocation {
+	fragments: [String!]
+	progression: Decimal
+	position: Int
+	totalProgression: Decimal
+	cssSelector: String
+	partialCfi: String
+}
+
+input ReadiumLocationInput {
+	fragments: [String!]
+	progression: Decimal
+	position: Int
+	totalProgression: Decimal
+	cssSelector: String
+	partialCfi: String
+}
+
+type ReadiumLocator {
+	chapterTitle: String!
+	href: String!
+	type: String!
+	title: String
+	locations: ReadiumLocation
+	text: ReadiumText
+}
+
+input ReadiumLocatorInput {
+	chapterTitle: String!
+	href: String!
+	type: String!
+	title: String
+	locations: ReadiumLocationInput
+	text: ReadiumTextInput
+}
+
+type ReadiumText {
+	after: String
+	before: String
+	highlight: String
+}
+
+input ReadiumTextInput {
+	after: String
+	before: String
+	highlight: String
 }
 
 type RecentlyAdded {

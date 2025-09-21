@@ -344,7 +344,9 @@ impl MediaMutation {
 
 		match input.clone() {
 			MediaProgressInput::Epub(input) => {
-				active_session.epubcfi = Set(Some(input.epubcfi.clone()));
+				let (epubcfi, locator) = input.locator.as_tuple();
+				active_session.epubcfi = Set(epubcfi);
+				active_session.locator = Set(locator);
 				active_session.percentage_completed = Set(input.percentage);
 				active_session.elapsed_seconds = Set(input.elapsed_seconds);
 				is_complete = input.is_complete.unwrap_or(
@@ -370,6 +372,8 @@ impl MediaMutation {
 			[
 				(matches!(input, MediaProgressInput::Epub(_)))
 					.then(|| reading_session::Column::Epubcfi),
+				(matches!(input, MediaProgressInput::Epub(_)))
+					.then(|| reading_session::Column::Locator),
 				(matches!(input, MediaProgressInput::Paged(_)))
 					.then(|| reading_session::Column::Page),
 			],

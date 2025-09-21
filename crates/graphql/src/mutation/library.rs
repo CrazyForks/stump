@@ -15,7 +15,6 @@ use sea_orm::{
 	sea_query::{OnConflict, Query},
 	Condition, IntoActiveModel, QuerySelect, Set, TransactionTrait,
 };
-use std::path::Path;
 use stump_core::filesystem::{
 	image::{
 		generate_book_thumbnail, remove_thumbnails, GenerateThumbnailOptions,

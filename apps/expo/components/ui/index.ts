@@ -1,4 +1,5 @@
 export * as icons from '../../lib/icons'
+export * from './accordion'
 export * from './avatar'
 export * from './badge'
 export * from './bottom-sheet'

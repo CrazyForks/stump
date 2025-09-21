@@ -1,13 +1,25 @@
-import { ALargeSmall, ChevronRight } from 'lucide-react-native'
-import { Platform, View } from 'react-native'
+import { View } from 'react-native'
 
-import { Text } from '~/components/ui'
-import { Icon } from '~/components/ui/icon'
-import { cn } from '~/lib/utils'
+import {
+	Accordion,
+	AccordionContent,
+	AccordionItem,
+	AccordionTrigger,
+	Label,
+	RadioGroup,
+	RadioGroupItem,
+	Text,
+} from '~/components/ui'
+import { useReaderStore } from '~/stores'
 
 import FontSizeSlider from './FontSizeSlider'
 
 export default function FontConfig() {
+	const store = useReaderStore((state) => ({
+		fontFamily: state.globalSettings.fontFamily,
+		save: state.setGlobalSettings,
+	}))
+
 	return (
 		<View className="">
 			<View className="flex-row px-4 py-2">
@@ -15,28 +27,90 @@ export default function FontConfig() {
 			</View>
 
 			<View className="flex-row justify-between px-4 py-2">
-				<View className="flex-row items-center gap-4">
-					<Icon as={ALargeSmall} className="h-6 w-6 text-foreground-muted" />
+				<View className="flex-1">
 					<Text className="text-lg text-foreground">Font</Text>
-				</View>
+					<Accordion type="single" collapsible className="w-full">
+						<AccordionItem value="item-1" className="border-0">
+							<AccordionTrigger>
+								<Text
+									className="text-lg font-normal"
+									style={{
+										fontFamily: store.fontFamily
+											? getPath(store.fontFamily as SupportedMobileFont)
+											: undefined,
+									}}
+								>
+									{store.fontFamily &&
+										store.fontFamily.charAt(0).toUpperCase() + store.fontFamily.slice(1)}
+									{!store.fontFamily && 'System'}
+								</Text>
+							</AccordionTrigger>
+							<AccordionContent>
+								<RadioGroup
+									value={store.fontFamily || ''}
+									onValueChange={(value) => store.save({ fontFamily: value || undefined })}
+								>
+									<View className="flex flex-row items-center gap-4">
+										<RadioGroupItem
+											value={''}
+											className="hover:bg-accent flex flex-row items-center rounded-md px-2 py-1"
+										/>
+										<Label className="text-lg font-normal" htmlFor={''}>
+											System
+										</Label>
+									</View>
 
-				<View className="flex-row items-center gap-4">
-					<Text className="text-lg text-foreground">Name</Text>
-					<Icon as={ChevronRight} className="h-6 w-6 text-foreground-muted" />
+									{Fonts.map((font) => (
+										<View key={font.value} className="flex flex-row items-center gap-4">
+											<RadioGroupItem
+												value={font.value}
+												className="hover:bg-accent flex flex-row items-center rounded-md px-2 py-1"
+											/>
+											<Label
+												className="text-lg font-normal"
+												style={{ fontFamily: getPath(font.value) }}
+												htmlFor={font.value}
+											>
+												{font.label}
+											</Label>
+										</View>
+									))}
+								</RadioGroup>
+							</AccordionContent>
+						</AccordionItem>
+					</Accordion>
 				</View>
 			</View>
-
-			<Divider />
 		</View>
 	)
 }
 
-const Divider = () => (
-	<View
-		className={cn('h-px w-full bg-edge')}
-		style={{
-			// 16 + 24 + 8 = 48
-			marginLeft: Platform.OS === 'android' ? 0 : 48,
-		}}
-	/>
-)
+type SupportedMobileFont =
+	| 'OpenDyslexic'
+	| 'Literata'
+	| 'Atkinson-Hyperlegible'
+	| 'CharisSIL'
+	| 'Bitter'
+
+const Fonts = [
+	{ label: 'OpenDyslexic', value: 'OpenDyslexic' },
+	{ label: 'Literata', value: 'Literata' },
+	{ label: 'Atkinson Hyperlegible', value: 'Atkinson-Hyperlegible' },
+	{ label: 'Charis SIL', value: 'CharisSIL' },
+	{ label: 'Bitter', value: 'Bitter' },
+] satisfies { label: string; value: SupportedMobileFont }[]
+
+const getPath = (font: SupportedMobileFont) => {
+	switch (font) {
+		case 'OpenDyslexic':
+			return 'OpenDyslexic-Regular'
+		case 'Literata':
+			return 'Literata'
+		case 'Atkinson-Hyperlegible':
+			return 'Atkinson Hyperlegible'
+		case 'CharisSIL':
+			return 'CharisSIL'
+		case 'Bitter':
+			return 'Bitter'
+	}
+}

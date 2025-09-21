@@ -1,10 +1,28 @@
 use async_graphql::{InputObject, OneofObject};
-use models::entity::{bookmark, media_metadata, user::AuthUser};
+use models::{
+	entity::{bookmark, media_metadata, user::AuthUser},
+	shared::readium::ReadiumLocator,
+};
 use sea_orm::{prelude::*, ActiveValue::Set, IntoActiveModel};
+
+#[derive(Debug, Clone, OneofObject)]
+pub enum EpubProgressLocatorInput {
+	Readium(ReadiumLocator),
+	Epubcfi(String),
+}
+
+impl EpubProgressLocatorInput {
+	pub fn as_tuple(&self) -> (Option<String>, Option<ReadiumLocator>) {
+		match self {
+			EpubProgressLocatorInput::Epubcfi(cfi) => (Some(cfi.clone()), None),
+			EpubProgressLocatorInput::Readium(loc) => (None, Some(loc.clone())),
+		}
+	}
+}
 
 #[derive(Debug, Clone, InputObject)]
 pub struct EpubProgressInput {
-	pub epubcfi: String,
+	pub locator: EpubProgressLocatorInput,
 	pub percentage: Option<Decimal>,
 	pub is_complete: Option<bool>,
 	pub elapsed_seconds: Option<i64>,
@@ -25,15 +43,20 @@ pub enum MediaProgressInput {
 #[derive(InputObject)]
 pub struct BookmarkInput {
 	pub media_id: String,
-	pub epubcfi: String,
+	pub locator: EpubProgressLocatorInput,
 	pub preview_content: Option<String>,
 }
 
 impl BookmarkInput {
 	pub fn into_active_model(&self, user: &AuthUser) -> bookmark::ActiveModel {
+		let (epubcfi, locator) = match &self.locator {
+			EpubProgressLocatorInput::Epubcfi(cfi) => (Some(cfi.clone()), None),
+			EpubProgressLocatorInput::Readium(loc) => (None, Some(loc.clone())),
+		};
 		bookmark::ActiveModel {
 			id: Set(Uuid::new_v4().to_string()),
-			epubcfi: Set(Some(self.epubcfi.clone())),
+			epubcfi: Set(epubcfi),
+			locator: Set(locator),
 			preview_content: Set(self.preview_content.clone()),
 			media_id: Set(self.media_id.clone()),
 			user_id: Set(user.id.clone()),

@@ -1,6 +1,6 @@
+import Foundation
 import R2Shared
 import R2Streamer
-import Foundation
 import ZIPFoundation
 
 enum BookServiceError: Error {
@@ -18,16 +18,16 @@ public final class BookService {
 
     /// A cache of publications, keyed by their identifier. A publication is added
     /// to the cache when it is opened
-    private var publications: [String : Publication] = [:]
-    
+    private var publications: [String: Publication] = [:]
+
     /// A singleton instance of the BookService class
     public static let instance = BookService()
-    
+
     /// A callback that is invoked when a publication is opened, provided to the streamer instance
-    private static func onCreatePublication(_ mediaType: MediaType,_ manifest: inout Manifest,_ fetcher: inout Fetcher,_ services: inout PublicationServicesBuilder) -> Void {
+    private static func onCreatePublication(_: MediaType, _: inout Manifest, _: inout Fetcher, _: inout PublicationServicesBuilder) {
         // TODO: write me
     }
-    
+
     /// The initializer for the BookService class
     private init() {
         streamer = Streamer(
@@ -41,29 +41,29 @@ public final class BookService {
     ///   - url: The URL of the local publication (EPUB file or extracted directory)
     public func openPublication(for bookID: String, at url: URL) async throws -> Publication {
         print("Opening publication for bookID: \(bookID) at: \(url)")
-        
+
         let asset = FileAsset(url: url)
         guard let mediaType = asset.mediaType() else {
             print("Failed to determine media type for: \(url)")
             throw BookServiceError.openFailed(Publication.OpeningError.unsupportedFormat)
         }
-        
+
         print("Opening publication with media type: \(mediaType)")
 
         let publication = try await withCheckedThrowingContinuation { cont in
-          streamer.open(asset: asset, allowUserInteraction: false) { result in
-            switch result {
-              case .success(let pub):
-                print("Successfully opened publication: \(pub.metadata.title)")
-                cont.resume(returning: pub)
-              case .failure(let error):
-                print("Failed to open publication: \(error)")
-                cont.resume(throwing: BookServiceError.openFailed(error))
-              case .cancelled:
-                print("Publication opening was cancelled")
-                cont.resume(throwing: CancellationError())
+            streamer.open(asset: asset, allowUserInteraction: false) { result in
+                switch result {
+                case let .success(pub):
+                    print("Successfully opened publication: \(pub.metadata.title)")
+                    cont.resume(returning: pub)
+                case let .failure(error):
+                    print("Failed to open publication: \(error)")
+                    cont.resume(throwing: BookServiceError.openFailed(error))
+                case .cancelled:
+                    print("Publication opening was cancelled")
+                    cont.resume(throwing: CancellationError())
+                }
             }
-          }
         }
 
         try validatePublication(publication: publication)
@@ -71,7 +71,7 @@ public final class BookService {
 
         return publication
     }
-    
+
     /// Extracts an archive (EPUB) to a directory
     /// - Parameters:
     ///   - archiveUrl: The URL of the local archive file
@@ -89,14 +89,14 @@ public final class BookService {
             throw BookServiceError.extractFailed(archiveUrl, error.localizedDescription)
         }
     }
-    
+
     /// Gets a publication by book ID
     /// - Parameter bookID: The identifier for the book
     /// - Returns: The publication if found, nil otherwise
     public func getPublication(for bookID: String) -> Publication? {
         return publications[bookID]
     }
-    
+
     /// Gets a resource from a publication
     /// - Parameters:
     ///   - bookID: The identifier for the book
@@ -108,7 +108,7 @@ public final class BookService {
         }
         return publication.get(link)
     }
-    
+
     /// Gets positions for a publication
     /// - Parameter bookID: The identifier for the book
     /// - Returns: Array of locators representing positions
@@ -118,7 +118,7 @@ public final class BookService {
         }
         return publication.positions
     }
-    
+
     /// Locates a link within a publication
     /// - Parameters:
     ///   - bookID: The identifier for the book
@@ -130,7 +130,7 @@ public final class BookService {
         }
         return publication.locate(link)
     }
-    
+
     /// A helper method to assert that a publication is not restricted.
     /// See https://github.com/readium/swift-toolkit/blob/main/docs/Guides/Readium%20LCP.md#using-the-opened-publication
     private func validatePublication(publication: Publication) throws {
@@ -142,5 +142,4 @@ public final class BookService {
             }
         }
     }
-
 }

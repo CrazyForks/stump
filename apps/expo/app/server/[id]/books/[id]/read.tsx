@@ -33,6 +33,26 @@ export const query = graphql(`
 			readProgress {
 				percentageCompleted
 				epubcfi
+				locator {
+					chapterTitle
+					href
+					type
+					title
+					locations {
+						fragments
+						progression
+						position
+						totalProgression
+						cssSelector
+						partialCfi
+					}
+					# FIXME: This caused the book to restart when selected...
+					# text {
+					# 	after
+					# 	before
+					# 	highlight
+					# }
+				}
 				page
 				elapsedSeconds
 			}
@@ -129,6 +149,9 @@ export default function Screen() {
 	const { mutate: updateProgress } = useGraphQLMutation(mutation, {
 		retry: (attempts) => attempts < 3,
 		throwOnError: false,
+		onError: (error) => {
+			console.error('Failed to update read progress:', error)
+		},
 	})
 
 	const onPageChanged = useCallback(
@@ -148,17 +171,25 @@ export default function Screen() {
 
 	const onLocationChanged = useCallback(
 		(locator: ReadiumLocator, percentage: number) => {
-			// updateProgress({
-			// 	id: book.id,
-			// 	input: {
-			// 		epub: {
-			// 			epubcfi: cfi,
-			// 			elapsedSeconds: totalSeconds,
-			// 			percentage,
-			// 		},
-			// 	},
-			// })
-			console.warn('TODO: Handle Locator change changes', { locator, percentage })
+			updateProgress({
+				id: book.id,
+				input: {
+					epub: {
+						locator: {
+							readium: {
+								chapterTitle: locator.chapterTitle,
+								href: locator.href,
+								type: locator.type,
+								locations: locator.locations,
+								text: locator.text,
+								title: locator.title,
+							},
+						},
+						elapsedSeconds: totalSeconds,
+						percentage,
+					},
+				},
+			})
 		},
 		[book.id, totalSeconds, updateProgress],
 	)
@@ -229,20 +260,7 @@ export default function Screen() {
 	if (!book) return null
 
 	if (book.extension.match(EBOOK_EXTENSION)) {
-		const currentProgressCfi = book.readProgress?.epubcfi || undefined
-
-		// TODO: This is a temporary solution until the backend provides full ReadiumLocator
-		// The folks on GitHub say it won't work but why the hell not try ig
-		const initialLocator: ReadiumLocator | undefined = currentProgressCfi
-			? {
-					chapterTitle: '',
-					href: '',
-					type: 'application/xhtml+xml',
-					locations: {
-						partialCfi: currentProgressCfi,
-					},
-				}
-			: undefined
+		const initialLocator = book.readProgress?.locator || undefined
 
 		return (
 			<ReadiumReader

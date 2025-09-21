@@ -1,9 +1,9 @@
 import ExpoModulesCore
-import WebKit
-import R2Shared
 import R2Navigator
+import R2Shared
 import ReadiumAdapterGCDWebServer
 import ReadiumInternal
+import WebKit
 
 public struct Props {
     var bookId: String?
@@ -43,7 +43,7 @@ public class EPUBView: ExpoView {
 
     public var navigator: EPUBNavigatorViewController?
 
-    public var pendingProps: Props = Props()
+    public var pendingProps: Props = .init()
     public var props: FinalizedProps?
 
     private var changingResource = false
@@ -54,7 +54,8 @@ public class EPUBView: ExpoView {
 
         // Don't proceed if we don't have required props
         guard let bookId = pendingProps.bookId,
-              let url = pendingProps.url else {
+              let url = pendingProps.url
+        else {
             return
         }
 
@@ -97,20 +98,20 @@ public class EPUBView: ExpoView {
 
     private func loadPublication() async {
         guard let props = props else { return }
-        
+
         do {
             // First check if we need to download and extract the EPUB
             if let url = URL(string: props.url) {
                 var publicationUrl = url
-                
+
                 // If it's a remote URL, download it first
                 if url.scheme == "http" || url.scheme == "https" {
                     publicationUrl = try await downloadEPUB(from: url)
                 }
-                
+
                 // Open the publication
                 let publication = try await BookService.instance.openPublication(for: props.bookId, at: publicationUrl)
-                
+
 //                TODO: See warning in Xcode
                 DispatchQueue.main.async {
                     self.initializeNavigator(with: publication)
@@ -123,19 +124,19 @@ public class EPUBView: ExpoView {
                 self.onError([
                     "errorDescription": error.localizedDescription,
                     "failureReason": "Failed to load publication",
-                    "recoverySuggestion": "Check the URL and try again"
+                    "recoverySuggestion": "Check the URL and try again",
                 ])
             }
         }
     }
-    
+
     // TODO: Prolly don't need this since I decided to download on JS side
     private func downloadEPUB(from url: URL) async throws -> URL {
         let (data, _) = try await URLSession.shared.data(from: url)
-        
+
         let tempDirectory = FileManager.default.temporaryDirectory
         let epubFile = tempDirectory.appendingPathComponent(UUID().uuidString + ".epub")
-        
+
         try data.write(to: epubFile)
         return epubFile
     }
@@ -145,13 +146,131 @@ public class EPUBView: ExpoView {
 
         let resources = Bundle.main.resourceURL!
 
-        let fontFamilyDeclarations = [
+        let fontFamilyDeclarations: [AnyHTMLFontFamilyDeclaration] = [
             CSSFontFamilyDeclaration(
-                fontFamily: FontFamily(rawValue: "systemFont"),
+                fontFamily: FontFamily(rawValue: "OpenDyslexic"),
                 fontFaces: [
                     CSSFontFace(
-                        file: resources.appendingPathComponent("Literata_500Medium.ttf"),
+                        file: resources.appendingPathComponent("OpenDyslexic-Regular.otf"),
                         style: .normal, weight: .standard(.normal)
+                    ),
+                    CSSFontFace(
+                        file: resources.appendingPathComponent("OpenDyslexic-Bold.otf"),
+                        style: .normal, weight: .standard(.bold)
+                    ),
+                    CSSFontFace(
+                        file: resources.appendingPathComponent("OpenDyslexic-Italic.otf"),
+                        style: .italic, weight: .standard(.normal)
+                    ),
+                    CSSFontFace(
+                        file: resources.appendingPathComponent("OpenDyslexic-Bold-Italic.otf"),
+                        style: .italic, weight: .standard(.bold)
+                    ),
+                ]
+            ).eraseToAnyHTMLFontFamilyDeclaration(),
+            // Literata via Literata-Italic[opsz,wght].ttf and Literata[opsz,wght].ttf
+            CSSFontFamilyDeclaration(
+                fontFamily: FontFamily(rawValue: "Literata"),
+                fontFaces: [
+                    // Regular weights
+                    CSSFontFace(
+                        file: resources.appendingPathComponent("Literata[opsz,wght].ttf"),
+                        style: .normal, weight: .standard(.normal)
+                    ),
+                    CSSFontFace(
+                        file: resources.appendingPathComponent("Literata[opsz,wght].ttf"),
+                        style: .normal, weight: .standard(.bold)
+                    ),
+                    CSSFontFace(
+                        file: resources.appendingPathComponent("Literata[opsz,wght].ttf"),
+                        style: .normal, weight: .standard(.light)
+                    ),
+                    // Italic weights
+                    CSSFontFace(
+                        file: resources.appendingPathComponent("Literata-Italic[opsz,wght].ttf"),
+                        style: .italic, weight: .standard(.normal)
+                    ),
+                    CSSFontFace(
+                        file: resources.appendingPathComponent("Literata-Italic[opsz,wght].ttf"),
+                        style: .italic, weight: .standard(.bold)
+                    ),
+                    CSSFontFace(
+                        file: resources.appendingPathComponent("Literata-Italic[opsz,wght].ttf"),
+                        style: .italic, weight: .standard(.light)
+                    ),
+                ]
+            ).eraseToAnyHTMLFontFamilyDeclaration(),
+            // Atkinson-Hyperlegible-{Bold,Regular,Italic,BoldItalic}.ttf
+            CSSFontFamilyDeclaration(
+                fontFamily: FontFamily(rawValue: "Atkinson-Hyperlegible"),
+                fontFaces: [
+                    CSSFontFace(
+                        file: resources.appendingPathComponent("Atkinson-Hyperlegible-Regular.ttf"),
+                        style: .normal, weight: .standard(.normal)
+                    ),
+                    CSSFontFace(
+                        file: resources.appendingPathComponent("Atkinson-Hyperlegible-Bold.ttf"),
+                        style: .normal, weight: .standard(.bold)
+                    ),
+                    CSSFontFace(
+                        file: resources.appendingPathComponent("Atkinson-Hyperlegible-Italic.ttf"),
+                        style: .italic, weight: .standard(.normal)
+                    ),
+                    CSSFontFace(
+                        file: resources.appendingPathComponent("Atkinson-Hyperlegible-BoldItalic.ttf"),
+                        style: .italic, weight: .standard(.bold)
+                    ),
+                ]
+            ).eraseToAnyHTMLFontFamilyDeclaration(),
+            // CharisSIL-{Bold,Italic,BoldItalic,Regular}.ttf
+            CSSFontFamilyDeclaration(
+                fontFamily: FontFamily(rawValue: "CharisSIL"),
+                fontFaces: [
+                    CSSFontFace(
+                        file: resources.appendingPathComponent("CharisSIL-Regular.ttf"),
+                        style: .normal, weight: .standard(.normal)
+                    ),
+                    CSSFontFace(
+                        file: resources.appendingPathComponent("CharisSIL-Bold.ttf"),
+                        style: .normal, weight: .standard(.bold)
+                    ),
+                    CSSFontFace(
+                        file: resources.appendingPathComponent("CharisSIL-Italic.ttf"),
+                        style: .italic, weight: .standard(.normal)
+                    ),
+                    CSSFontFace(
+                        file: resources.appendingPathComponent("CharisSIL-BoldItalic.ttf"),
+                        style: .italic, weight: .standard(.bold)
+                    ),
+                ]
+            ).eraseToAnyHTMLFontFamilyDeclaration(),
+            // Bitter-Italic-VariableFont_wght and Bitter-VariableFont_wght
+            CSSFontFamilyDeclaration(
+                fontFamily: FontFamily(rawValue: "Bitter"),
+                fontFaces: [
+                    CSSFontFace(
+                        file: resources.appendingPathComponent("Bitter-VariableFont_wght.ttf"),
+                        style: .normal, weight: .standard(.normal)
+                    ),
+                    CSSFontFace(
+                        file: resources.appendingPathComponent("Bitter-VariableFont_wght.ttf"),
+                        style: .normal, weight: .standard(.bold)
+                    ),
+                    CSSFontFace(
+                        file: resources.appendingPathComponent("Bitter-VariableFont_wght.ttf"),
+                        style: .normal, weight: .standard(.light)
+                    ),
+                    CSSFontFace(
+                        file: resources.appendingPathComponent("Bitter-Italic-VariableFont_wght.ttf"),
+                        style: .italic, weight: .standard(.normal)
+                    ),
+                    CSSFontFace(
+                        file: resources.appendingPathComponent("Bitter-Italic-VariableFont_wght.ttf"),
+                        style: .italic, weight: .standard(.bold)
+                    ),
+                    CSSFontFace(
+                        file: resources.appendingPathComponent("Bitter-Italic-VariableFont_wght.ttf"),
+                        style: .italic, weight: .standard(.light)
                     ),
                 ]
             ).eraseToAnyHTMLFontFamilyDeclaration(),
@@ -177,7 +296,7 @@ public class EPUBView: ExpoView {
                     contentInset: [
                         .compact: (top: 0, bottom: 0),
                         .regular: (top: 0, bottom: 0),
-                        .unspecified: (top: 0, bottom: 0)
+                        .unspecified: (top: 0, bottom: 0),
                     ],
                     fontFamilyDeclarations: fontFamilyDeclarations
                 ),
@@ -187,8 +306,8 @@ public class EPUBView: ExpoView {
             navigator.delegate = self
             addSubview(navigator.view)
             self.navigator = navigator
-            self.isInitialized = true
-            
+            isInitialized = true
+
             onBookLoaded([
                 "success": true,
                 "bookMetadata": [
@@ -198,34 +317,35 @@ public class EPUBView: ExpoView {
                     "identifier": publication.metadata.identifier ?? "",
                     "language": publication.metadata.languages.first ?? "en",
                     "totalPages": publication.positions.count,
-                    "chapterCount": publication.readingOrder.count
-                ]
+                    "chapterCount": publication.readingOrder.count,
+                ],
             ])
-            
+
             emitCurrentLocator()
-            
+
         } catch {
             print("Failed to create Navigator instance: \(error)")
             onError([
                 "errorDescription": error.localizedDescription,
                 "failureReason": "Failed to create navigator",
-                "recoverySuggestion": "Try reloading the publication"
+                "recoverySuggestion": "Try reloading the publication",
             ])
         }
     }
 
     public func destroyNavigator() {
-        self.navigator?.view.removeFromSuperview()
-        self.navigator = nil
-        self.isInitialized = false
+        navigator?.view.removeFromSuperview()
+        navigator = nil
+        isInitialized = false
     }
 
     func emitCurrentLocator() {
         guard let navigator = navigator,
-              let currentLocator = navigator.currentLocation else {
+              let currentLocator = navigator.currentLocation
+        else {
             return
         }
-        
+
         // FIXME: The epubcfi is not getting picked up right
         onLocatorChange(makeJSON([
             "chapterTitle": currentLocator.title ?? "",
@@ -234,7 +354,7 @@ public class EPUBView: ExpoView {
             "title": encodeIfNotNil(currentLocator.title),
             "locations": encodeIfNotEmpty(currentLocator.locations.json),
             "text": encodeIfNotEmpty(currentLocator.text.json),
-            "epubcfi": currentLocator.locations.partialCFI ?? ""
+            "epubcfi": currentLocator.locations.partialCFI ?? "",
         ]))
     }
 
@@ -242,10 +362,10 @@ public class EPUBView: ExpoView {
         guard let navigator = navigator else {
             return
         }
-        
+
         // Get the publication to access updated metadata
         let publication = navigator.publication
-        
+
         onLayoutChange([
             "bookMetadata": [
                 "title": publication.metadata.title,
@@ -254,8 +374,8 @@ public class EPUBView: ExpoView {
                 "identifier": publication.metadata.identifier ?? "",
                 "language": publication.metadata.languages.first ?? "en",
                 "totalPages": publication.positions.count,
-                "chapterCount": publication.readingOrder.count
-            ]
+                "chapterCount": publication.readingOrder.count,
+            ],
         ])
     }
 
@@ -263,24 +383,24 @@ public class EPUBView: ExpoView {
         if locator.href != navigator?.currentLocation?.href {
             changingResource = true
         }
-        _ = self.navigator?.go(to: locator, animated: true)
+        _ = navigator?.go(to: locator, animated: true)
     }
-    
+
     func goToLocation(locator: Locator) {
         go(locator: locator)
     }
-    
+
     func goForward() {
         _ = navigator?.goForward(animated: true) {}
     }
-    
+
     func goBackward() {
         _ = navigator?.goBackward(animated: true) {}
     }
-    
+
     func updatePreferences() {
         guard let props = props else { return }
-        
+
         navigator?.submitPreferences(EPUBPreferences(
             backgroundColor: props.background,
             fontFamily: props.fontFamily,
@@ -289,16 +409,16 @@ public class EPUBView: ExpoView {
             textAlign: props.textAlign,
             textColor: props.foreground
         ))
-        
+
         // Emit layout change event after preferences are updated
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
             self.emitLayoutChange()
         }
     }
 
-    public override func layoutSubviews() {
+    override public func layoutSubviews() {
         super.layoutSubviews()
-        guard let navigatorView = self.navigator?.view else {
+        guard let navigatorView = navigator?.view else {
             return
         }
         navigatorView.frame = bounds
@@ -306,31 +426,31 @@ public class EPUBView: ExpoView {
 }
 
 extension EPUBView: EPUBNavigatorDelegate {
-    public func navigator(_ navigator: Navigator, locationDidChange locator: Locator) {
+    public func navigator(_: Navigator, locationDidChange _: Locator) {
         changingResource = false
         emitCurrentLocator()
     }
-    
-    public func navigator(_ navigator: Navigator, presentError error: NavigatorError) {
-        self.onError([
+
+    public func navigator(_: Navigator, presentError error: NavigatorError) {
+        onError([
             "errorDescription": error.errorDescription ?? "Unknown error",
             "failureReason": error.failureReason ?? "Navigation failed",
-            "recoverySuggestion": error.recoverySuggestion ?? "Try again"
+            "recoverySuggestion": error.recoverySuggestion ?? "Try again",
         ])
     }
-    
+
     public func navigator(_ navigator: VisualNavigator, didTapAt point: CGPoint) {
         let navigator = navigator as! EPUBNavigatorViewController
-        
-        if point.x < self.bounds.maxX * 0.2 {
+
+        if point.x < bounds.maxX * 0.2 {
             _ = navigator.goBackward(animated: true) {}
             return
         }
-        if point.x > self.bounds.maxX * 0.8 {
+        if point.x > bounds.maxX * 0.8 {
             _ = navigator.goForward(animated: true) {}
             return
         }
 
-        self.onMiddleTouch()
+        onMiddleTouch()
     }
 }

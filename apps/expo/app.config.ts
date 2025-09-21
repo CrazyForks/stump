@@ -75,6 +75,7 @@ export default ({ config }: ConfigContext): ExpoConfig => {
 			[
 				'expo-font',
 				{
+					// TODO: Manually define font-family in config to make access easier
 					fonts: [
 						'assets/fonts/Atkinson-Hyperlegible-Bold.ttf',
 						'assets/fonts/Atkinson-Hyperlegible-BoldItalic.ttf',

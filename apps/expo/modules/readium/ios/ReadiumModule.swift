@@ -1,7 +1,7 @@
 import ExpoModulesCore
-import R2Shared
-import R2Navigator
 import Foundation
+import R2Navigator
+import R2Shared
 
 public class ReadiumModule: Module {
     public func definition() -> ModuleDefinition {
@@ -16,7 +16,7 @@ public class ReadiumModule: Module {
             return pub.jsonManifest ?? "{}"
         }
 
-        AsyncFunction("getResource") { (bookId: String, linkJson: [String : Any]) -> String in
+        AsyncFunction("getResource") { (bookId: String, linkJson: [String: Any]) -> String in
             let link = try Link(json: linkJson)
             let resource = try BookService.instance.getResource(for: bookId, link: link)
             if link.type?.starts(with: "image/") == true {
@@ -26,12 +26,12 @@ public class ReadiumModule: Module {
             return try resource.readAsString().get()
         }
 
-        AsyncFunction("getPositions") { (bookId: String) -> [[String : Any]] in
+        AsyncFunction("getPositions") { (bookId: String) -> [[String: Any]] in
             let positions = try BookService.instance.getPositions(for: bookId)
             return positions.map { $0.json }
         }
 
-        AsyncFunction("locateLink") { (bookId: String, linkJson: [String : Any]) -> [String : Any]? in
+        AsyncFunction("locateLink") { (bookId: String, linkJson: [String: Any]) -> [String: Any]? in
             let link = try Link(json: linkJson)
             let locator = BookService.instance.locateLink(for: bookId, link: link)
             return locator?.json
@@ -43,7 +43,7 @@ public class ReadiumModule: Module {
             guard let epubUrl = URL(string: url) else {
                 return false
             }
-            
+
             do {
                 _ = try await BookService.instance.openPublication(for: bookId, at: epubUrl)
                 return true
@@ -75,14 +75,14 @@ public class ReadiumModule: Module {
                 view.pendingProps.bookId = prop
             }
 
-            Prop("locator") { (view: EPUBView, prop: [String : Any]) in
+            Prop("locator") { (view: EPUBView, prop: [String: Any]) in
                 guard let locator = try? Locator(json: prop) else {
                     return
                 }
                 view.pendingProps.locator = locator
             }
 
-            Prop("initialLocator") { (view: EPUBView, prop: [String : Any]) in
+            Prop("initialLocator") { (view: EPUBView, prop: [String: Any]) in
                 guard let locator = try? Locator(json: prop) else {
                     return
                 }

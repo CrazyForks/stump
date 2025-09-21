@@ -28,6 +28,7 @@
 		"@react-native-menu/menu": "^1.2.4",
 		"@react-native-picker/picker": "2.11.1",
 		"@react-navigation/native": "^7.1.17",
+		"@rn-primitives/accordion": "^1.2.0",
 		"@rn-primitives/avatar": "~1.1.0",
 		"@rn-primitives/checkbox": "^1.2.0",
 		"@rn-primitives/dialog": "^1.1.0",

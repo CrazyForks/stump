@@ -1,6 +1,8 @@
 use async_graphql::SimpleObject;
 use sea_orm::{entity::prelude::*, prelude::async_trait::async_trait, ActiveValue};
 
+use crate::shared::readium::ReadiumLocator;
+
 use super::user::AuthUser;
 
 // TODO(sea-orm): Consider i32 for ID
@@ -13,6 +15,8 @@ pub struct Model {
 	pub id: String,
 	#[sea_orm(column_type = "Text", nullable)]
 	pub preview_content: Option<String>,
+	#[sea_orm(column_type = "Json", nullable)]
+	pub locator: Option<ReadiumLocator>,
 	#[sea_orm(column_type = "Text", nullable)]
 	pub epubcfi: Option<String>,
 	pub page: Option<i32>,

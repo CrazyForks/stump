@@ -1,4 +1,5 @@
 import { Platform } from 'react-native'
+
 import { useColorScheme } from './useColorScheme'
 
 export const ENABLE_LARGE_HEADER = Platform.select({

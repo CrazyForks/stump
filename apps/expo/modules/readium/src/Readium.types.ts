@@ -4,25 +4,25 @@ export type ReadingDirection = 'ltr' | 'rtl'
 export type ReadingMode = 'paged' | 'scrolled'
 
 export type ReadiumLocation = {
-	fragments?: string[]
-	progression?: number
-	position?: number
-	totalProgression?: number
-	cssSelector?: string
-	partialCfi?: string
+	fragments?: string[] | null
+	progression?: number | null
+	position?: number | null
+	totalProgression?: number | null
+	cssSelector?: string | null
+	partialCfi?: string | null
 }
 
 export type ReadiumLocator = {
 	chapterTitle: string
 	href: string
 	type: string
-	title?: string
-	locations?: ReadiumLocation
+	title?: string | null
+	locations?: ReadiumLocation | null
 	text?: {
-		after?: string
-		before?: string
-		highlight?: string
-	}
+		after?: string | null
+		before?: string | null
+		highlight?: string | null
+	} | null
 }
 
 export type ReadiumLink = {

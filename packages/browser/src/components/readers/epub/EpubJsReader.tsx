@@ -134,6 +134,15 @@ const query = graphql(`
 					defaultReadingMode
 					defaultReadingDir
 				}
+				nextInSeries(pagination: { cursor: { limit: 1 } }) {
+					nodes {
+						id
+						name: resolvedName
+						thumbnail {
+							url
+						}
+					}
+				}
 			}
 		}
 	}
@@ -323,7 +332,9 @@ export default function EpubJsReader({ id, isIncognito }: EpubJsReaderProps) {
 			}
 
 			updateProgress({
-				epubcfi: location.start.cfi,
+				locator: {
+					epubcfi: location.start.cfi,
+				},
 				percentage: percentageCompleted,
 				isComplete: percentageCompleted >= 1.0,
 			})
@@ -961,7 +972,7 @@ async function onJumpToSection(
 	section: number,
 	book: Book | null,
 	rendition: Rendition | null,
-	ref: React.RefObject<HTMLDivElement> | undefined,
+	ref: React.RefObject<HTMLDivElement | null> | undefined,
 	onGoToCfi: (cfi: string) => void,
 ) {
 	if (!book || !rendition || !ref || !ref.current || section < 0) return
