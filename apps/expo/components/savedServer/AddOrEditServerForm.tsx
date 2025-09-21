@@ -27,9 +27,15 @@ type Props = {
 	editingServer?: SavedServerWithConfig | null
 	onSubmit: (data: AddOrEditServerSchema) => void
 	onClose: () => void
+	onInputFocused?: (e: NativeSyntheticEvent<TextInputFocusEventData>) => void
 }
 
-export default function AddOrEditServerForm({ editingServer, onSubmit, onClose }: Props) {
+export default function AddOrEditServerForm({
+	editingServer,
+	onSubmit,
+	onClose,
+	onInputFocused,
+}: Props) {
 	const { savedServers, stumpEnabled } = useSavedServers()
 
 	const { control, handleSubmit, ...form } = useForm<AddOrEditServerSchema>({
@@ -127,14 +133,15 @@ export default function AddOrEditServerForm({ editingServer, onSubmit, onClose }
 						control={control}
 						render={({ field: { onChange, onBlur, value } }) => (
 							<BottomSheet.Input
+								label="Username"
 								autoCorrect={false}
 								autoCapitalize="none"
-								label="Username"
 								placeholder="oromei"
 								onBlur={onBlur}
 								onChangeText={onChange}
 								value={value}
 								errorMessage={errors.basicUser?.message}
+								onFocus={onInputFocused}
 							/>
 						)}
 						name="basicUser"
@@ -153,6 +160,7 @@ export default function AddOrEditServerForm({ editingServer, onSubmit, onClose }
 								onChangeText={onChange}
 								value={value}
 								errorMessage={errors.basicPassword?.message}
+								onFocus={onInputFocused}
 							/>
 						)}
 						name="basicPassword"
@@ -174,6 +182,7 @@ export default function AddOrEditServerForm({ editingServer, onSubmit, onClose }
 							value={value}
 							errorMessage={errors.token?.message}
 							secureTextEntry
+							onFocus={onInputFocused}
 						/>
 					)}
 					name="token"

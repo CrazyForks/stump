@@ -22925,6 +22925,13 @@ react-native-is-edge-to-edge@^1.2.1:
   resolved "https://registry.yarnpkg.com/react-native-is-edge-to-edge/-/react-native-is-edge-to-edge-1.2.1.tgz#64e10851abd9d176cbf2b40562f751622bde3358"
   integrity sha512-FLbPWl/MyYQWz+KwqOZsSyj2JmLKglHatd3xLZWskXOpRaio4LfEDEz8E/A6uD8QoTHW6Aobw1jbEwK7KMgR7Q==
 
+react-native-keyboard-controller@^1.18.6:
+  version "1.18.6"
+  resolved "https://registry.yarnpkg.com/react-native-keyboard-controller/-/react-native-keyboard-controller-1.18.6.tgz#ee7449d669bb599c29399d7f5f8cfc72c8528e45"
+  integrity sha512-K/RMw3MdtuykkACFN5d9RTapAcO0v4T34gmSyHkEraU5UsX+fxEHd6j4MvL7KUihvmLLod0NV/mQC0nL4cOurw==
+  dependencies:
+    react-native-is-edge-to-edge "^1.2.1"
+
 react-native-linear-gradient@^2.8.3:
   version "2.8.3"
   resolved "https://registry.npmjs.org/react-native-linear-gradient/-/react-native-linear-gradient-2.8.3.tgz"
@@ -25183,24 +25190,6 @@ string-length@^4.0.1:
   dependencies:
     char-regex "^1.0.2"
     strip-ansi "^6.0.0"
-
-string-strip-html@^13.4.13:
-  version "13.4.13"
-  resolved "https://registry.yarnpkg.com/string-strip-html/-/string-strip-html-13.4.13.tgz#414f7dc509e25c5dc3df99128d15ace547c54820"
-  integrity sha512-bth9qxlu/ZEJsy0MMlnrHYxtgW8VOvmhLMpcLh1oV5U0I3h4wBvHBTnZpB4o/V4/UepGNlaazdXS47C0WqyxFA==
-  dependencies:
-    "@types/lodash-es" "^4.17.12"
-    codsen-utils "^1.6.8"
-    html-entities "^2.6.0"
-    lodash-es "^4.17.21"
-    ranges-apply "^7.0.20"
-    ranges-push "^7.0.19"
-    string-left-right "^6.0.21"
-
-string-trim-spaces-only@^5.0.13:
-  version "5.0.13"
-  resolved "https://registry.yarnpkg.com/string-trim-spaces-only/-/string-trim-spaces-only-5.0.13.tgz#2c091309413f96114d7a90d5824aa4c86e7a312b"
-  integrity sha512-NGYfr+ZPkE8OKvrkEysuHPhgPifpe6fd0NfdXUlLVykaZxBDuNW+Ln2ja9dvaWlC69vqh6ZbEbOLbfiEDgomCQ==
 
 "string-width-cjs@npm:string-width@^4.2.0":
   version "4.2.3"
