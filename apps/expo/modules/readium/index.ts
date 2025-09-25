@@ -25,8 +25,7 @@ export async function getResource(bookId: string, href: string): Promise<string>
 	return ReadiumModule.getResource(bookId, href)
 }
 
-// TODO: type this
-export async function getPositions(bookId: string): Promise<unknown[]> {
+export async function getPositions(bookId: string): Promise<ReadiumLocator[]> {
 	return ReadiumModule.getPositions(bookId)
 }
 

@@ -1,6 +1,6 @@
-import Foundation
-import R2Shared
+// import Foundation
+// import R2Shared
 
-enum ReadiumError: LocalizedError {
-    case unknown
-}
+// enum ReadiumError: LocalizedError {
+//     case unknown
+// }

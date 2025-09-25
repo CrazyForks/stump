@@ -15,7 +15,6 @@ export type ReadiumLocation = {
 export type ReadiumLocator = {
 	chapterTitle: string
 	href: string
-	type: string
 	title?: string | null
 	locations?: ReadiumLocation | null
 	text?: {

@@ -1,145 +1,198 @@
-import Foundation
-import R2Shared
-import R2Streamer
-import ZIPFoundation
+ import Foundation
+ import ReadiumShared
+ import ReadiumStreamer
+ import ReadiumZIPFoundation
 
-enum BookServiceError: Error {
-    case openFailed(Publication.OpeningError)
-    case publicationNotFound
-    case restrictedPublication(Error)
-    case extractFailed(URL, String)
-    case locatorNotInReadingOrder(String, String)
-}
+ enum BookServiceError: Error {
+     case openFailed(Error)
+     case publicationNotFound
+     case restrictedPublication(Error)
+     case extractFailed(URL, String)
+     case locatorNotInReadingOrder(String, String)
+     case assetRetrievalFailed(Error)
+ }
 
-public final class BookService {
-    /// An instance of R2Streamer's Streamer class, which is used during the actual
-    /// opening of a publication
-    private let streamer: Streamer
-
-    /// A cache of publications, keyed by their identifier. A publication is added
-    /// to the cache when it is opened
-    private var publications: [String: Publication] = [:]
-
-    /// A singleton instance of the BookService class
-    public static let instance = BookService()
-
-    /// A callback that is invoked when a publication is opened, provided to the streamer instance
-    private static func onCreatePublication(_: MediaType, _: inout Manifest, _: inout Fetcher, _: inout PublicationServicesBuilder) {
-        // TODO: write me
+ /// A minimal PDF document factory that doesn't create PDF documents
+ /// Used when PDF support is not needed or not available
+class NullPDFDocumentFactory: PDFDocumentFactory {
+    func open(file: ReadiumShared.FileURL, password: String?) async throws -> any ReadiumShared.PDFDocument {
+        throw NSError(domain: "NullPDFDocumentFactory", code: -1, userInfo: [NSLocalizedDescriptionKey: "PDF support is not available"])
     }
-
-    /// The initializer for the BookService class
-    private init() {
-        streamer = Streamer(
-            onCreatePublication: Self.onCreatePublication
-        )
+    
+    func open<HREF>(resource: any ReadiumShared.Resource, at href: HREF, password: String?) async throws -> any ReadiumShared.PDFDocument where HREF : ReadiumShared.URLConvertible {
+        throw NSError(domain: "NullPDFDocumentFactory", code: -1, userInfo: [NSLocalizedDescriptionKey: "PDF support is not available"])
     }
+    
+     func open(file: FileURL, password: String?) -> PDFDocument? {
+         return nil
+     }
+ }
 
-    /// Opens a publication from a local EPUB file or directory
-    /// - Parameters:
-    ///   - bookID: The identifier for the book
-    ///   - url: The URL of the local publication (EPUB file or extracted directory)
-    public func openPublication(for bookID: String, at url: URL) async throws -> Publication {
-        print("Opening publication for bookID: \(bookID) at: \(url)")
+ public final class BookService {
+     /// An instance of AssetRetriever for accessing publication assets
+     private let assetRetriever: AssetRetriever
+     
+     /// An instance of PublicationOpener for opening publications using the new Readium 3.0 API
+     private let publicationOpener: PublicationOpener
 
-        let asset = FileAsset(url: url)
-        guard let mediaType = asset.mediaType() else {
-            print("Failed to determine media type for: \(url)")
-            throw BookServiceError.openFailed(Publication.OpeningError.unsupportedFormat)
-        }
+     /// A cache of publications, keyed by their identifier. A publication is added
+     /// to the cache when it is opened
+     private var publications: [String: Publication] = [:]
 
-        print("Opening publication with media type: \(mediaType)")
+     /// A singleton instance of the BookService class
+     public static let instance = BookService()
 
-        let publication = try await withCheckedThrowingContinuation { cont in
-            streamer.open(asset: asset, allowUserInteraction: false) { result in
-                switch result {
-                case let .success(pub):
-                    print("Successfully opened publication: \(pub.metadata.title)")
-                    cont.resume(returning: pub)
-                case let .failure(error):
-                    print("Failed to open publication: \(error)")
-                    cont.resume(throwing: BookServiceError.openFailed(error))
-                case .cancelled:
-                    print("Publication opening was cancelled")
-                    cont.resume(throwing: CancellationError())
-                }
-            }
-        }
+     /// The initializer for the BookService class
+     private init() {
+         // Initialize the HTTP client (using default implementation)
+         let httpClient = DefaultHTTPClient()
+         
+         // Initialize the asset retriever
+         assetRetriever = AssetRetriever(httpClient: httpClient)
+         
+         // Initialize publication opener with parsers and content protections
+         // Create a minimal PDF factory that doesn't support PDF creation
+         let pdfFactory = NullPDFDocumentFactory()
+         
+         publicationOpener = PublicationOpener(
+             parser: DefaultPublicationParser(
+                 httpClient: httpClient,
+                 assetRetriever: assetRetriever,
+                 pdfFactory: pdfFactory
+             ),
+             contentProtections: [] // Add LCP or other content protections here if needed
+         )
+     }
 
-        try validatePublication(publication: publication)
-        publications[bookID] = publication
+     /// Opens a publication from a local EPUB file or directory
+     /// - Parameters:
+     ///   - bookID: The identifier for the book
+     ///   - url: The URL of the local publication (EPUB file or extracted directory)
+     public func openPublication(for bookID: String, at url: URL) async throws -> Publication {
+         print("Opening publication for bookID: \(bookID) at: \(url)")
 
-        return publication
-    }
+         // Create FileURL from the URL
+         guard let fileURL = FileURL(url: url) else {
+             print("Failed to create FileURL from: \(url)")
+             throw BookServiceError.openFailed(URLError(.badURL))
+         }
 
-    /// Extracts an archive (EPUB) to a directory
-    /// - Parameters:
-    ///   - archiveUrl: The URL of the local archive file
-    ///   - extractedUrl: The URL where the archive should be extracted
-    public func extractArchive(archiveUrl: URL, extractedUrl: URL) throws {
-        print("Extracting archive from: \(archiveUrl) to: \(extractedUrl)")
-        let fileManager = FileManager.default
+         // Retrieve the asset using AssetRetriever
+         let assetResult = await assetRetriever.retrieve(url: fileURL)
+         let asset: Asset
+         
+         switch assetResult {
+         case .success(let retrievedAsset):
+             asset = retrievedAsset
+         case .failure(let error):
+             print("Failed to retrieve asset: \(error)")
+             throw BookServiceError.assetRetrievalFailed(error)
+         }
 
-        do {
-            try fileManager.createDirectory(at: extractedUrl, withIntermediateDirectories: true, attributes: nil)
-            try fileManager.unzipItem(at: archiveUrl, to: extractedUrl)
-            print("Successfully extracted archive")
-        } catch {
-            print("Extract failed: \(error.localizedDescription)")
-            throw BookServiceError.extractFailed(archiveUrl, error.localizedDescription)
-        }
-    }
+         print("Opening publication with media type: \(asset.format.mediaType)")
 
-    /// Gets a publication by book ID
-    /// - Parameter bookID: The identifier for the book
-    /// - Returns: The publication if found, nil otherwise
-    public func getPublication(for bookID: String) -> Publication? {
-        return publications[bookID]
-    }
+         // Open the publication using PublicationOpener
+         let publicationResult = await publicationOpener.open(
+             asset: asset,
+             allowUserInteraction: false,
+             credentials: nil
+         )
+         
+         let publication: Publication
+         switch publicationResult {
+         case .success(let pub):
+             print("Successfully opened publication: \(pub.metadata.title)")
+             publication = pub
+         case .failure(let error):
+             print("Failed to open publication: \(error)")
+             throw BookServiceError.openFailed(error)
+         }
 
-    /// Gets a resource from a publication
-    /// - Parameters:
-    ///   - bookID: The identifier for the book
-    ///   - link: The link to the resource
-    /// - Returns: The resource
-    public func getResource(for bookID: String, link: Link) throws -> Resource {
-        guard let publication = publications[bookID] else {
-            throw BookServiceError.publicationNotFound
-        }
-        return publication.get(link)
-    }
+         try validatePublication(publication: publication)
+         publications[bookID] = publication
 
-    /// Gets positions for a publication
-    /// - Parameter bookID: The identifier for the book
-    /// - Returns: Array of locators representing positions
-    public func getPositions(for bookID: String) throws -> [Locator] {
-        guard let publication = publications[bookID] else {
-            throw BookServiceError.publicationNotFound
-        }
-        return publication.positions
-    }
+         return publication
+     }
 
-    /// Locates a link within a publication
-    /// - Parameters:
-    ///   - bookID: The identifier for the book
-    ///   - link: The link to locate
-    /// - Returns: A locator for the link, if found
-    public func locateLink(for bookID: String, link: Link) -> Locator? {
-        guard let publication = getPublication(for: bookID) else {
-            return nil
-        }
-        return publication.locate(link)
-    }
+     /// Extracts an archive (EPUB) to a directory
+     /// - Parameters:
+     ///   - archiveUrl: The URL of the local archive file
+     ///   - extractedUrl: The URL where the archive should be extracted
+     public func extractArchive(archiveUrl: URL, extractedUrl: URL) async throws {
+         print("Extracting archive from: \(archiveUrl) to: \(extractedUrl)")
+         let fileManager = FileManager.default
 
-    /// A helper method to assert that a publication is not restricted.
-    /// See https://github.com/readium/swift-toolkit/blob/main/docs/Guides/Readium%20LCP.md#using-the-opened-publication
-    private func validatePublication(publication: Publication) throws {
-        guard !publication.isRestricted else {
-            if let error = publication.protectionError {
-                throw BookServiceError.restrictedPublication(error)
-            } else {
-                throw ReadiumError.unknown
-            }
-        }
-    }
-}
+         do {
+             try fileManager.createDirectory(at: extractedUrl, withIntermediateDirectories: true, attributes: nil)
+             
+             // Use ZIPFoundation for extraction (Readium 3.0 uses ZIPFoundation instead of Minizip by default)
+             try await fileManager.unzipItem(at: archiveUrl, to: extractedUrl)
+             print("Successfully extracted archive")
+         } catch {
+             print("Extract failed: \(error.localizedDescription)")
+             throw BookServiceError.extractFailed(archiveUrl, error.localizedDescription)
+         }
+     }
+
+     /// Gets a publication by book ID
+     /// - Parameter bookID: The identifier for the book
+     /// - Returns: The publication if found, nil otherwise
+     public func getPublication(for bookID: String) -> Publication? {
+         return publications[bookID]
+     }
+
+     /// Gets a resource from a publication
+     /// - Parameters:
+     ///   - bookID: The identifier for the book
+     ///   - link: The link to the resource
+     /// - Returns: The resource
+     public func getResource(for bookID: String, link: Link) throws -> Resource {
+         guard let publication = publications[bookID] else {
+             throw BookServiceError.publicationNotFound
+         }
+         guard let resource = publication.get(link) else {
+             throw BookServiceError.publicationNotFound
+         }
+         return resource
+     }
+
+     /// Gets positions for a publication
+     /// - Parameter bookID: The identifier for the book
+     /// - Returns: Array of locators representing positions
+     public func getPositions(for bookID: String) async throws -> [Locator] {
+         guard let publication = publications[bookID] else {
+             throw BookServiceError.publicationNotFound
+         }
+         let positionsResult = await publication.positions()
+         switch positionsResult {
+         case .success(let positions):
+             return positions
+         case .failure(let error):
+             throw BookServiceError.openFailed(error)
+         }
+     }
+
+     /// Locates a link within a publication
+     /// - Parameters:
+     ///   - bookID: The identifier for the book
+     ///   - link: The link to locate
+     /// - Returns: A locator for the link, if found
+     public func locateLink(for bookID: String, link: Link) async -> Locator? {
+         guard let publication = getPublication(for: bookID) else {
+             return nil
+         }
+         return await publication.locate(link)
+     }
+
+     /// A helper method to assert that a publication is not restricted.
+     /// See https://github.com/readium/swift-toolkit/blob/main/docs/Guides/Readium%20LCP.md#using-the-opened-publication
+     private func validatePublication(publication: Publication) throws {
+         guard !publication.isRestricted else {
+             if let error = publication.protectionError {
+                 throw BookServiceError.restrictedPublication(error)
+             } else {
+                 throw BookServiceError.restrictedPublication(NSError(domain: "BookService", code: -1, userInfo: [NSLocalizedDescriptionKey: "Publication is restricted but no specific error was provided"]))
+             }
+         }
+     }
+ }
