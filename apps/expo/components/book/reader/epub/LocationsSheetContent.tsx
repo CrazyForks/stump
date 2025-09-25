@@ -6,7 +6,7 @@ import { Pressable, ScrollView } from 'react-native-gesture-handler'
 import PagerView from 'react-native-pager-view'
 import { stripHtml } from 'string-strip-html'
 
-import { FasterImage } from '~/components/Image'
+import { TurboImage } from '~/components/Image'
 import { Heading, Text } from '~/components/ui'
 import { useColors } from '~/lib/constants'
 import { cn } from '~/lib/utils'
@@ -90,15 +90,15 @@ export default function LocationsSheetContent() {
 					<ScrollView contentContainerStyle={{ paddingBottom: 16 }}>
 						<View className="flex items-center gap-4">
 							<View className="aspect-[2/3] self-center">
-								<FasterImage
+								<TurboImage
 									source={{
-										url: book?.thumbnail.url,
+										uri: book?.thumbnail.url,
 										headers: {
 											Authorization: sdk.authorizationHeader || '',
 										},
-										resizeMode: 'fill',
-										borderRadius: 8,
 									}}
+									resizeMode="stretch"
+									resize={(700 / 3) * 1.5}
 									style={{
 										height: 350,
 										width: 'auto',
@@ -106,7 +106,7 @@ export default function LocationsSheetContent() {
 										shadowOffset: { width: 0, height: 1 },
 										shadowOpacity: 0.2,
 										shadowRadius: 5,
-										borderRadius: 8,
+										borderRadius: 12,
 										borderWidth: 0.2,
 										borderColor: colors.edge.DEFAULT,
 									}}

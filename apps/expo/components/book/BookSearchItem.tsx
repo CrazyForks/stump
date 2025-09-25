@@ -9,9 +9,9 @@ import { formatBytes } from '~/lib/format'
 import { useDisplay } from '~/lib/hooks'
 
 import { useActiveServer } from '../activeServer'
+import { BorderAndShadow } from '../BorderAndShadow'
 import { TurboImage } from '../Image'
 import { Text } from '../ui'
-import { BorderAndShadow } from '../BorderAndShadow'
 
 const fragment = graphql(`
 	fragment BookSearchItem on Media {
