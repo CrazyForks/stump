@@ -59,7 +59,6 @@ pub struct ReadiumText {
 pub struct ReadiumLocator {
 	pub chapter_title: String,
 	pub href: String,
-	pub r#type: String,
 	pub title: Option<String>,
 	pub locations: Option<ReadiumLocation>,
 	pub text: Option<ReadiumText>,

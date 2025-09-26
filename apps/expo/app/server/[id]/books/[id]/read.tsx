@@ -36,7 +36,6 @@ export const query = graphql(`
 				locator {
 					chapterTitle
 					href
-					type
 					title
 					locations {
 						fragments
@@ -179,7 +178,6 @@ export default function Screen() {
 							readium: {
 								chapterTitle: locator.chapterTitle,
 								href: locator.href,
-								type: locator.type,
 								locations: locator.locations,
 								text: locator.text,
 								title: locator.title,

@@ -1786,7 +1786,6 @@ input ReadiumLocationInput {
 type ReadiumLocator {
 	chapterTitle: String!
 	href: String!
-	type: String!
 	title: String
 	locations: ReadiumLocation
 	text: ReadiumText
@@ -1795,7 +1794,6 @@ type ReadiumLocator {
 input ReadiumLocatorInput {
 	chapterTitle: String!
 	href: String!
-	type: String!
 	title: String
 	locations: ReadiumLocationInput
 	text: ReadiumTextInput
