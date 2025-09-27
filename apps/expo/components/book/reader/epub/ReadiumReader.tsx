@@ -4,7 +4,6 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context'
 
 import { useActiveServer } from '~/components/activeServer'
 import { BookMetadata, ReadiumLocator, ReadiumView, ReadiumViewRef } from '~/modules/readium'
-import { locateLink } from '~/modules/readium'
 import { useReaderStore } from '~/stores'
 import { useDownload } from '~/stores/download'
 import { useEpubLocationStore, useEpubTheme } from '~/stores/epub'
@@ -43,7 +42,7 @@ export default function ReadiumReader({
 	const { downloadBook } = useDownload()
 
 	const [localUri, setLocalUri] = useState<string | null>(null)
-	const [locator, setLocator] = useState<ReadiumLocator | undefined>(() => initialLocator)
+	const [locator, setLocator] = useState<ReadiumLocator | undefined>(initialLocator)
 
 	const controlsVisible = useReaderStore((state) => state.showControls)
 	const setControlsVisible = useReaderStore((state) => state.setShowControls)
@@ -70,10 +69,7 @@ export default function ReadiumReader({
 		() =>
 			({
 				goToLocation: async (locator: ReadiumLocator) => {
-					const location = await locateLink(book.id, { href: '/' + locator.href })
-					if (location) {
-						await readerRef.current?.goToLocation(location)
-					}
+					readerRef.current?.goToLocation(locator)
 				},
 				goForward: async () => {
 					readerRef.current?.goForward()
@@ -82,7 +78,7 @@ export default function ReadiumReader({
 					readerRef.current?.goBackward()
 				},
 			}) satisfies ReadiumViewRef,
-		[book.id],
+		[],
 	)
 
 	const store = useEpubLocationStore((store) => ({

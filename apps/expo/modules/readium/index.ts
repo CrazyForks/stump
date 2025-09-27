@@ -1,3 +1,6 @@
+import { ReadiumLocator as StumpReadiumLocator } from '@stump/graphql'
+import omit from 'lodash/omit'
+
 import { ReadiumLink, ReadiumLocator } from './src'
 import ReadiumModule from './src/ReadiumModule'
 
@@ -31,4 +34,22 @@ export async function getPositions(bookId: string): Promise<ReadiumLocator[]> {
 
 export async function goToLocation(bookId: string, locator: ReadiumLocator): Promise<void> {
 	return ReadiumModule.goToLocation(bookId, locator)
+}
+
+export function intoReadiumLocator(locator: StumpReadiumLocator): ReadiumLocator {
+	const safeNumber = (value: unknown) => {
+		if (value == null) return null
+		const num = Number(value)
+		return Number.isNaN(num) ? undefined : num
+	}
+
+	return {
+		...omit(locator, ['__typename']),
+		locations: {
+			position: safeNumber(locator.locations?.position),
+			progression: safeNumber(locator.locations?.progression),
+			totalProgression: safeNumber(locator.locations?.totalProgression),
+		},
+		type: locator.type || 'application/xhtml+xml',
+	}
 }

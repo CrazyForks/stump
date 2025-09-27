@@ -22,6 +22,7 @@ export type ReadiumLocator = {
 		before?: string | null
 		highlight?: string | null
 	} | null
+	type?: string | null
 }
 
 export type ReadiumLink = {

@@ -2533,6 +2533,7 @@ export type ReadiumLocator = {
   locations?: Maybe<ReadiumLocation>;
   text?: Maybe<ReadiumText>;
   title?: Maybe<Scalars['String']['output']>;
+  type: Scalars['String']['output'];
 };
 
 export type ReadiumLocatorInput = {
@@ -2541,6 +2542,7 @@ export type ReadiumLocatorInput = {
   locations?: InputMaybe<ReadiumLocationInput>;
   text?: InputMaybe<ReadiumTextInput>;
   title?: InputMaybe<Scalars['String']['input']>;
+  type?: Scalars['String']['input'];
 };
 
 export type ReadiumText = {
@@ -3377,7 +3379,7 @@ export type BookReadScreenQueryVariables = Exact<{
 }>;
 
 
-export type BookReadScreenQuery = { __typename?: 'Query', mediaById?: { __typename?: 'Media', id: string, pages: number, extension: string, name: string, thumbnail: { __typename?: 'ImageRef', url: string }, readProgress?: { __typename?: 'ActiveReadingSession', percentageCompleted?: any | null, epubcfi?: string | null, page?: number | null, elapsedSeconds?: number | null, locator?: { __typename?: 'ReadiumLocator', chapterTitle: string, href: string, title?: string | null, locations?: { __typename?: 'ReadiumLocation', fragments?: Array<string> | null, progression?: any | null, position?: number | null, totalProgression?: any | null, cssSelector?: string | null, partialCfi?: string | null } | null } | null } | null, libraryConfig: { __typename?: 'LibraryConfig', defaultReadingImageScaleFit: ReadingImageScaleFit, defaultReadingMode: ReadingMode, defaultReadingDir: ReadingDirection }, metadata?: { __typename?: 'MediaMetadata', writers: Array<string>, publisher?: string | null, summary?: string | null } | null, pageAnalysis?: { __typename?: 'PageAnalysis', dimensions: Array<{ __typename?: 'PageDimension', height: number, width: number }> } | null, nextInSeries: { __typename?: 'PaginatedMediaResponse', nodes: Array<{ __typename?: 'Media', id: string, name: string, thumbnail: { __typename?: 'ImageRef', url: string } }> }, ebook?: { __typename?: 'Epub', toc: Array<string>, bookmarks: Array<{ __typename?: 'Bookmark', id: string, userId: string, epubcfi?: string | null, mediaId: string }>, spine: Array<{ __typename?: 'SpineItem', id?: string | null, idref: string, properties?: string | null, linear: boolean }> } | null } | null };
+export type BookReadScreenQuery = { __typename?: 'Query', mediaById?: { __typename?: 'Media', id: string, pages: number, extension: string, name: string, thumbnail: { __typename?: 'ImageRef', url: string }, readProgress?: { __typename?: 'ActiveReadingSession', percentageCompleted?: any | null, epubcfi?: string | null, page?: number | null, elapsedSeconds?: number | null, locator?: { __typename?: 'ReadiumLocator', chapterTitle: string, href: string, title?: string | null, type: string, locations?: { __typename?: 'ReadiumLocation', fragments?: Array<string> | null, progression?: any | null, position?: number | null, totalProgression?: any | null, cssSelector?: string | null, partialCfi?: string | null } | null } | null } | null, libraryConfig: { __typename?: 'LibraryConfig', defaultReadingImageScaleFit: ReadingImageScaleFit, defaultReadingMode: ReadingMode, defaultReadingDir: ReadingDirection }, metadata?: { __typename?: 'MediaMetadata', writers: Array<string>, publisher?: string | null, summary?: string | null } | null, pageAnalysis?: { __typename?: 'PageAnalysis', dimensions: Array<{ __typename?: 'PageDimension', height: number, width: number }> } | null, nextInSeries: { __typename?: 'PaginatedMediaResponse', nodes: Array<{ __typename?: 'Media', id: string, name: string, thumbnail: { __typename?: 'ImageRef', url: string } }> }, ebook?: { __typename?: 'Epub', toc: Array<string>, bookmarks: Array<{ __typename?: 'Bookmark', id: string, userId: string, epubcfi?: string | null, mediaId: string }>, spine: Array<{ __typename?: 'SpineItem', id?: string | null, idref: string, properties?: string | null, linear: boolean }> } | null } | null };
 
 export type UpdateReadProgressionMutationVariables = Exact<{
   id: Scalars['ID']['input'];
@@ -5222,6 +5224,7 @@ export const BookReadScreenDocument = new TypedDocumentString(`
           cssSelector
           partialCfi
         }
+        type
       }
       page
       elapsedSeconds

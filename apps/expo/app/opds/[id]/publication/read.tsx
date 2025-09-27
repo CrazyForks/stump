@@ -44,6 +44,10 @@ export default function Screen() {
 						}
 					: {}),
 				nextInSeries: { nodes: [] },
+				thumbnail: {
+					// TODO: Try pull from json instead, too tired now
+					url: readingOrder?.[0]?.href || '',
+				},
 			}) satisfies ImageReaderBookRef,
 		[id, title, readingOrder],
 	)

@@ -16,7 +16,7 @@ import { useCallback, useEffect, useMemo } from 'react'
 import { ImageBasedReader, ReadiumReader, UnsupportedReader } from '~/components/book/reader'
 import { NextInSeriesBookRef } from '~/components/book/reader/image/context'
 import { useAppState } from '~/lib/hooks'
-import { ReadiumLocator } from '~/modules/readium'
+import { intoReadiumLocator, ReadiumLocator } from '~/modules/readium'
 import { useReaderStore } from '~/stores'
 import { useBookPreferences, useBookTimer } from '~/stores/reader'
 
@@ -51,6 +51,7 @@ export const query = graphql(`
 					# 	before
 					# 	highlight
 					# }
+					type
 				}
 				page
 				elapsedSeconds
@@ -181,6 +182,7 @@ export default function Screen() {
 								locations: locator.locations,
 								text: locator.text,
 								title: locator.title,
+								type: locator.type || 'application/xhtml+xml',
 							},
 						},
 						elapsedSeconds: totalSeconds,
@@ -263,7 +265,7 @@ export default function Screen() {
 		return (
 			<ReadiumReader
 				book={book}
-				initialLocator={initialLocator}
+				initialLocator={initialLocator ? intoReadiumLocator(initialLocator) : undefined}
 				onLocationChanged={onLocationChanged}
 			/>
 		)

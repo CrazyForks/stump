@@ -43,6 +43,10 @@ pub struct ReadiumText {
 	pub highlight: Option<String>,
 }
 
+fn default_type() -> String {
+	"application/xhtml+xml".to_string()
+}
+
 #[derive(
 	Clone,
 	Debug,
@@ -62,4 +66,7 @@ pub struct ReadiumLocator {
 	pub title: Option<String>,
 	pub locations: Option<ReadiumLocation>,
 	pub text: Option<ReadiumText>,
+	#[graphql(default = "application/xhtml+xml", name = "type")]
+	#[serde(default = "default_type")]
+	pub r#type: String,
 }

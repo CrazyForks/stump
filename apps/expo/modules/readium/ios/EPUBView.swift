@@ -73,7 +73,6 @@
          // If this is a new book or first initialization, load the publication
          if props!.bookId != oldProps?.bookId || props!.url != oldProps?.url || !isInitialized {
              Task {
-                 // TODO: initializeNavigator like with Kt to initialize custom fonts
                  await loadPublication()
              }
              return
@@ -271,11 +270,6 @@
          ]
 
          do {
-             print("DEBUG: Creating navigator with initial preferences:")
-             print("  backgroundColor: \(props.background)")
-             print("  textColor: \(props.foreground)")
-             print("  fontSize: \(props.fontSize)")
-             
              let navigator = try EPUBNavigatorViewController(
                  publication: publication,
                  initialLocation: props.locator,
@@ -305,34 +299,11 @@
                      assetRetriever: AssetRetriever(httpClient: DefaultHTTPClient())
                  )
              )
-             
-             
-             
-//             assert(navigator.settings.scroll == false)
-//             assert(navigator.settings.theme.backgroundColor == props.background)
-             print("DEBUG: After navigator creation:")
-             print("  theme.backgroundColor: \(navigator.settings.theme.backgroundColor)")
-             print("  effectiveBackgroundColor: \(navigator.settings.effectiveBackgroundColor)")
-             print("  backgroundColor: \(navigator.settings.backgroundColor)")
-             print("  textColor: \(navigator.settings.textColor)")
-             print("  fontSize: \(navigator.settings.fontSize)")
-             print("  fontFamily: \(navigator.settings.fontFamily)")
 
              navigator.delegate = self
              addSubview(navigator.view)
              self.navigator = navigator
              isInitialized = true
-             
-             // Apply preferences immediately after navigator is created (as per preferences guide)
-//             navigator.submitPreferences(EPUBPreferences(
-//                 backgroundColor: props.background,
-//                 fontFamily: props.fontFamily,
-//                 fontSize: props.fontSize,
-//                 lineHeight: props.lineHeight,
-//                 scroll: false,
-//                 textAlign: props.textAlign,
-//                 textColor: props.foreground
-//             ))
 
              Task {
                  let positionsResult = await publication.positions()
@@ -388,7 +359,7 @@
              "title": encodeIfNotNil(currentLocator.title),
              "locations": encodeIfNotEmpty(currentLocator.locations.json),
              "text": encodeIfNotEmpty(currentLocator.text.json),
-             "epubcfi": currentLocator.locations.partialCFI ?? "",
+             "type": encodeIfNotEmpty(currentLocator.mediaType.string),
          ]))
      }
 

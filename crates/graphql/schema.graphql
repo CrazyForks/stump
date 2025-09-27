@@ -1789,6 +1789,7 @@ type ReadiumLocator {
 	title: String
 	locations: ReadiumLocation
 	text: ReadiumText
+	type: String!
 }
 
 input ReadiumLocatorInput {
@@ -1797,6 +1798,7 @@ input ReadiumLocatorInput {
 	title: String
 	locations: ReadiumLocationInput
 	text: ReadiumTextInput
+	type: String! = "application/xhtml+xml"
 }
 
 type ReadiumText {
