@@ -19,15 +19,18 @@ import expo.modules.kotlin.viewevent.EventDispatcher
 import expo.modules.kotlin.views.ExpoView
 import kotlinx.coroutines.*
 import org.readium.r2.navigator.DecorableNavigator
-import org.readium.r2.navigator.ExperimentalDecorator
 import org.readium.r2.navigator.preferences.FontFamily
 import org.readium.r2.navigator.epub.EpubNavigatorFragment
 import org.readium.r2.navigator.epub.EpubPreferences
 import org.readium.r2.shared.ExperimentalReadiumApi
+import org.readium.r2.shared.InternalReadiumApi
 import org.readium.r2.shared.extensions.toMap
 import org.readium.r2.shared.publication.Publication
 import org.readium.r2.shared.publication.Locator
 import org.readium.r2.shared.publication.services.positions
+import org.readium.r2.shared.util.AbsoluteUrl
+import org.readium.r2.navigator.input.InputListener
+import org.readium.r2.navigator.input.TapEvent
 import java.net.URL
 
 data class Props(
@@ -44,7 +47,7 @@ data class Props(
 
 data class FinalizedProps(
     val bookId: String,
-    val locator: Locator,
+    val locator: Locator?,
     val url: String,
     @ColorInt var foreground: Int,
     @ColorInt var background: Int,
@@ -55,7 +58,6 @@ data class FinalizedProps(
 )
 
 @SuppressLint("ViewConstructor", "ResourceType")
-@OptIn(ExperimentalDecorator::class)
 class EPUBView(context: Context, appContext: AppContext) : ExpoView(context, appContext),
     EpubNavigatorFragment.Listener, DecorableNavigator.Listener {
 
@@ -107,16 +109,9 @@ class EPUBView(context: Context, appContext: AppContext) : ExpoView(context, app
 
         Log.d("EPUBView", "finalizeProps called with bookId: $bookId, url: $url")
 
-        val defaultLocator = pendingProps.locator ?: oldProps?.locator ?: Locator(
-            href = "",
-            type = "application/xhtml+xml",
-            locations = Locator.Locations()
-        )
-
         props = FinalizedProps(
             bookId = bookId,
-            locator = pendingProps.locator
-                ?: oldProps?.locator ?: defaultLocator,
+            locator = pendingProps.locator ?: oldProps?.locator,
             url = url,
             foreground = pendingProps.foreground
                 ?: oldProps?.foreground ?: Color.parseColor("#111111"),
@@ -130,6 +125,7 @@ class EPUBView(context: Context, appContext: AppContext) : ExpoView(context, app
         )
 
         if (props!!.bookId != oldProps?.bookId || props!!.url != oldProps?.url) {
+            Log.d("EPUBView", "Book ID or URL changed, reloading publication")
             destroyNavigator()
             coroutineScope.launch {
                 loadPublication()
@@ -137,9 +133,8 @@ class EPUBView(context: Context, appContext: AppContext) : ExpoView(context, app
             return
         }
 
-        // Update navigator if locator changed
-        if (props!!.locator != oldProps?.locator) {
-            go(props!!.locator)
+        if (props!!.locator != oldProps?.locator && props!!.locator != null) {
+            go(props!!.locator!!)
         }
 
         navigator!!.submitPreferences(
@@ -178,9 +173,11 @@ class EPUBView(context: Context, appContext: AppContext) : ExpoView(context, app
 
         navigator = epubFragment.navigator
 
+        navigator?.addInputListener(TapInputListener())
+
         activity?.lifecycleScope?.launch {
-           navigator?.currentLocator?.collect {
-               onLocatorChanged(it)
+           navigator?.currentLocator?.collect { locator ->
+               locator?.let { onLocatorChanged(it) }
            }
             emitCurrentLocator()
         }
@@ -196,6 +193,7 @@ class EPUBView(context: Context, appContext: AppContext) : ExpoView(context, app
         removeView(navigator.view)
     }
 
+    @OptIn(InternalReadiumApi::class)
     private suspend fun emitCurrentLocator() {
         val currentLocator = navigator!!.currentLocator?.value ?: return
         val found = navigator!!.firstVisibleElementLocator()
@@ -256,7 +254,9 @@ class EPUBView(context: Context, appContext: AppContext) : ExpoView(context, app
     }
 
     fun go(locator: Locator, animated: Boolean = true) {
-        if (locator.href != navigator?.currentLocator?.value?.href) {
+        val currentHref = navigator?.currentLocator?.value?.href?.toString()
+        val newHref = locator.href.toString()
+        if (newHref != currentHref) {
             changingResource = true
         }
         navigator!!.go(locator, animated)
@@ -288,8 +288,8 @@ class EPUBView(context: Context, appContext: AppContext) : ExpoView(context, app
 //            onDoubleTouch(locator.toJSON().toMap())
 //        }
 //    }
-
-    override fun onTap(point: PointF): Boolean {
+    
+    fun handleTap(point: PointF): Boolean {
         if (point.x < width * 0.2) {
             navigator?.goBackward(animated = true)
             return true
@@ -303,11 +303,37 @@ class EPUBView(context: Context, appContext: AppContext) : ExpoView(context, app
     }
 
     private suspend fun onLocatorChanged(locator: Locator) {
-        if (locator.href != props!!.locator.href || changingResource) {
+        val currentHref = locator.href.toString()
+        val propsHref = props!!.locator?.href.toString()
+        if (currentHref != propsHref || changingResource) {
             changingResource = false
             emitCurrentLocator()
         } else {
             emitCurrentLocator()
+        }
+    }
+
+    @ExperimentalReadiumApi
+    override fun onExternalLinkActivated(url: AbsoluteUrl) {
+//        TODO: Figure this out
+//        if (!url. isHttp) return
+//        val context = requireActivity()
+//        val uri = url.toUri()
+//        try {
+//            CustomTabsIntent.Builder()
+//                .build()
+//                .launchUrl(context, uri)
+//        } catch (e: ActivityNotFoundException) {
+//            context.startActivity(Intent(Intent. ACTION_VIEW, uri))
+//        }
+    }
+
+    /**
+     * Input listener to handle tap events for navigation
+     */
+    private inner class TapInputListener : InputListener {
+        override fun onTap(event: TapEvent): Boolean {
+            return handleTap(event.point)
         }
     }
 }

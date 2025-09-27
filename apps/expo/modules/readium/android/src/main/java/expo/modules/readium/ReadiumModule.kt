@@ -15,6 +15,8 @@ import org.readium.r2.shared.publication.Locator
 import org.readium.r2.shared.ExperimentalReadiumApi
 import android.util.Log
 import org.readium.r2.navigator.preferences.FontFamily
+import org.readium.r2.shared.InternalReadiumApi
+import org.readium.r2.shared.util.getOrElse
 
 class ReadiumModule : Module() {
     // Each module class must implement the definition function. The definition consists of
@@ -22,7 +24,7 @@ class ReadiumModule : Module() {
     // that describes the module's functionality and behavior.
     // See https://docs.expo.dev/modules/module-api for more details about available components.
   @RequiresApi(Build.VERSION_CODES.O)
-  @OptIn(ExperimentalReadiumApi::class)
+  @OptIn(ExperimentalReadiumApi::class, InternalReadiumApi::class)
   override fun definition() = ModuleDefinition {
     val bookService = BookService(appContext.reactContext!!)
 
@@ -34,18 +36,19 @@ class ReadiumModule : Module() {
 
     AsyncFunction("openPublication") Coroutine { bookId: String, publicationUri: URL ->
        return@Coroutine bookService.openPublication(bookId, publicationUri)
-                            .jsonManifest
+                            .manifest
     }
 
     AsyncFunction("getResource") Coroutine { bookId: String, linkMap: Map<String, Any> ->
       val linkJson = JSONObject(linkMap)
       val link = Link.fromJSON(linkJson) ?: return@Coroutine null
-      val resource = bookService.getResource(bookId, link)
-      if (link.type?.startsWith("image/") == true) {
-          val data = resource.read().getOrThrow()
+      val resource = bookService.getResource(bookId, link) ?: return@Coroutine null
+      val mediaType = link.mediaType?.toString() ?: ""
+      if (mediaType.startsWith("image/")) {
+          val data = resource.read().getOrNull() ?: return@Coroutine null
           return@Coroutine String(Base64.getEncoder().encode(data))
       }
-      return@Coroutine resource.readAsString().getOrThrow()
+      return@Coroutine resource.read().getOrElse { null }?.let { String(it) }
     }
 
     AsyncFunction("getPositions") Coroutine { bookId: String ->
