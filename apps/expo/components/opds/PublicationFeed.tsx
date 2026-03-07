@@ -2,6 +2,7 @@ import { FlashList } from '@shopify/flash-list'
 import { useSDK } from '@stump/client'
 import { OPDSFeed, resolveUrl } from '@stump/sdk'
 import { keepPreviousData, useInfiniteQuery } from '@tanstack/react-query'
+import { useRouter } from 'expo-router'
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import { View } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
@@ -32,6 +33,7 @@ export default function PublicationFeed({
 	} = useActiveServer()
 	const { sdk } = useSDK()
 
+	const router = useRouter()
 	const feedURL = feed.links?.find((link) => link.rel === 'self')?.href || ''
 	const [pageSize, setPageSize] = useState(() => feed.metadata.itemsPerPage || 20)
 
@@ -86,18 +88,20 @@ export default function PublicationFeed({
 					<GridImageItem
 						uri={thumbnailURL}
 						title={publication.metadata.title}
-						href={{
-							pathname: '/opds/[id]/publication',
-							params: {
-								id: serverID,
-								url: selfURL ? resolveUrl(selfURL, sdk.rootURL) : undefined,
-							},
-						}}
+						onPress={() =>
+							router.navigate({
+								pathname: '/opds/[id]/publication',
+								params: {
+									id: serverID,
+									url: selfURL ? resolveUrl(selfURL, sdk.rootURL) : undefined,
+								},
+							})
+						}
 					/>
 				</View>
 			)
 		},
-		[serverID, sdk.rootURL],
+		[serverID, sdk.rootURL, router],
 	)
 
 	if (!publications.length) return null

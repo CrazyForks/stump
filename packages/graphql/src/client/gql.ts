@@ -15,6 +15,10 @@ import * as types from './graphql';
  * Learn more about it here: https://the-guild.dev/graphql/codegen/plugins/presets/preset-client#reducing-bundle-size
  */
 type Documents = {
+    "\n\tmutation CreateBookClubMobile($input: CreateBookClubInput!) {\n\t\tcreateBookClub(input: $input) {\n\t\t\tid\n\t\t\tslug\n\t\t}\n\t}\n": typeof types.CreateBookClubMobileDocument,
+    "\n\tquery BookClubsScreen {\n\t\tbookClubs {\n\t\t\tid\n\t\t\t...BookClubCard\n\t\t}\n\t\tmyBookClubInvitations {\n\t\t\tid\n\t\t}\n\t}\n": typeof types.BookClubsScreenDocument,
+    "\n\tquery BookClubInvitesScreen {\n\t\tmyBookClubInvitations {\n\t\t\tid\n\t\t\trole\n\t\t\tbookClubId\n\t\t\tbookClub {\n\t\t\t\tname\n\t\t\t\tdescription\n\t\t\t\tmembersCount\n\t\t\t}\n\t\t}\n\t}\n": typeof types.BookClubInvitesScreenDocument,
+    "\n\tmutation RespondToBookClubInvitation($id: ID!, $accept: Boolean!) {\n\t\trespondToBookClubInvitation(id: $id, input: { accept: $accept }) {\n\t\t\tid\n\t\t}\n\t}\n": typeof types.RespondToBookClubInvitationDocument,
     "\n\tquery SearchMedia($filter: MediaFilterInput!) {\n\t\tmedia(filter: $filter, pagination: { cursor: { limit: 10 } }) {\n\t\t\tnodes {\n\t\t\t\tid\n\t\t\t\t...BookSearchItem\n\t\t\t}\n\t\t\tpageInfo {\n\t\t\t\t__typename\n\t\t\t\t... on CursorPaginationInfo {\n\t\t\t\t\tnextCursor\n\t\t\t\t}\n\t\t\t}\n\t\t}\n\t}\n": typeof types.SearchMediaDocument,
     "\n\tquery SearchSeries($filter: SeriesFilterInput!) {\n\t\tseries(filter: $filter, pagination: { cursor: { limit: 10 } }) {\n\t\t\tnodes {\n\t\t\t\tid\n\t\t\t\t...SeriesSearchItem\n\t\t\t}\n\t\t\tpageInfo {\n\t\t\t\t__typename\n\t\t\t\t... on CursorPaginationInfo {\n\t\t\t\t\tnextCursor\n\t\t\t\t}\n\t\t\t}\n\t\t}\n\t}\n": typeof types.SearchSeriesDocument,
     "\n\tquery SearchLibrary($search: String!) {\n\t\tlibraries(search: $search, pagination: { cursor: { limit: 10 } }) {\n\t\t\tnodes {\n\t\t\t\tid\n\t\t\t\t...LibrarySearchItem\n\t\t\t}\n\t\t\tpageInfo {\n\t\t\t\t__typename\n\t\t\t\t... on CursorPaginationInfo {\n\t\t\t\t\tnextCursor\n\t\t\t\t}\n\t\t\t}\n\t\t}\n\t}\n": typeof types.SearchLibraryDocument,
@@ -28,6 +32,25 @@ type Documents = {
     "\n\tmutation DeleteAnnotationMobile($id: String!) {\n\t\tdeleteAnnotation(id: $id) {\n\t\t\tid\n\t\t}\n\t}\n": typeof types.DeleteAnnotationMobileDocument,
     "\n\tquery BooksScreen(\n\t\t$pagination: Pagination\n\t\t$filters: MediaFilterInput\n\t\t$orderBy: [MediaOrderBy!]\n\t) {\n\t\tmedia(pagination: $pagination, filter: $filters, orderBy: $orderBy) {\n\t\t\tnodes {\n\t\t\t\tid\n\t\t\t\t...BookGridItem\n\t\t\t}\n\t\t\tpageInfo {\n\t\t\t\t__typename\n\t\t\t\t... on OffsetPaginationInfo {\n\t\t\t\t\ttotalPages\n\t\t\t\t\tcurrentPage\n\t\t\t\t\tpageSize\n\t\t\t\t\tpageOffset\n\t\t\t\t\tzeroBased\n\t\t\t\t}\n\t\t\t}\n\t\t}\n\t}\n": typeof types.BooksScreenDocument,
     "\n\tquery BookSearchScreen($filter: MediaFilterInput!, $pagination: Pagination!) {\n\t\tmedia(filter: $filter, pagination: $pagination) {\n\t\t\tnodes {\n\t\t\t\tid\n\t\t\t\t...BookGridItem\n\t\t\t}\n\t\t\tpageInfo {\n\t\t\t\t__typename\n\t\t\t\t... on CursorPaginationInfo {\n\t\t\t\t\tcurrentCursor\n\t\t\t\t\tnextCursor\n\t\t\t\t\tlimit\n\t\t\t\t}\n\t\t\t}\n\t\t}\n\t}\n": typeof types.BookSearchScreenDocument,
+    "\n\tquery BookClubContextLayout($id: ID!) {\n\t\tbookClubById(id: $id) {\n\t\t\tid\n\t\t\tmembership {\n\t\t\t\tid\n\t\t\t\trole\n\t\t\t}\n\t\t}\n\t}\n": typeof types.BookClubContextLayoutDocument,
+    "\n\tquery BookClubPastDiscussions($bookClubId: ID!) {\n\t\tpreviousBookClubDiscussions(bookClubId: $bookClubId) {\n\t\t\tdisplayName\n\t\t\tcreatedAt\n\t\t\tbook {\n\t\t\t\tid\n\t\t\t\t...PastBookGridItem\n\t\t\t}\n\t\t\tmessageCount\n\t\t}\n\t}\n": typeof types.BookClubPastDiscussionsDocument,
+    "\n\tquery BookClubPastBookScreen($bookId: ID!) {\n\t\tbookClubDiscussionByBook(bookClubBookId: $bookId) {\n\t\t\tid\n\t\t\t...DiscussionListItem\n\t\t}\n\t\tbookClubBook(id: $bookId) {\n\t\t\ttitle\n\t\t\tentity {\n\t\t\t\tresolvedName\n\t\t\t}\n\t\t}\n\t}\n": typeof types.BookClubPastBookScreenDocument,
+    "\n\tquery BookClubDiscussionRoom($id: ID!) {\n\t\tbookClubDiscussion(id: $id) {\n\t\t\tid\n\t\t\tdisplayName\n\t\t\tisLocked\n\t\t\tbook {\n\t\t\t\tid\n\t\t\t\ttitle\n\t\t\t\tauthor\n\t\t\t}\n\t\t}\n\t}\n": typeof types.BookClubDiscussionRoomDocument,
+    "\n\tquery BookClubDiscussionMessages($discussionId: ID!, $pagination: CursorPagination) {\n\t\tbookClubDiscussionMessages(discussionId: $discussionId, pagination: $pagination) {\n\t\t\tnodes {\n\t\t\t\tid\n\t\t\t\tcontent\n\t\t\t\ttimestamp\n\t\t\t\teditedAt\n\t\t\t\tdeletedAt\n\t\t\t\tisPinnedMessage\n\t\t\t\tparentMessageId\n\t\t\t\tmemberId\n\t\t\t\tthreadChildrenCount\n\t\t\t\treactions {\n\t\t\t\t\temoji\n\t\t\t\t\tcustomEmojiId\n\t\t\t\t\tcustomEmojiUrl\n\t\t\t\t\tcount\n\t\t\t\t\treactedByMe\n\t\t\t\t}\n\t\t\t\treplyTo {\n\t\t\t\t\tid\n\t\t\t\t\tcontent\n\t\t\t\t\tmember {\n\t\t\t\t\t\tdisplayName\n\t\t\t\t\t\tusername\n\t\t\t\t\t\tavatarUrl\n\t\t\t\t\t}\n\t\t\t\t}\n\t\t\t\tmember {\n\t\t\t\t\tid\n\t\t\t\t\tdisplayName\n\t\t\t\t\tavatarUrl\n\t\t\t\t\tusername\n\t\t\t\t}\n\t\t\t}\n\t\t\tcursorInfo {\n\t\t\t\tnextCursor\n\t\t\t\tlimit\n\t\t\t}\n\t\t}\n\t}\n": typeof types.BookClubDiscussionMessagesDocument,
+    "\n\tmutation SendDiscussionMessage($discussionId: ID!, $input: SendMessageInput!) {\n\t\tsendMessage(discussionId: $discussionId, input: $input) {\n\t\t\tid\n\t\t}\n\t}\n": typeof types.SendDiscussionMessageDocument,
+    "\n\tmutation ToggleMessageReaction($messageId: ID!, $emoji: String, $customEmojiId: Int) {\n\t\ttoggleReaction(messageId: $messageId, emoji: $emoji, customEmojiId: $customEmojiId)\n\t}\n": typeof types.ToggleMessageReactionDocument,
+    "\n\tmutation DeleteDiscussionMessage($messageId: ID!) {\n\t\tdeleteMessage(messageId: $messageId) {\n\t\t\tid\n\t\t}\n\t}\n": typeof types.DeleteDiscussionMessageDocument,
+    "\n\tquery ThreadParentMessage($id: ID!) {\n\t\tbookClubDiscussionMessage(id: $id) {\n\t\t\tid\n\t\t\tcontent\n\t\t\ttimestamp\n\t\t\teditedAt\n\t\t\tdeletedAt\n\t\t\tisPinnedMessage\n\t\t\tparentMessageId\n\t\t\tmemberId\n\t\t\tthreadChildrenCount\n\t\t\treactions {\n\t\t\t\temoji\n\t\t\t\tcustomEmojiId\n\t\t\t\tcustomEmojiUrl\n\t\t\t\tcount\n\t\t\t\treactedByMe\n\t\t\t}\n\t\t\treplyTo {\n\t\t\t\tid\n\t\t\t\tcontent\n\t\t\t\tmember {\n\t\t\t\t\tdisplayName\n\t\t\t\t\tusername\n\t\t\t\t\tavatarUrl\n\t\t\t\t}\n\t\t\t}\n\t\t\tmember {\n\t\t\t\tid\n\t\t\t\tdisplayName\n\t\t\t\tavatarUrl\n\t\t\t\tusername\n\t\t\t}\n\t\t}\n\t}\n": typeof types.ThreadParentMessageDocument,
+    "\n\tquery ThreadReplies($discussionId: ID!, $parentId: ID, $pagination: CursorPagination) {\n\t\tbookClubDiscussionMessages(\n\t\t\tdiscussionId: $discussionId\n\t\t\tparentId: $parentId\n\t\t\tpagination: $pagination\n\t\t) {\n\t\t\tnodes {\n\t\t\t\tid\n\t\t\t\tcontent\n\t\t\t\ttimestamp\n\t\t\t\teditedAt\n\t\t\t\tdeletedAt\n\t\t\t\tisPinnedMessage\n\t\t\t\tparentMessageId\n\t\t\t\tmemberId\n\t\t\t\tthreadChildrenCount\n\t\t\t\treactions {\n\t\t\t\t\temoji\n\t\t\t\t\tcustomEmojiId\n\t\t\t\t\tcount\n\t\t\t\t\treactedByMe\n\t\t\t\t}\n\t\t\t\treplyTo {\n\t\t\t\t\tid\n\t\t\t\t\tcontent\n\t\t\t\t\tmember {\n\t\t\t\t\t\tdisplayName\n\t\t\t\t\t\tusername\n\t\t\t\t\t}\n\t\t\t\t}\n\t\t\t\tmember {\n\t\t\t\t\tid\n\t\t\t\t\tdisplayName\n\t\t\t\t\tavatarUrl\n\t\t\t\t\tusername\n\t\t\t\t}\n\t\t\t}\n\t\t\tcursorInfo {\n\t\t\t\tnextCursor\n\t\t\t\tlimit\n\t\t\t}\n\t\t}\n\t}\n": typeof types.ThreadRepliesDocument,
+    "\n\tmutation SendThreadReply($discussionId: ID!, $input: SendMessageInput!) {\n\t\tsendMessage(discussionId: $discussionId, input: $input) {\n\t\t\tid\n\t\t}\n\t}\n": typeof types.SendThreadReplyDocument,
+    "\n\tmutation ToggleThreadMessageReaction($messageId: ID!, $emoji: String, $customEmojiId: Int) {\n\t\ttoggleReaction(messageId: $messageId, emoji: $emoji, customEmojiId: $customEmojiId)\n\t}\n": typeof types.ToggleThreadMessageReactionDocument,
+    "\n\tmutation DeleteThreadMessage($messageId: ID!) {\n\t\tdeleteMessage(messageId: $messageId) {\n\t\t\tid\n\t\t}\n\t}\n": typeof types.DeleteThreadMessageDocument,
+    "\n\tquery ThreadDiscussionInfo($id: ID!) {\n\t\tbookClubDiscussion(id: $id) {\n\t\t\tid\n\t\t\tdisplayName\n\t\t\tisLocked\n\t\t}\n\t}\n": typeof types.ThreadDiscussionInfoDocument,
+    "\n\tquery BookClubDetailScreen($id: ID!) {\n\t\tbookClubById(id: $id) {\n\t\t\tid\n\t\t\tname\n\t\t\temoji\n\t\t\tmembership {\n\t\t\t\tid\n\t\t\t\trole\n\t\t\t}\n\t\t\tmoderators {\n\t\t\t\tid\n\t\t\t\tavatarUrl\n\t\t\t\tdisplayName\n\t\t\t}\n\t\t\tpinnedDiscussions {\n\t\t\t\tid\n\t\t\t\t...DiscussionListItem\n\t\t\t}\n\t\t\tcurrentBook {\n\t\t\t\tid\n\t\t\t\t...CurrentBookCard\n\t\t\t\tdiscussions {\n\t\t\t\t\tid\n\t\t\t\t\t...DiscussionListItem\n\t\t\t\t}\n\t\t\t\tentity {\n\t\t\t\t\tid\n\t\t\t\t\treadProgress {\n\t\t\t\t\t\tpercentageCompleted\n\t\t\t\t\t\telapsedSeconds\n\t\t\t\t\t\tstartedAt\n\t\t\t\t\t}\n\t\t\t\t\treadHistory {\n\t\t\t\t\t\t__typename\n\t\t\t\t\t\tcompletedAt\n\t\t\t\t\t}\n\t\t\t\t}\n\t\t\t}\n\t\t\t...PastDiscussionsLink\n\t\t}\n\t}\n": typeof types.BookClubDetailScreenDocument,
+    "\n\tquery BookClubSettings($id: ID!) {\n\t\tbookClubById(id: $id) {\n\t\t\tid\n\t\t\tname\n\t\t\tdescription\n\t\t\tisPrivate\n\t\t\temoji\n\t\t\tmembership {\n\t\t\t\tid\n\t\t\t\trole\n\t\t\t}\n\t\t}\n\t}\n": typeof types.BookClubSettingsDocument,
+    "\n\tmutation UpdateBookClubSettings($id: ID!, $input: UpdateBookClubInput!) {\n\t\tupdateBookClub(id: $id, input: $input) {\n\t\t\tid\n\t\t}\n\t}\n": typeof types.UpdateBookClubSettingsDocument,
+    "\n\tmutation DeleteBookClub($id: ID!) {\n\t\tdeleteBookClub(id: $id) {\n\t\t\tid\n\t\t}\n\t}\n": typeof types.DeleteBookClubDocument,
+    "\n\tmutation LeaveBookClub($id: ID!) {\n\t\tleaveBookClub(bookClubId: $id) {\n\t\t\tid\n\t\t}\n\t}\n": typeof types.LeaveBookClubDocument,
     "\n\tquery LibraryPaths {\n\t\tlibraries(pagination: { none: { unpaginated: true } }) {\n\t\t\tnodes {\n\t\t\t\tid\n\t\t\t\tname\n\t\t\t\tpath\n\t\t\t}\n\t\t}\n\t}\n": typeof types.LibraryPathsDocument,
     "\n\tquery LibrarySeriesScreenSeriesName($id: ID!) {\n\t\tlibraryById(id: $id) {\n\t\t\tname\n\t\t}\n\t}\n": typeof types.LibrarySeriesScreenSeriesNameDocument,
     "\n\tquery LibrarySeriesScreen($filter: SeriesFilterInput!, $pagination: Pagination) {\n\t\tseries(filter: $filter, pagination: $pagination) {\n\t\t\tnodes {\n\t\t\t\tid\n\t\t\t\t...SeriesGridItem\n\t\t\t}\n\t\t\tpageInfo {\n\t\t\t\t__typename\n\t\t\t\t... on CursorPaginationInfo {\n\t\t\t\t\tcurrentCursor\n\t\t\t\t\tnextCursor\n\t\t\t\t\tlimit\n\t\t\t\t}\n\t\t\t}\n\t\t}\n\t}\n": typeof types.LibrarySeriesScreenDocument,
@@ -68,6 +91,17 @@ type Documents = {
     "\n\tmutation BookMenuComplete($id: ID!, $isComplete: Boolean!, $page: Int) {\n\t\tmarkMediaAsComplete(id: $id, isComplete: $isComplete, page: $page) {\n\t\t\tcompletedAt\n\t\t}\n\t}\n": typeof types.BookMenuCompleteDocument,
     "\n\tmutation BookMenuDeleteSession($id: ID!) {\n\t\tdeleteMediaProgress(id: $id) {\n\t\t\t__typename\n\t\t}\n\t}\n": typeof types.BookMenuDeleteSessionDocument,
     "\n\tmutation BookMenuDeleteHistory($id: ID!) {\n\t\tdeleteMediaReadHistory(id: $id) {\n\t\t\t__typename\n\t\t}\n\t}\n": typeof types.BookMenuDeleteHistoryDocument,
+    "\n\tquery AddBookSheet($pagination: Pagination, $filters: MediaFilterInput) {\n\t\tmedia(pagination: $pagination, filter: $filters) {\n\t\t\tnodes {\n\t\t\t\tid\n\t\t\t\t...BookGridItem\n\t\t\t}\n\t\t\tpageInfo {\n\t\t\t\t__typename\n\t\t\t\t... on OffsetPaginationInfo {\n\t\t\t\t\ttotalPages\n\t\t\t\t\tcurrentPage\n\t\t\t\t\tpageSize\n\t\t\t\t\tpageOffset\n\t\t\t\t\tzeroBased\n\t\t\t\t}\n\t\t\t}\n\t\t}\n\t}\n": typeof types.AddBookSheetDocument,
+    "\n\tfragment BookClubCard on BookClub {\n\t\tid\n\t\tname\n\t\tslug\n\t\tdescription\n\t\tmembersCount\n\t\tmembers {\n\t\t\tid\n\t\t\tdisplayName\n\t\t\tavatarUrl\n\t\t}\n\t\tcurrentBook {\n\t\t\tid\n\t\t\timageUrl\n\t\t\ttitle\n\t\t\tentity {\n\t\t\t\t__typename\n\t\t\t\tid\n\t\t\t\tthumbnail {\n\t\t\t\t\turl\n\t\t\t\t\tmetadata {\n\t\t\t\t\t\taverageColor\n\t\t\t\t\t\tcolors {\n\t\t\t\t\t\t\tcolor\n\t\t\t\t\t\t\tpercentage\n\t\t\t\t\t\t}\n\t\t\t\t\t\tthumbhash\n\t\t\t\t\t}\n\t\t\t\t}\n\t\t\t}\n\t\t}\n\t}\n": typeof types.BookClubCardFragmentDoc,
+    "\n\tfragment CurrentBookCard on BookClubBook {\n\t\tid\n\t\ttitle\n\t\tauthor\n\t\timageUrl\n\t\taddedAt\n\t\turl\n\t\tentity {\n\t\t\t__typename\n\t\t\tid\n\t\t\tresolvedName\n\t\t\tthumbnail {\n\t\t\t\turl\n\t\t\t\tmetadata {\n\t\t\t\t\taverageColor\n\t\t\t\t\tcolors {\n\t\t\t\t\t\tcolor\n\t\t\t\t\t\tpercentage\n\t\t\t\t\t}\n\t\t\t\t\tthumbhash\n\t\t\t\t}\n\t\t\t}\n\t\t}\n\t}\n": typeof types.CurrentBookCardFragmentDoc,
+    "\n\tmutation AddBookToClub($bookClubId: ID!, $input: AddBookToClubInput!) {\n\t\taddBookToClub(bookClubId: $bookClubId, input: $input) {\n\t\t\tid\n\t\t}\n\t}\n": typeof types.AddBookToClubDocument,
+    "\n\tmutation ArchiveCurrentBook($bookClubBookId: ID!) {\n\t\tcompleteBook(bookClubBookId: $bookClubBookId) {\n\t\t\tid\n\t\t}\n\t}\n": typeof types.ArchiveCurrentBookDocument,
+    "\n\tfragment PastBookGridItem on BookClubBook {\n\t\tid\n\t\timageUrl\n\t\ttitle\n\t\tentity {\n\t\t\t__typename\n\t\t\tid\n\t\t\tresolvedName\n\t\t\tthumbnail {\n\t\t\t\turl\n\t\t\t\tmetadata {\n\t\t\t\t\taverageColor\n\t\t\t\t\tcolors {\n\t\t\t\t\t\tcolor\n\t\t\t\t\t\tpercentage\n\t\t\t\t\t}\n\t\t\t\t\tthumbhash\n\t\t\t\t}\n\t\t\t}\n\t\t}\n\t\tcompletedAt\n\t}\n": typeof types.PastBookGridItemFragmentDoc,
+    "\n\tfragment PastDiscussionsLink on BookClub {\n\t\tpreviousBook {\n\t\t\timageUrl\n\t\t\tentity {\n\t\t\t\t__typename\n\t\t\t\tid\n\t\t\t\tthumbnail {\n\t\t\t\t\turl\n\t\t\t\t\tmetadata {\n\t\t\t\t\t\taverageColor\n\t\t\t\t\t\tcolors {\n\t\t\t\t\t\t\tcolor\n\t\t\t\t\t\t\tpercentage\n\t\t\t\t\t\t}\n\t\t\t\t\t\tthumbhash\n\t\t\t\t\t}\n\t\t\t\t}\n\t\t\t}\n\t\t}\n\t\tpreviousDiscussionsCount\n\t}\n": typeof types.PastDiscussionsLinkFragmentDoc,
+    "\n\tquery PreviewBookSheet($id: ID!) {\n\t\tmediaById(id: $id) {\n\t\t\tid\n\t\t\tresolvedName\n\t\t\tthumbnail {\n\t\t\t\turl\n\t\t\t\tmetadata {\n\t\t\t\t\taverageColor\n\t\t\t\t\tcolors {\n\t\t\t\t\t\tcolor\n\t\t\t\t\t\tpercentage\n\t\t\t\t\t}\n\t\t\t\t\tthumbhash\n\t\t\t\t}\n\t\t\t}\n\t\t\tmetadata {\n\t\t\t\tgenres\n\t\t\t\twriters\n\t\t\t}\n\t\t\ttags {\n\t\t\t\tname\n\t\t\t}\n\t\t}\n\t}\n": typeof types.PreviewBookSheetDocument,
+    "\n\tquery SuggestionsPickerSheet($bookClubId: ID!, $status: BookClubSuggestionStatus) {\n\t\tbookClubSuggestions(bookClubId: $bookClubId, status: $status) {\n\t\t\tid\n\t\t\ttitle\n\t\t\tauthor\n\t\t\turl\n\t\t\tbookId\n\t\t\tnotes\n\t\t\tsuggestedBy {\n\t\t\t\tuser {\n\t\t\t\t\tusername\n\t\t\t\t}\n\t\t\t}\n\t\t}\n\t}\n": typeof types.SuggestionsPickerSheetDocument,
+    "\n\tfragment DiscussionListItem on BookClubDiscussion {\n\t\tid\n\t\tdisplayName\n\t\temoji\n\t\tmessageCount\n\t\tisLocked\n\t\tisArchived\n\t}\n": typeof types.DiscussionListItemFragmentDoc,
+    "\n\tquery useEmojis {\n\t\tcustomEmojis {\n\t\t\tid\n\t\t\tname\n\t\t\tisAnimated\n\t\t\turl\n\t\t}\n\t}\n": typeof types.UseEmojisDocument,
     "\n\tmutation LibraryActionMenuScanLibrary($id: ID!) {\n\t\tscanLibrary(id: $id)\n\t}\n": typeof types.LibraryActionMenuScanLibraryDocument,
     "\n\tfragment LibraryGridItem on Library {\n\t\tid\n\t\tname\n\t\tseries(take: 5) {\n\t\t\tthumbnail {\n\t\t\t\turl\n\t\t\t\tmetadata {\n\t\t\t\t\taverageColor\n\t\t\t\t\tcolors {\n\t\t\t\t\t\tcolor\n\t\t\t\t\t\tpercentage\n\t\t\t\t\t}\n\t\t\t\t\tthumbhash\n\t\t\t\t}\n\t\t\t}\n\t\t}\n\t}\n": typeof types.LibraryGridItemFragmentDoc,
     "\n\tquery LibraryOverviewSheet($id: ID!) {\n\t\tlibraryById(id: $id) {\n\t\t\tname\n\t\t\tdescription\n\t\t\tstats {\n\t\t\t\tseriesCount\n\t\t\t\tbookCount\n\t\t\t\ttotalBytes\n\t\t\t\tcompletedBooks\n\t\t\t\tinProgressBooks\n\t\t\t\ttotalReadingTimeSeconds\n\t\t\t}\n\t\t\ttags {\n\t\t\t\tname\n\t\t\t}\n\t\t}\n\t}\n": typeof types.LibraryOverviewSheetDocument,
@@ -89,6 +123,8 @@ type Documents = {
     "\n\tmutation UpdateMediaMetadata($id: ID!, $input: MediaMetadataInput!) {\n\t\tupdateMediaMetadata(id: $id, input: $input) {\n\t\t\tmetadata {\n\t\t\t\t...MediaMetadataEditor\n\t\t\t}\n\t\t}\n\t}\n": typeof types.UpdateMediaMetadataDocument,
     "\n\tquery BookOverviewScene($id: ID!) {\n\t\tmediaById(id: $id) {\n\t\t\tid\n\t\t\t...BookCard\n\t\t\t...BookFileInformation\n\t\t\tresolvedName\n\t\t\textension\n\t\t\tmetadata {\n\t\t\t\tlinks\n\t\t\t\tsummary\n\t\t\t\t...MediaMetadataEditor\n\t\t\t}\n\t\t\treadHistory {\n\t\t\t\tcompletedAt\n\t\t\t}\n\t\t}\n\t}\n": typeof types.BookOverviewSceneDocument,
     "\n\tmutation DeleteBookClubConfirmation($id: ID!) {\n\t\tdeleteBookClub(id: $id) {\n\t\t\tid\n\t\t}\n\t}\n": typeof types.DeleteBookClubConfirmationDocument,
+    "\n\tfragment BookClubBookItem on BookClubBook {\n\t\tid\n\t\ttitle\n\t\tauthor\n\t\timageUrl\n\t\turl\n\t\tentity {\n\t\t\t__typename\n\t\t\tid\n\t\t\tresolvedName\n\t\t\tmetadata {\n\t\t\t\twriters\n\t\t\t}\n\t\t\tthumbnail {\n\t\t\t\turl\n\t\t\t}\n\t\t}\n\t\tcompletedAt\n\t\taddedAt\n\t}\n": typeof types.BookClubBookItemFragmentDoc,
+    "\n\tquery BookClubBooksScene($id: ID!) {\n\t\tbookClubById(id: $id) {\n\t\t\tid\n\t\t\tpreviousBooks {\n\t\t\t\tid\n\t\t\t\t...BookClubBookItem\n\t\t\t}\n\t\t}\n\t}\n": typeof types.BookClubBooksSceneDocument,
     "\n\tquery MediaAtPath($path: String!) {\n\t\tmediaByPath(path: $path) {\n\t\t\tid\n\t\t\tresolvedName\n\t\t\tthumbnail {\n\t\t\t\turl\n\t\t\t}\n\t\t}\n\t}\n": typeof types.MediaAtPathDocument,
     "\n\tmutation UploadLibraryBooks($input: UploadBooksInput!) {\n\t\tuploadBooks(input: $input)\n\t}\n": typeof types.UploadLibraryBooksDocument,
     "\n\tmutation UploadLibrarySeries($input: UploadSeriesInput!) {\n\t\tuploadSeries(input: $input)\n\t}\n": typeof types.UploadLibrarySeriesDocument,
@@ -134,8 +170,9 @@ type Documents = {
     "\n\tfragment BookThumbnailSelector on Media {\n\t\tid\n\t\tthumbnail {\n\t\t\turl\n\t\t}\n\t\tpages\n\t}\n": typeof types.BookThumbnailSelectorFragmentDoc,
     "\n\tmutation BookThumbnailSelectorUpdate($id: ID!, $input: PageBasedThumbnailInput!) {\n\t\tupdateMediaThumbnail(id: $id, input: $input) {\n\t\t\tid\n\t\t\tthumbnail {\n\t\t\t\turl\n\t\t\t}\n\t\t}\n\t}\n": typeof types.BookThumbnailSelectorUpdateDocument,
     "\n\tmutation BookThumbnailSelectorUpload($id: ID!, $file: Upload!) {\n\t\tuploadMediaThumbnail(id: $id, file: $file) {\n\t\t\tid\n\t\t\tthumbnail {\n\t\t\t\turl\n\t\t\t}\n\t\t}\n\t}\n": typeof types.BookThumbnailSelectorUploadDocument,
-    "\n\tquery BookClubLayout($slug: String!) {\n\t\tbookClubBySlug(slug: $slug) {\n\t\t\tid\n\t\t\tname\n\t\t\tslug\n\t\t\tdescription\n\t\t\tisPrivate\n\t\t\troleSpec\n\t\t\tcreator {\n\t\t\t\tid\n\t\t\t\tdisplayName\n\t\t\t\tavatarUrl\n\t\t\t}\n\t\t\tmembersCount\n\t\t\tmembership {\n\t\t\t\trole\n\t\t\t\tisCreator\n\t\t\t\tavatarUrl\n\t\t\t\t__typename\n\t\t\t}\n\t\t\tschedule {\n\t\t\t\tid\n\t\t\t\tdefaultIntervalDays\n\t\t\t\tbooks {\n\t\t\t\t\tid\n\t\t\t\t\tstartAt\n\t\t\t\t\tendAt\n\t\t\t\t\tdiscussionDurationDays\n\t\t\t\t\timageUrl\n\t\t\t\t\ttitle\n\t\t\t\t\tauthor\n\t\t\t\t\turl\n\t\t\t\t\tentity {\n\t\t\t\t\t\tid\n\t\t\t\t\t\tresolvedName\n\t\t\t\t\t\tthumbnail {\n\t\t\t\t\t\t\turl\n\t\t\t\t\t\t}\n\t\t\t\t\t\tmetadata {\n\t\t\t\t\t\t\twriters\n\t\t\t\t\t\t}\n\t\t\t\t\t}\n\t\t\t\t}\n\t\t\t}\n\t\t\tcreatedAt\n\t\t}\n\t}\n": typeof types.BookClubLayoutDocument,
-    "\n\tquery UserBookClubsScene {\n\t\tbookClubs(all: false) {\n\t\t\tid\n\t\t\tname\n\t\t\tslug\n\t\t\tdescription\n\t\t\tmembersCount\n\t\t\tschedule {\n\t\t\t\tactiveBooks {\n\t\t\t\t\t__typename\n\t\t\t\t}\n\t\t\t}\n\t\t}\n\t}\n": typeof types.UserBookClubsSceneDocument,
+    "\n\tquery BookClubLayout($slug: String!) {\n\t\tbookClubBySlug(slug: $slug) {\n\t\t\tid\n\t\t\tname\n\t\t\tslug\n\t\t\tdescription\n\t\t\tisPrivate\n\t\t\troleSpec\n\t\t\tcreator {\n\t\t\t\tid\n\t\t\t\tdisplayName\n\t\t\t\tavatarUrl\n\t\t\t}\n\t\t\tmembersCount\n\t\t\tmembership {\n\t\t\t\trole\n\t\t\t\tavatarUrl\n\t\t\t\tisCreator\n\t\t\t}\n\t\t\tcurrentBook {\n\t\t\t\tid\n\t\t\t\ttitle\n\t\t\t\tauthor\n\t\t\t\timageUrl\n\t\t\t\tentity {\n\t\t\t\t\tid\n\t\t\t\t\tthumbnail {\n\t\t\t\t\t\turl\n\t\t\t\t\t}\n\t\t\t\t}\n\t\t\t\t...BookClubBookItem\n\t\t\t}\n\t\t\tcreatedAt\n\t\t}\n\t}\n": typeof types.BookClubLayoutDocument,
+    "\n\tmutation UpdateBookClub($id: ID!, $input: UpdateBookClubInput!) {\n\t\tupdateBookClub(id: $id, input: $input) {\n\t\t\tid\n\t\t\tname\n\t\t\temoji\n\t\t\tisPrivate\n\t\t\troleSpec\n\t\t\tdescription\n\t\t}\n\t}\n": typeof types.UpdateBookClubDocument,
+    "\n\tquery UserBookClubsScene {\n\t\tbookClubs(all: false) {\n\t\t\tid\n\t\t\tname\n\t\t\tslug\n\t\t\tdescription\n\t\t\tmembersCount\n\t\t\tcurrentBook {\n\t\t\t\tid\n\t\t\t}\n\t\t}\n\t}\n": typeof types.UserBookClubsSceneDocument,
     "\n\tquery CreateBookClubForm {\n\t\tbookClubs {\n\t\t\tname\n\t\t\tslug\n\t\t}\n\t}\n": typeof types.CreateBookClubFormDocument,
     "\n\tmutation CreateBookClubScene($input: CreateBookClubInput!) {\n\t\tcreateBookClub(input: $input) {\n\t\t\tid\n\t\t\tslug\n\t\t}\n\t}\n": typeof types.CreateBookClubSceneDocument,
     "\n\tquery BookClubBasicSettingsScene {\n\t\tbookClubs(all: true) {\n\t\t\tid\n\t\t\tname\n\t\t\tslug\n\t\t}\n\t}\n": typeof types.BookClubBasicSettingsSceneDocument,
@@ -189,7 +226,9 @@ type Documents = {
     "\n\tquery APIKeyTable {\n\t\tapiKeys {\n\t\t\tid\n\t\t\tname\n\t\t\tpermissions {\n\t\t\t\t__typename\n\t\t\t\t... on UserPermissionStruct {\n\t\t\t\t\tvalue\n\t\t\t\t}\n\t\t\t}\n\t\t\tlastUsedAt\n\t\t\texpiresAt\n\t\t\tcreatedAt\n\t\t}\n\t}\n": typeof types.ApiKeyTableDocument,
     "\n\tmutation CreateAPIKeyModal($input: ApikeyInput!) {\n\t\tcreateApiKey(input: $input) {\n\t\t\tapiKey {\n\t\t\t\tid\n\t\t\t}\n\t\t\tsecret\n\t\t}\n\t}\n": typeof types.CreateApiKeyModalDocument,
     "\n\tmutation DeleteAPIKeyConfirmModal($id: Int!) {\n\t\tdeleteApiKey(id: $id) {\n\t\t\tid\n\t\t}\n\t}\n": typeof types.DeleteApiKeyConfirmModalDocument,
-    "\n\tmutation UpdateUserProfileForm($input: UpdateUserInput!) {\n\t\tupdateViewer(input: $input) {\n\t\t\tid\n\t\t\tusername\n\t\t\tavatarUrl\n\t\t}\n\t}\n": typeof types.UpdateUserProfileFormDocument,
+    "\n\tmutation UploadUserAvatar($file: Upload!) {\n\t\tuploadUserAvatar(upload: $file) {\n\t\t\tid\n\t\t\tavatarUrl\n\t\t}\n\t}\n": typeof types.UploadUserAvatarDocument,
+    "\n\tmutation DeleteUserAvatar {\n\t\tdeleteUserAvatar {\n\t\t\tid\n\t\t\tavatarUrl\n\t\t}\n\t}\n": typeof types.DeleteUserAvatarDocument,
+    "\n\tmutation UpdateUserProfileForm($input: UpdateUserInput!) {\n\t\tupdateViewer(input: $input) {\n\t\t\tid\n\t\t\tusername\n\t\t}\n\t}\n": typeof types.UpdateUserProfileFormDocument,
     "\n\tquery NavigationArrangement {\n\t\tme {\n\t\t\tpreferences {\n\t\t\t\tnavigationArrangement {\n\t\t\t\t\tlocked\n\t\t\t\t\tsections {\n\t\t\t\t\t\t__typename\n\t\t\t\t\t\tconfig {\n\t\t\t\t\t\t\t__typename\n\t\t\t\t\t\t\t... on SystemArrangementConfig {\n\t\t\t\t\t\t\t\tvariant\n\t\t\t\t\t\t\t\tlinks\n\t\t\t\t\t\t\t}\n\t\t\t\t\t\t}\n\t\t\t\t\t\tvisible\n\t\t\t\t\t}\n\t\t\t\t}\n\t\t\t}\n\t\t}\n\t}\n": typeof types.NavigationArrangementDocument,
     "\n\tmutation NavigationArrangementUpdate($input: NavigationArrangementInput!) {\n\t\tupdateNavigationArrangement(input: $input) {\n\t\t\t__typename\n\t\t}\n\t}\n": typeof types.NavigationArrangementUpdateDocument,
     "\n\tmutation NavigationArrangementUpdateLockStatus($locked: Boolean!) {\n\t\tupdateNavigationArrangementLock(locked: $locked) {\n\t\t\t__typename\n\t\t}\n\t}\n": typeof types.NavigationArrangementUpdateLockStatusDocument,
@@ -205,6 +244,12 @@ type Documents = {
     "\n\tmutation DeleteEmailer($emailerId: Int!) {\n\t\tdeleteEmailer(id: $emailerId) {\n\t\t\tid\n\t\t}\n\t}\n": typeof types.DeleteEmailerDocument,
     "\n\tquery EmailerSendHistory($id: Int!, $fetchUser: Boolean!) {\n\t\temailerById(id: $id) {\n\t\t\tsendHistory {\n\t\t\t\tsentAt\n\t\t\t\trecipientEmail\n\t\t\t\tsentByUserId\n\t\t\t\tsentBy @include(if: $fetchUser) {\n\t\t\t\t\tid\n\t\t\t\t\tusername\n\t\t\t\t}\n\t\t\t\tattachmentMeta {\n\t\t\t\t\tfilename\n\t\t\t\t\tmediaId\n\t\t\t\t\tmedia {\n\t\t\t\t\t\tresolvedName\n\t\t\t\t\t}\n\t\t\t\t\tsize\n\t\t\t\t}\n\t\t\t}\n\t\t}\n\t}\n": typeof types.EmailerSendHistoryDocument,
     "\n\tquery EmailersList {\n\t\temailers {\n\t\t\tid\n\t\t\t...EmailerListItem\n\t\t}\n\t}\n": typeof types.EmailersListDocument,
+    "\n\tquery ServerEmojisSection {\n\t\tcustomEmojis {\n\t\t\tid\n\t\t\tname\n\t\t\tisAnimated\n\t\t\turl\n\t\t}\n\t}\n": typeof types.ServerEmojisSectionDocument,
+    "\n\tmutation ServerEmojisSectionUploadEmoji($input: CreateCustomEmojiInput!, $upload: Upload!) {\n\t\tuploadCustomEmoji(input: $input, upload: $upload) {\n\t\t\tid\n\t\t\tname\n\t\t\tisAnimated\n\t\t\turl\n\t\t}\n\t}\n": typeof types.ServerEmojisSectionUploadEmojiDocument,
+    "\n\tmutation ServerEmojisSectionRenameEmoji($id: ID!, $input: UpdateCustomEmojiInput!) {\n\t\tupdateCustomEmoji(id: $id, input: $input) {\n\t\t\tid\n\t\t\tname\n\t\t\tisAnimated\n\t\t\turl\n\t\t}\n\t}\n": typeof types.ServerEmojisSectionRenameEmojiDocument,
+    "\n\tmutation ServerEmojisSectionDeleteEmoji($id: ID!) {\n\t\tdeleteCustomEmoji(id: $id)\n\t}\n": typeof types.ServerEmojisSectionDeleteEmojiDocument,
+    "\n\tmutation ServerPublicURLUpdate($publicUrl: String!) {\n\t\tupdatePublicUrl(publicUrl: $publicUrl) {\n\t\t\tpublicUrl\n\t\t}\n\t}\n": typeof types.ServerPublicUrlUpdateDocument,
+    "\n\tquery ServerPublicURL {\n\t\tserverConfig {\n\t\t\tpublicUrl\n\t\t}\n\t}\n": typeof types.ServerPublicUrlDocument,
     "\n\tquery ServerStats {\n\t\tnumberOfLibraries\n\t\tnumberOfSeries\n\t\tmediaCount\n\t\tmediaDiskUsage\n\t}\n": typeof types.ServerStatsDocument,
     "\n\tmutation DeleteJobHistoryConfirmation {\n\t\tdeleteJobHistory {\n\t\t\taffectedRows\n\t\t}\n\t}\n": typeof types.DeleteJobHistoryConfirmationDocument,
     "\n\tmutation JobActionMenuCancelJob($id: ID!) {\n\t\tcancelJob(id: $id)\n\t}\n": typeof types.JobActionMenuCancelJobDocument,
@@ -246,6 +291,10 @@ type Documents = {
     "\n\tquery UploadConfig {\n\t\tuploadConfig {\n\t\t\tenabled\n\t\t\tmaxFileUploadSize\n\t\t}\n\t}\n": typeof types.UploadConfigDocument,
 };
 const documents: Documents = {
+    "\n\tmutation CreateBookClubMobile($input: CreateBookClubInput!) {\n\t\tcreateBookClub(input: $input) {\n\t\t\tid\n\t\t\tslug\n\t\t}\n\t}\n": types.CreateBookClubMobileDocument,
+    "\n\tquery BookClubsScreen {\n\t\tbookClubs {\n\t\t\tid\n\t\t\t...BookClubCard\n\t\t}\n\t\tmyBookClubInvitations {\n\t\t\tid\n\t\t}\n\t}\n": types.BookClubsScreenDocument,
+    "\n\tquery BookClubInvitesScreen {\n\t\tmyBookClubInvitations {\n\t\t\tid\n\t\t\trole\n\t\t\tbookClubId\n\t\t\tbookClub {\n\t\t\t\tname\n\t\t\t\tdescription\n\t\t\t\tmembersCount\n\t\t\t}\n\t\t}\n\t}\n": types.BookClubInvitesScreenDocument,
+    "\n\tmutation RespondToBookClubInvitation($id: ID!, $accept: Boolean!) {\n\t\trespondToBookClubInvitation(id: $id, input: { accept: $accept }) {\n\t\t\tid\n\t\t}\n\t}\n": types.RespondToBookClubInvitationDocument,
     "\n\tquery SearchMedia($filter: MediaFilterInput!) {\n\t\tmedia(filter: $filter, pagination: { cursor: { limit: 10 } }) {\n\t\t\tnodes {\n\t\t\t\tid\n\t\t\t\t...BookSearchItem\n\t\t\t}\n\t\t\tpageInfo {\n\t\t\t\t__typename\n\t\t\t\t... on CursorPaginationInfo {\n\t\t\t\t\tnextCursor\n\t\t\t\t}\n\t\t\t}\n\t\t}\n\t}\n": types.SearchMediaDocument,
     "\n\tquery SearchSeries($filter: SeriesFilterInput!) {\n\t\tseries(filter: $filter, pagination: { cursor: { limit: 10 } }) {\n\t\t\tnodes {\n\t\t\t\tid\n\t\t\t\t...SeriesSearchItem\n\t\t\t}\n\t\t\tpageInfo {\n\t\t\t\t__typename\n\t\t\t\t... on CursorPaginationInfo {\n\t\t\t\t\tnextCursor\n\t\t\t\t}\n\t\t\t}\n\t\t}\n\t}\n": types.SearchSeriesDocument,
     "\n\tquery SearchLibrary($search: String!) {\n\t\tlibraries(search: $search, pagination: { cursor: { limit: 10 } }) {\n\t\t\tnodes {\n\t\t\t\tid\n\t\t\t\t...LibrarySearchItem\n\t\t\t}\n\t\t\tpageInfo {\n\t\t\t\t__typename\n\t\t\t\t... on CursorPaginationInfo {\n\t\t\t\t\tnextCursor\n\t\t\t\t}\n\t\t\t}\n\t\t}\n\t}\n": types.SearchLibraryDocument,
@@ -259,6 +308,25 @@ const documents: Documents = {
     "\n\tmutation DeleteAnnotationMobile($id: String!) {\n\t\tdeleteAnnotation(id: $id) {\n\t\t\tid\n\t\t}\n\t}\n": types.DeleteAnnotationMobileDocument,
     "\n\tquery BooksScreen(\n\t\t$pagination: Pagination\n\t\t$filters: MediaFilterInput\n\t\t$orderBy: [MediaOrderBy!]\n\t) {\n\t\tmedia(pagination: $pagination, filter: $filters, orderBy: $orderBy) {\n\t\t\tnodes {\n\t\t\t\tid\n\t\t\t\t...BookGridItem\n\t\t\t}\n\t\t\tpageInfo {\n\t\t\t\t__typename\n\t\t\t\t... on OffsetPaginationInfo {\n\t\t\t\t\ttotalPages\n\t\t\t\t\tcurrentPage\n\t\t\t\t\tpageSize\n\t\t\t\t\tpageOffset\n\t\t\t\t\tzeroBased\n\t\t\t\t}\n\t\t\t}\n\t\t}\n\t}\n": types.BooksScreenDocument,
     "\n\tquery BookSearchScreen($filter: MediaFilterInput!, $pagination: Pagination!) {\n\t\tmedia(filter: $filter, pagination: $pagination) {\n\t\t\tnodes {\n\t\t\t\tid\n\t\t\t\t...BookGridItem\n\t\t\t}\n\t\t\tpageInfo {\n\t\t\t\t__typename\n\t\t\t\t... on CursorPaginationInfo {\n\t\t\t\t\tcurrentCursor\n\t\t\t\t\tnextCursor\n\t\t\t\t\tlimit\n\t\t\t\t}\n\t\t\t}\n\t\t}\n\t}\n": types.BookSearchScreenDocument,
+    "\n\tquery BookClubContextLayout($id: ID!) {\n\t\tbookClubById(id: $id) {\n\t\t\tid\n\t\t\tmembership {\n\t\t\t\tid\n\t\t\t\trole\n\t\t\t}\n\t\t}\n\t}\n": types.BookClubContextLayoutDocument,
+    "\n\tquery BookClubPastDiscussions($bookClubId: ID!) {\n\t\tpreviousBookClubDiscussions(bookClubId: $bookClubId) {\n\t\t\tdisplayName\n\t\t\tcreatedAt\n\t\t\tbook {\n\t\t\t\tid\n\t\t\t\t...PastBookGridItem\n\t\t\t}\n\t\t\tmessageCount\n\t\t}\n\t}\n": types.BookClubPastDiscussionsDocument,
+    "\n\tquery BookClubPastBookScreen($bookId: ID!) {\n\t\tbookClubDiscussionByBook(bookClubBookId: $bookId) {\n\t\t\tid\n\t\t\t...DiscussionListItem\n\t\t}\n\t\tbookClubBook(id: $bookId) {\n\t\t\ttitle\n\t\t\tentity {\n\t\t\t\tresolvedName\n\t\t\t}\n\t\t}\n\t}\n": types.BookClubPastBookScreenDocument,
+    "\n\tquery BookClubDiscussionRoom($id: ID!) {\n\t\tbookClubDiscussion(id: $id) {\n\t\t\tid\n\t\t\tdisplayName\n\t\t\tisLocked\n\t\t\tbook {\n\t\t\t\tid\n\t\t\t\ttitle\n\t\t\t\tauthor\n\t\t\t}\n\t\t}\n\t}\n": types.BookClubDiscussionRoomDocument,
+    "\n\tquery BookClubDiscussionMessages($discussionId: ID!, $pagination: CursorPagination) {\n\t\tbookClubDiscussionMessages(discussionId: $discussionId, pagination: $pagination) {\n\t\t\tnodes {\n\t\t\t\tid\n\t\t\t\tcontent\n\t\t\t\ttimestamp\n\t\t\t\teditedAt\n\t\t\t\tdeletedAt\n\t\t\t\tisPinnedMessage\n\t\t\t\tparentMessageId\n\t\t\t\tmemberId\n\t\t\t\tthreadChildrenCount\n\t\t\t\treactions {\n\t\t\t\t\temoji\n\t\t\t\t\tcustomEmojiId\n\t\t\t\t\tcustomEmojiUrl\n\t\t\t\t\tcount\n\t\t\t\t\treactedByMe\n\t\t\t\t}\n\t\t\t\treplyTo {\n\t\t\t\t\tid\n\t\t\t\t\tcontent\n\t\t\t\t\tmember {\n\t\t\t\t\t\tdisplayName\n\t\t\t\t\t\tusername\n\t\t\t\t\t\tavatarUrl\n\t\t\t\t\t}\n\t\t\t\t}\n\t\t\t\tmember {\n\t\t\t\t\tid\n\t\t\t\t\tdisplayName\n\t\t\t\t\tavatarUrl\n\t\t\t\t\tusername\n\t\t\t\t}\n\t\t\t}\n\t\t\tcursorInfo {\n\t\t\t\tnextCursor\n\t\t\t\tlimit\n\t\t\t}\n\t\t}\n\t}\n": types.BookClubDiscussionMessagesDocument,
+    "\n\tmutation SendDiscussionMessage($discussionId: ID!, $input: SendMessageInput!) {\n\t\tsendMessage(discussionId: $discussionId, input: $input) {\n\t\t\tid\n\t\t}\n\t}\n": types.SendDiscussionMessageDocument,
+    "\n\tmutation ToggleMessageReaction($messageId: ID!, $emoji: String, $customEmojiId: Int) {\n\t\ttoggleReaction(messageId: $messageId, emoji: $emoji, customEmojiId: $customEmojiId)\n\t}\n": types.ToggleMessageReactionDocument,
+    "\n\tmutation DeleteDiscussionMessage($messageId: ID!) {\n\t\tdeleteMessage(messageId: $messageId) {\n\t\t\tid\n\t\t}\n\t}\n": types.DeleteDiscussionMessageDocument,
+    "\n\tquery ThreadParentMessage($id: ID!) {\n\t\tbookClubDiscussionMessage(id: $id) {\n\t\t\tid\n\t\t\tcontent\n\t\t\ttimestamp\n\t\t\teditedAt\n\t\t\tdeletedAt\n\t\t\tisPinnedMessage\n\t\t\tparentMessageId\n\t\t\tmemberId\n\t\t\tthreadChildrenCount\n\t\t\treactions {\n\t\t\t\temoji\n\t\t\t\tcustomEmojiId\n\t\t\t\tcustomEmojiUrl\n\t\t\t\tcount\n\t\t\t\treactedByMe\n\t\t\t}\n\t\t\treplyTo {\n\t\t\t\tid\n\t\t\t\tcontent\n\t\t\t\tmember {\n\t\t\t\t\tdisplayName\n\t\t\t\t\tusername\n\t\t\t\t\tavatarUrl\n\t\t\t\t}\n\t\t\t}\n\t\t\tmember {\n\t\t\t\tid\n\t\t\t\tdisplayName\n\t\t\t\tavatarUrl\n\t\t\t\tusername\n\t\t\t}\n\t\t}\n\t}\n": types.ThreadParentMessageDocument,
+    "\n\tquery ThreadReplies($discussionId: ID!, $parentId: ID, $pagination: CursorPagination) {\n\t\tbookClubDiscussionMessages(\n\t\t\tdiscussionId: $discussionId\n\t\t\tparentId: $parentId\n\t\t\tpagination: $pagination\n\t\t) {\n\t\t\tnodes {\n\t\t\t\tid\n\t\t\t\tcontent\n\t\t\t\ttimestamp\n\t\t\t\teditedAt\n\t\t\t\tdeletedAt\n\t\t\t\tisPinnedMessage\n\t\t\t\tparentMessageId\n\t\t\t\tmemberId\n\t\t\t\tthreadChildrenCount\n\t\t\t\treactions {\n\t\t\t\t\temoji\n\t\t\t\t\tcustomEmojiId\n\t\t\t\t\tcount\n\t\t\t\t\treactedByMe\n\t\t\t\t}\n\t\t\t\treplyTo {\n\t\t\t\t\tid\n\t\t\t\t\tcontent\n\t\t\t\t\tmember {\n\t\t\t\t\t\tdisplayName\n\t\t\t\t\t\tusername\n\t\t\t\t\t}\n\t\t\t\t}\n\t\t\t\tmember {\n\t\t\t\t\tid\n\t\t\t\t\tdisplayName\n\t\t\t\t\tavatarUrl\n\t\t\t\t\tusername\n\t\t\t\t}\n\t\t\t}\n\t\t\tcursorInfo {\n\t\t\t\tnextCursor\n\t\t\t\tlimit\n\t\t\t}\n\t\t}\n\t}\n": types.ThreadRepliesDocument,
+    "\n\tmutation SendThreadReply($discussionId: ID!, $input: SendMessageInput!) {\n\t\tsendMessage(discussionId: $discussionId, input: $input) {\n\t\t\tid\n\t\t}\n\t}\n": types.SendThreadReplyDocument,
+    "\n\tmutation ToggleThreadMessageReaction($messageId: ID!, $emoji: String, $customEmojiId: Int) {\n\t\ttoggleReaction(messageId: $messageId, emoji: $emoji, customEmojiId: $customEmojiId)\n\t}\n": types.ToggleThreadMessageReactionDocument,
+    "\n\tmutation DeleteThreadMessage($messageId: ID!) {\n\t\tdeleteMessage(messageId: $messageId) {\n\t\t\tid\n\t\t}\n\t}\n": types.DeleteThreadMessageDocument,
+    "\n\tquery ThreadDiscussionInfo($id: ID!) {\n\t\tbookClubDiscussion(id: $id) {\n\t\t\tid\n\t\t\tdisplayName\n\t\t\tisLocked\n\t\t}\n\t}\n": types.ThreadDiscussionInfoDocument,
+    "\n\tquery BookClubDetailScreen($id: ID!) {\n\t\tbookClubById(id: $id) {\n\t\t\tid\n\t\t\tname\n\t\t\temoji\n\t\t\tmembership {\n\t\t\t\tid\n\t\t\t\trole\n\t\t\t}\n\t\t\tmoderators {\n\t\t\t\tid\n\t\t\t\tavatarUrl\n\t\t\t\tdisplayName\n\t\t\t}\n\t\t\tpinnedDiscussions {\n\t\t\t\tid\n\t\t\t\t...DiscussionListItem\n\t\t\t}\n\t\t\tcurrentBook {\n\t\t\t\tid\n\t\t\t\t...CurrentBookCard\n\t\t\t\tdiscussions {\n\t\t\t\t\tid\n\t\t\t\t\t...DiscussionListItem\n\t\t\t\t}\n\t\t\t\tentity {\n\t\t\t\t\tid\n\t\t\t\t\treadProgress {\n\t\t\t\t\t\tpercentageCompleted\n\t\t\t\t\t\telapsedSeconds\n\t\t\t\t\t\tstartedAt\n\t\t\t\t\t}\n\t\t\t\t\treadHistory {\n\t\t\t\t\t\t__typename\n\t\t\t\t\t\tcompletedAt\n\t\t\t\t\t}\n\t\t\t\t}\n\t\t\t}\n\t\t\t...PastDiscussionsLink\n\t\t}\n\t}\n": types.BookClubDetailScreenDocument,
+    "\n\tquery BookClubSettings($id: ID!) {\n\t\tbookClubById(id: $id) {\n\t\t\tid\n\t\t\tname\n\t\t\tdescription\n\t\t\tisPrivate\n\t\t\temoji\n\t\t\tmembership {\n\t\t\t\tid\n\t\t\t\trole\n\t\t\t}\n\t\t}\n\t}\n": types.BookClubSettingsDocument,
+    "\n\tmutation UpdateBookClubSettings($id: ID!, $input: UpdateBookClubInput!) {\n\t\tupdateBookClub(id: $id, input: $input) {\n\t\t\tid\n\t\t}\n\t}\n": types.UpdateBookClubSettingsDocument,
+    "\n\tmutation DeleteBookClub($id: ID!) {\n\t\tdeleteBookClub(id: $id) {\n\t\t\tid\n\t\t}\n\t}\n": types.DeleteBookClubDocument,
+    "\n\tmutation LeaveBookClub($id: ID!) {\n\t\tleaveBookClub(bookClubId: $id) {\n\t\t\tid\n\t\t}\n\t}\n": types.LeaveBookClubDocument,
     "\n\tquery LibraryPaths {\n\t\tlibraries(pagination: { none: { unpaginated: true } }) {\n\t\t\tnodes {\n\t\t\t\tid\n\t\t\t\tname\n\t\t\t\tpath\n\t\t\t}\n\t\t}\n\t}\n": types.LibraryPathsDocument,
     "\n\tquery LibrarySeriesScreenSeriesName($id: ID!) {\n\t\tlibraryById(id: $id) {\n\t\t\tname\n\t\t}\n\t}\n": types.LibrarySeriesScreenSeriesNameDocument,
     "\n\tquery LibrarySeriesScreen($filter: SeriesFilterInput!, $pagination: Pagination) {\n\t\tseries(filter: $filter, pagination: $pagination) {\n\t\t\tnodes {\n\t\t\t\tid\n\t\t\t\t...SeriesGridItem\n\t\t\t}\n\t\t\tpageInfo {\n\t\t\t\t__typename\n\t\t\t\t... on CursorPaginationInfo {\n\t\t\t\t\tcurrentCursor\n\t\t\t\t\tnextCursor\n\t\t\t\t\tlimit\n\t\t\t\t}\n\t\t\t}\n\t\t}\n\t}\n": types.LibrarySeriesScreenDocument,
@@ -299,6 +367,17 @@ const documents: Documents = {
     "\n\tmutation BookMenuComplete($id: ID!, $isComplete: Boolean!, $page: Int) {\n\t\tmarkMediaAsComplete(id: $id, isComplete: $isComplete, page: $page) {\n\t\t\tcompletedAt\n\t\t}\n\t}\n": types.BookMenuCompleteDocument,
     "\n\tmutation BookMenuDeleteSession($id: ID!) {\n\t\tdeleteMediaProgress(id: $id) {\n\t\t\t__typename\n\t\t}\n\t}\n": types.BookMenuDeleteSessionDocument,
     "\n\tmutation BookMenuDeleteHistory($id: ID!) {\n\t\tdeleteMediaReadHistory(id: $id) {\n\t\t\t__typename\n\t\t}\n\t}\n": types.BookMenuDeleteHistoryDocument,
+    "\n\tquery AddBookSheet($pagination: Pagination, $filters: MediaFilterInput) {\n\t\tmedia(pagination: $pagination, filter: $filters) {\n\t\t\tnodes {\n\t\t\t\tid\n\t\t\t\t...BookGridItem\n\t\t\t}\n\t\t\tpageInfo {\n\t\t\t\t__typename\n\t\t\t\t... on OffsetPaginationInfo {\n\t\t\t\t\ttotalPages\n\t\t\t\t\tcurrentPage\n\t\t\t\t\tpageSize\n\t\t\t\t\tpageOffset\n\t\t\t\t\tzeroBased\n\t\t\t\t}\n\t\t\t}\n\t\t}\n\t}\n": types.AddBookSheetDocument,
+    "\n\tfragment BookClubCard on BookClub {\n\t\tid\n\t\tname\n\t\tslug\n\t\tdescription\n\t\tmembersCount\n\t\tmembers {\n\t\t\tid\n\t\t\tdisplayName\n\t\t\tavatarUrl\n\t\t}\n\t\tcurrentBook {\n\t\t\tid\n\t\t\timageUrl\n\t\t\ttitle\n\t\t\tentity {\n\t\t\t\t__typename\n\t\t\t\tid\n\t\t\t\tthumbnail {\n\t\t\t\t\turl\n\t\t\t\t\tmetadata {\n\t\t\t\t\t\taverageColor\n\t\t\t\t\t\tcolors {\n\t\t\t\t\t\t\tcolor\n\t\t\t\t\t\t\tpercentage\n\t\t\t\t\t\t}\n\t\t\t\t\t\tthumbhash\n\t\t\t\t\t}\n\t\t\t\t}\n\t\t\t}\n\t\t}\n\t}\n": types.BookClubCardFragmentDoc,
+    "\n\tfragment CurrentBookCard on BookClubBook {\n\t\tid\n\t\ttitle\n\t\tauthor\n\t\timageUrl\n\t\taddedAt\n\t\turl\n\t\tentity {\n\t\t\t__typename\n\t\t\tid\n\t\t\tresolvedName\n\t\t\tthumbnail {\n\t\t\t\turl\n\t\t\t\tmetadata {\n\t\t\t\t\taverageColor\n\t\t\t\t\tcolors {\n\t\t\t\t\t\tcolor\n\t\t\t\t\t\tpercentage\n\t\t\t\t\t}\n\t\t\t\t\tthumbhash\n\t\t\t\t}\n\t\t\t}\n\t\t}\n\t}\n": types.CurrentBookCardFragmentDoc,
+    "\n\tmutation AddBookToClub($bookClubId: ID!, $input: AddBookToClubInput!) {\n\t\taddBookToClub(bookClubId: $bookClubId, input: $input) {\n\t\t\tid\n\t\t}\n\t}\n": types.AddBookToClubDocument,
+    "\n\tmutation ArchiveCurrentBook($bookClubBookId: ID!) {\n\t\tcompleteBook(bookClubBookId: $bookClubBookId) {\n\t\t\tid\n\t\t}\n\t}\n": types.ArchiveCurrentBookDocument,
+    "\n\tfragment PastBookGridItem on BookClubBook {\n\t\tid\n\t\timageUrl\n\t\ttitle\n\t\tentity {\n\t\t\t__typename\n\t\t\tid\n\t\t\tresolvedName\n\t\t\tthumbnail {\n\t\t\t\turl\n\t\t\t\tmetadata {\n\t\t\t\t\taverageColor\n\t\t\t\t\tcolors {\n\t\t\t\t\t\tcolor\n\t\t\t\t\t\tpercentage\n\t\t\t\t\t}\n\t\t\t\t\tthumbhash\n\t\t\t\t}\n\t\t\t}\n\t\t}\n\t\tcompletedAt\n\t}\n": types.PastBookGridItemFragmentDoc,
+    "\n\tfragment PastDiscussionsLink on BookClub {\n\t\tpreviousBook {\n\t\t\timageUrl\n\t\t\tentity {\n\t\t\t\t__typename\n\t\t\t\tid\n\t\t\t\tthumbnail {\n\t\t\t\t\turl\n\t\t\t\t\tmetadata {\n\t\t\t\t\t\taverageColor\n\t\t\t\t\t\tcolors {\n\t\t\t\t\t\t\tcolor\n\t\t\t\t\t\t\tpercentage\n\t\t\t\t\t\t}\n\t\t\t\t\t\tthumbhash\n\t\t\t\t\t}\n\t\t\t\t}\n\t\t\t}\n\t\t}\n\t\tpreviousDiscussionsCount\n\t}\n": types.PastDiscussionsLinkFragmentDoc,
+    "\n\tquery PreviewBookSheet($id: ID!) {\n\t\tmediaById(id: $id) {\n\t\t\tid\n\t\t\tresolvedName\n\t\t\tthumbnail {\n\t\t\t\turl\n\t\t\t\tmetadata {\n\t\t\t\t\taverageColor\n\t\t\t\t\tcolors {\n\t\t\t\t\t\tcolor\n\t\t\t\t\t\tpercentage\n\t\t\t\t\t}\n\t\t\t\t\tthumbhash\n\t\t\t\t}\n\t\t\t}\n\t\t\tmetadata {\n\t\t\t\tgenres\n\t\t\t\twriters\n\t\t\t}\n\t\t\ttags {\n\t\t\t\tname\n\t\t\t}\n\t\t}\n\t}\n": types.PreviewBookSheetDocument,
+    "\n\tquery SuggestionsPickerSheet($bookClubId: ID!, $status: BookClubSuggestionStatus) {\n\t\tbookClubSuggestions(bookClubId: $bookClubId, status: $status) {\n\t\t\tid\n\t\t\ttitle\n\t\t\tauthor\n\t\t\turl\n\t\t\tbookId\n\t\t\tnotes\n\t\t\tsuggestedBy {\n\t\t\t\tuser {\n\t\t\t\t\tusername\n\t\t\t\t}\n\t\t\t}\n\t\t}\n\t}\n": types.SuggestionsPickerSheetDocument,
+    "\n\tfragment DiscussionListItem on BookClubDiscussion {\n\t\tid\n\t\tdisplayName\n\t\temoji\n\t\tmessageCount\n\t\tisLocked\n\t\tisArchived\n\t}\n": types.DiscussionListItemFragmentDoc,
+    "\n\tquery useEmojis {\n\t\tcustomEmojis {\n\t\t\tid\n\t\t\tname\n\t\t\tisAnimated\n\t\t\turl\n\t\t}\n\t}\n": types.UseEmojisDocument,
     "\n\tmutation LibraryActionMenuScanLibrary($id: ID!) {\n\t\tscanLibrary(id: $id)\n\t}\n": types.LibraryActionMenuScanLibraryDocument,
     "\n\tfragment LibraryGridItem on Library {\n\t\tid\n\t\tname\n\t\tseries(take: 5) {\n\t\t\tthumbnail {\n\t\t\t\turl\n\t\t\t\tmetadata {\n\t\t\t\t\taverageColor\n\t\t\t\t\tcolors {\n\t\t\t\t\t\tcolor\n\t\t\t\t\t\tpercentage\n\t\t\t\t\t}\n\t\t\t\t\tthumbhash\n\t\t\t\t}\n\t\t\t}\n\t\t}\n\t}\n": types.LibraryGridItemFragmentDoc,
     "\n\tquery LibraryOverviewSheet($id: ID!) {\n\t\tlibraryById(id: $id) {\n\t\t\tname\n\t\t\tdescription\n\t\t\tstats {\n\t\t\t\tseriesCount\n\t\t\t\tbookCount\n\t\t\t\ttotalBytes\n\t\t\t\tcompletedBooks\n\t\t\t\tinProgressBooks\n\t\t\t\ttotalReadingTimeSeconds\n\t\t\t}\n\t\t\ttags {\n\t\t\t\tname\n\t\t\t}\n\t\t}\n\t}\n": types.LibraryOverviewSheetDocument,
@@ -320,6 +399,8 @@ const documents: Documents = {
     "\n\tmutation UpdateMediaMetadata($id: ID!, $input: MediaMetadataInput!) {\n\t\tupdateMediaMetadata(id: $id, input: $input) {\n\t\t\tmetadata {\n\t\t\t\t...MediaMetadataEditor\n\t\t\t}\n\t\t}\n\t}\n": types.UpdateMediaMetadataDocument,
     "\n\tquery BookOverviewScene($id: ID!) {\n\t\tmediaById(id: $id) {\n\t\t\tid\n\t\t\t...BookCard\n\t\t\t...BookFileInformation\n\t\t\tresolvedName\n\t\t\textension\n\t\t\tmetadata {\n\t\t\t\tlinks\n\t\t\t\tsummary\n\t\t\t\t...MediaMetadataEditor\n\t\t\t}\n\t\t\treadHistory {\n\t\t\t\tcompletedAt\n\t\t\t}\n\t\t}\n\t}\n": types.BookOverviewSceneDocument,
     "\n\tmutation DeleteBookClubConfirmation($id: ID!) {\n\t\tdeleteBookClub(id: $id) {\n\t\t\tid\n\t\t}\n\t}\n": types.DeleteBookClubConfirmationDocument,
+    "\n\tfragment BookClubBookItem on BookClubBook {\n\t\tid\n\t\ttitle\n\t\tauthor\n\t\timageUrl\n\t\turl\n\t\tentity {\n\t\t\t__typename\n\t\t\tid\n\t\t\tresolvedName\n\t\t\tmetadata {\n\t\t\t\twriters\n\t\t\t}\n\t\t\tthumbnail {\n\t\t\t\turl\n\t\t\t}\n\t\t}\n\t\tcompletedAt\n\t\taddedAt\n\t}\n": types.BookClubBookItemFragmentDoc,
+    "\n\tquery BookClubBooksScene($id: ID!) {\n\t\tbookClubById(id: $id) {\n\t\t\tid\n\t\t\tpreviousBooks {\n\t\t\t\tid\n\t\t\t\t...BookClubBookItem\n\t\t\t}\n\t\t}\n\t}\n": types.BookClubBooksSceneDocument,
     "\n\tquery MediaAtPath($path: String!) {\n\t\tmediaByPath(path: $path) {\n\t\t\tid\n\t\t\tresolvedName\n\t\t\tthumbnail {\n\t\t\t\turl\n\t\t\t}\n\t\t}\n\t}\n": types.MediaAtPathDocument,
     "\n\tmutation UploadLibraryBooks($input: UploadBooksInput!) {\n\t\tuploadBooks(input: $input)\n\t}\n": types.UploadLibraryBooksDocument,
     "\n\tmutation UploadLibrarySeries($input: UploadSeriesInput!) {\n\t\tuploadSeries(input: $input)\n\t}\n": types.UploadLibrarySeriesDocument,
@@ -365,8 +446,9 @@ const documents: Documents = {
     "\n\tfragment BookThumbnailSelector on Media {\n\t\tid\n\t\tthumbnail {\n\t\t\turl\n\t\t}\n\t\tpages\n\t}\n": types.BookThumbnailSelectorFragmentDoc,
     "\n\tmutation BookThumbnailSelectorUpdate($id: ID!, $input: PageBasedThumbnailInput!) {\n\t\tupdateMediaThumbnail(id: $id, input: $input) {\n\t\t\tid\n\t\t\tthumbnail {\n\t\t\t\turl\n\t\t\t}\n\t\t}\n\t}\n": types.BookThumbnailSelectorUpdateDocument,
     "\n\tmutation BookThumbnailSelectorUpload($id: ID!, $file: Upload!) {\n\t\tuploadMediaThumbnail(id: $id, file: $file) {\n\t\t\tid\n\t\t\tthumbnail {\n\t\t\t\turl\n\t\t\t}\n\t\t}\n\t}\n": types.BookThumbnailSelectorUploadDocument,
-    "\n\tquery BookClubLayout($slug: String!) {\n\t\tbookClubBySlug(slug: $slug) {\n\t\t\tid\n\t\t\tname\n\t\t\tslug\n\t\t\tdescription\n\t\t\tisPrivate\n\t\t\troleSpec\n\t\t\tcreator {\n\t\t\t\tid\n\t\t\t\tdisplayName\n\t\t\t\tavatarUrl\n\t\t\t}\n\t\t\tmembersCount\n\t\t\tmembership {\n\t\t\t\trole\n\t\t\t\tisCreator\n\t\t\t\tavatarUrl\n\t\t\t\t__typename\n\t\t\t}\n\t\t\tschedule {\n\t\t\t\tid\n\t\t\t\tdefaultIntervalDays\n\t\t\t\tbooks {\n\t\t\t\t\tid\n\t\t\t\t\tstartAt\n\t\t\t\t\tendAt\n\t\t\t\t\tdiscussionDurationDays\n\t\t\t\t\timageUrl\n\t\t\t\t\ttitle\n\t\t\t\t\tauthor\n\t\t\t\t\turl\n\t\t\t\t\tentity {\n\t\t\t\t\t\tid\n\t\t\t\t\t\tresolvedName\n\t\t\t\t\t\tthumbnail {\n\t\t\t\t\t\t\turl\n\t\t\t\t\t\t}\n\t\t\t\t\t\tmetadata {\n\t\t\t\t\t\t\twriters\n\t\t\t\t\t\t}\n\t\t\t\t\t}\n\t\t\t\t}\n\t\t\t}\n\t\t\tcreatedAt\n\t\t}\n\t}\n": types.BookClubLayoutDocument,
-    "\n\tquery UserBookClubsScene {\n\t\tbookClubs(all: false) {\n\t\t\tid\n\t\t\tname\n\t\t\tslug\n\t\t\tdescription\n\t\t\tmembersCount\n\t\t\tschedule {\n\t\t\t\tactiveBooks {\n\t\t\t\t\t__typename\n\t\t\t\t}\n\t\t\t}\n\t\t}\n\t}\n": types.UserBookClubsSceneDocument,
+    "\n\tquery BookClubLayout($slug: String!) {\n\t\tbookClubBySlug(slug: $slug) {\n\t\t\tid\n\t\t\tname\n\t\t\tslug\n\t\t\tdescription\n\t\t\tisPrivate\n\t\t\troleSpec\n\t\t\tcreator {\n\t\t\t\tid\n\t\t\t\tdisplayName\n\t\t\t\tavatarUrl\n\t\t\t}\n\t\t\tmembersCount\n\t\t\tmembership {\n\t\t\t\trole\n\t\t\t\tavatarUrl\n\t\t\t\tisCreator\n\t\t\t}\n\t\t\tcurrentBook {\n\t\t\t\tid\n\t\t\t\ttitle\n\t\t\t\tauthor\n\t\t\t\timageUrl\n\t\t\t\tentity {\n\t\t\t\t\tid\n\t\t\t\t\tthumbnail {\n\t\t\t\t\t\turl\n\t\t\t\t\t}\n\t\t\t\t}\n\t\t\t\t...BookClubBookItem\n\t\t\t}\n\t\t\tcreatedAt\n\t\t}\n\t}\n": types.BookClubLayoutDocument,
+    "\n\tmutation UpdateBookClub($id: ID!, $input: UpdateBookClubInput!) {\n\t\tupdateBookClub(id: $id, input: $input) {\n\t\t\tid\n\t\t\tname\n\t\t\temoji\n\t\t\tisPrivate\n\t\t\troleSpec\n\t\t\tdescription\n\t\t}\n\t}\n": types.UpdateBookClubDocument,
+    "\n\tquery UserBookClubsScene {\n\t\tbookClubs(all: false) {\n\t\t\tid\n\t\t\tname\n\t\t\tslug\n\t\t\tdescription\n\t\t\tmembersCount\n\t\t\tcurrentBook {\n\t\t\t\tid\n\t\t\t}\n\t\t}\n\t}\n": types.UserBookClubsSceneDocument,
     "\n\tquery CreateBookClubForm {\n\t\tbookClubs {\n\t\t\tname\n\t\t\tslug\n\t\t}\n\t}\n": types.CreateBookClubFormDocument,
     "\n\tmutation CreateBookClubScene($input: CreateBookClubInput!) {\n\t\tcreateBookClub(input: $input) {\n\t\t\tid\n\t\t\tslug\n\t\t}\n\t}\n": types.CreateBookClubSceneDocument,
     "\n\tquery BookClubBasicSettingsScene {\n\t\tbookClubs(all: true) {\n\t\t\tid\n\t\t\tname\n\t\t\tslug\n\t\t}\n\t}\n": types.BookClubBasicSettingsSceneDocument,
@@ -420,7 +502,9 @@ const documents: Documents = {
     "\n\tquery APIKeyTable {\n\t\tapiKeys {\n\t\t\tid\n\t\t\tname\n\t\t\tpermissions {\n\t\t\t\t__typename\n\t\t\t\t... on UserPermissionStruct {\n\t\t\t\t\tvalue\n\t\t\t\t}\n\t\t\t}\n\t\t\tlastUsedAt\n\t\t\texpiresAt\n\t\t\tcreatedAt\n\t\t}\n\t}\n": types.ApiKeyTableDocument,
     "\n\tmutation CreateAPIKeyModal($input: ApikeyInput!) {\n\t\tcreateApiKey(input: $input) {\n\t\t\tapiKey {\n\t\t\t\tid\n\t\t\t}\n\t\t\tsecret\n\t\t}\n\t}\n": types.CreateApiKeyModalDocument,
     "\n\tmutation DeleteAPIKeyConfirmModal($id: Int!) {\n\t\tdeleteApiKey(id: $id) {\n\t\t\tid\n\t\t}\n\t}\n": types.DeleteApiKeyConfirmModalDocument,
-    "\n\tmutation UpdateUserProfileForm($input: UpdateUserInput!) {\n\t\tupdateViewer(input: $input) {\n\t\t\tid\n\t\t\tusername\n\t\t\tavatarUrl\n\t\t}\n\t}\n": types.UpdateUserProfileFormDocument,
+    "\n\tmutation UploadUserAvatar($file: Upload!) {\n\t\tuploadUserAvatar(upload: $file) {\n\t\t\tid\n\t\t\tavatarUrl\n\t\t}\n\t}\n": types.UploadUserAvatarDocument,
+    "\n\tmutation DeleteUserAvatar {\n\t\tdeleteUserAvatar {\n\t\t\tid\n\t\t\tavatarUrl\n\t\t}\n\t}\n": types.DeleteUserAvatarDocument,
+    "\n\tmutation UpdateUserProfileForm($input: UpdateUserInput!) {\n\t\tupdateViewer(input: $input) {\n\t\t\tid\n\t\t\tusername\n\t\t}\n\t}\n": types.UpdateUserProfileFormDocument,
     "\n\tquery NavigationArrangement {\n\t\tme {\n\t\t\tpreferences {\n\t\t\t\tnavigationArrangement {\n\t\t\t\t\tlocked\n\t\t\t\t\tsections {\n\t\t\t\t\t\t__typename\n\t\t\t\t\t\tconfig {\n\t\t\t\t\t\t\t__typename\n\t\t\t\t\t\t\t... on SystemArrangementConfig {\n\t\t\t\t\t\t\t\tvariant\n\t\t\t\t\t\t\t\tlinks\n\t\t\t\t\t\t\t}\n\t\t\t\t\t\t}\n\t\t\t\t\t\tvisible\n\t\t\t\t\t}\n\t\t\t\t}\n\t\t\t}\n\t\t}\n\t}\n": types.NavigationArrangementDocument,
     "\n\tmutation NavigationArrangementUpdate($input: NavigationArrangementInput!) {\n\t\tupdateNavigationArrangement(input: $input) {\n\t\t\t__typename\n\t\t}\n\t}\n": types.NavigationArrangementUpdateDocument,
     "\n\tmutation NavigationArrangementUpdateLockStatus($locked: Boolean!) {\n\t\tupdateNavigationArrangementLock(locked: $locked) {\n\t\t\t__typename\n\t\t}\n\t}\n": types.NavigationArrangementUpdateLockStatusDocument,
@@ -436,6 +520,12 @@ const documents: Documents = {
     "\n\tmutation DeleteEmailer($emailerId: Int!) {\n\t\tdeleteEmailer(id: $emailerId) {\n\t\t\tid\n\t\t}\n\t}\n": types.DeleteEmailerDocument,
     "\n\tquery EmailerSendHistory($id: Int!, $fetchUser: Boolean!) {\n\t\temailerById(id: $id) {\n\t\t\tsendHistory {\n\t\t\t\tsentAt\n\t\t\t\trecipientEmail\n\t\t\t\tsentByUserId\n\t\t\t\tsentBy @include(if: $fetchUser) {\n\t\t\t\t\tid\n\t\t\t\t\tusername\n\t\t\t\t}\n\t\t\t\tattachmentMeta {\n\t\t\t\t\tfilename\n\t\t\t\t\tmediaId\n\t\t\t\t\tmedia {\n\t\t\t\t\t\tresolvedName\n\t\t\t\t\t}\n\t\t\t\t\tsize\n\t\t\t\t}\n\t\t\t}\n\t\t}\n\t}\n": types.EmailerSendHistoryDocument,
     "\n\tquery EmailersList {\n\t\temailers {\n\t\t\tid\n\t\t\t...EmailerListItem\n\t\t}\n\t}\n": types.EmailersListDocument,
+    "\n\tquery ServerEmojisSection {\n\t\tcustomEmojis {\n\t\t\tid\n\t\t\tname\n\t\t\tisAnimated\n\t\t\turl\n\t\t}\n\t}\n": types.ServerEmojisSectionDocument,
+    "\n\tmutation ServerEmojisSectionUploadEmoji($input: CreateCustomEmojiInput!, $upload: Upload!) {\n\t\tuploadCustomEmoji(input: $input, upload: $upload) {\n\t\t\tid\n\t\t\tname\n\t\t\tisAnimated\n\t\t\turl\n\t\t}\n\t}\n": types.ServerEmojisSectionUploadEmojiDocument,
+    "\n\tmutation ServerEmojisSectionRenameEmoji($id: ID!, $input: UpdateCustomEmojiInput!) {\n\t\tupdateCustomEmoji(id: $id, input: $input) {\n\t\t\tid\n\t\t\tname\n\t\t\tisAnimated\n\t\t\turl\n\t\t}\n\t}\n": types.ServerEmojisSectionRenameEmojiDocument,
+    "\n\tmutation ServerEmojisSectionDeleteEmoji($id: ID!) {\n\t\tdeleteCustomEmoji(id: $id)\n\t}\n": types.ServerEmojisSectionDeleteEmojiDocument,
+    "\n\tmutation ServerPublicURLUpdate($publicUrl: String!) {\n\t\tupdatePublicUrl(publicUrl: $publicUrl) {\n\t\t\tpublicUrl\n\t\t}\n\t}\n": types.ServerPublicUrlUpdateDocument,
+    "\n\tquery ServerPublicURL {\n\t\tserverConfig {\n\t\t\tpublicUrl\n\t\t}\n\t}\n": types.ServerPublicUrlDocument,
     "\n\tquery ServerStats {\n\t\tnumberOfLibraries\n\t\tnumberOfSeries\n\t\tmediaCount\n\t\tmediaDiskUsage\n\t}\n": types.ServerStatsDocument,
     "\n\tmutation DeleteJobHistoryConfirmation {\n\t\tdeleteJobHistory {\n\t\t\taffectedRows\n\t\t}\n\t}\n": types.DeleteJobHistoryConfirmationDocument,
     "\n\tmutation JobActionMenuCancelJob($id: ID!) {\n\t\tcancelJob(id: $id)\n\t}\n": types.JobActionMenuCancelJobDocument,
@@ -477,6 +567,22 @@ const documents: Documents = {
     "\n\tquery UploadConfig {\n\t\tuploadConfig {\n\t\t\tenabled\n\t\t\tmaxFileUploadSize\n\t\t}\n\t}\n": types.UploadConfigDocument,
 };
 
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(source: "\n\tmutation CreateBookClubMobile($input: CreateBookClubInput!) {\n\t\tcreateBookClub(input: $input) {\n\t\t\tid\n\t\t\tslug\n\t\t}\n\t}\n"): typeof import('./graphql').CreateBookClubMobileDocument;
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(source: "\n\tquery BookClubsScreen {\n\t\tbookClubs {\n\t\t\tid\n\t\t\t...BookClubCard\n\t\t}\n\t\tmyBookClubInvitations {\n\t\t\tid\n\t\t}\n\t}\n"): typeof import('./graphql').BookClubsScreenDocument;
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(source: "\n\tquery BookClubInvitesScreen {\n\t\tmyBookClubInvitations {\n\t\t\tid\n\t\t\trole\n\t\t\tbookClubId\n\t\t\tbookClub {\n\t\t\t\tname\n\t\t\t\tdescription\n\t\t\t\tmembersCount\n\t\t\t}\n\t\t}\n\t}\n"): typeof import('./graphql').BookClubInvitesScreenDocument;
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(source: "\n\tmutation RespondToBookClubInvitation($id: ID!, $accept: Boolean!) {\n\t\trespondToBookClubInvitation(id: $id, input: { accept: $accept }) {\n\t\t\tid\n\t\t}\n\t}\n"): typeof import('./graphql').RespondToBookClubInvitationDocument;
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
@@ -529,6 +635,82 @@ export function graphql(source: "\n\tquery BooksScreen(\n\t\t$pagination: Pagina
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
 export function graphql(source: "\n\tquery BookSearchScreen($filter: MediaFilterInput!, $pagination: Pagination!) {\n\t\tmedia(filter: $filter, pagination: $pagination) {\n\t\t\tnodes {\n\t\t\t\tid\n\t\t\t\t...BookGridItem\n\t\t\t}\n\t\t\tpageInfo {\n\t\t\t\t__typename\n\t\t\t\t... on CursorPaginationInfo {\n\t\t\t\t\tcurrentCursor\n\t\t\t\t\tnextCursor\n\t\t\t\t\tlimit\n\t\t\t\t}\n\t\t\t}\n\t\t}\n\t}\n"): typeof import('./graphql').BookSearchScreenDocument;
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(source: "\n\tquery BookClubContextLayout($id: ID!) {\n\t\tbookClubById(id: $id) {\n\t\t\tid\n\t\t\tmembership {\n\t\t\t\tid\n\t\t\t\trole\n\t\t\t}\n\t\t}\n\t}\n"): typeof import('./graphql').BookClubContextLayoutDocument;
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(source: "\n\tquery BookClubPastDiscussions($bookClubId: ID!) {\n\t\tpreviousBookClubDiscussions(bookClubId: $bookClubId) {\n\t\t\tdisplayName\n\t\t\tcreatedAt\n\t\t\tbook {\n\t\t\t\tid\n\t\t\t\t...PastBookGridItem\n\t\t\t}\n\t\t\tmessageCount\n\t\t}\n\t}\n"): typeof import('./graphql').BookClubPastDiscussionsDocument;
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(source: "\n\tquery BookClubPastBookScreen($bookId: ID!) {\n\t\tbookClubDiscussionByBook(bookClubBookId: $bookId) {\n\t\t\tid\n\t\t\t...DiscussionListItem\n\t\t}\n\t\tbookClubBook(id: $bookId) {\n\t\t\ttitle\n\t\t\tentity {\n\t\t\t\tresolvedName\n\t\t\t}\n\t\t}\n\t}\n"): typeof import('./graphql').BookClubPastBookScreenDocument;
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(source: "\n\tquery BookClubDiscussionRoom($id: ID!) {\n\t\tbookClubDiscussion(id: $id) {\n\t\t\tid\n\t\t\tdisplayName\n\t\t\tisLocked\n\t\t\tbook {\n\t\t\t\tid\n\t\t\t\ttitle\n\t\t\t\tauthor\n\t\t\t}\n\t\t}\n\t}\n"): typeof import('./graphql').BookClubDiscussionRoomDocument;
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(source: "\n\tquery BookClubDiscussionMessages($discussionId: ID!, $pagination: CursorPagination) {\n\t\tbookClubDiscussionMessages(discussionId: $discussionId, pagination: $pagination) {\n\t\t\tnodes {\n\t\t\t\tid\n\t\t\t\tcontent\n\t\t\t\ttimestamp\n\t\t\t\teditedAt\n\t\t\t\tdeletedAt\n\t\t\t\tisPinnedMessage\n\t\t\t\tparentMessageId\n\t\t\t\tmemberId\n\t\t\t\tthreadChildrenCount\n\t\t\t\treactions {\n\t\t\t\t\temoji\n\t\t\t\t\tcustomEmojiId\n\t\t\t\t\tcustomEmojiUrl\n\t\t\t\t\tcount\n\t\t\t\t\treactedByMe\n\t\t\t\t}\n\t\t\t\treplyTo {\n\t\t\t\t\tid\n\t\t\t\t\tcontent\n\t\t\t\t\tmember {\n\t\t\t\t\t\tdisplayName\n\t\t\t\t\t\tusername\n\t\t\t\t\t\tavatarUrl\n\t\t\t\t\t}\n\t\t\t\t}\n\t\t\t\tmember {\n\t\t\t\t\tid\n\t\t\t\t\tdisplayName\n\t\t\t\t\tavatarUrl\n\t\t\t\t\tusername\n\t\t\t\t}\n\t\t\t}\n\t\t\tcursorInfo {\n\t\t\t\tnextCursor\n\t\t\t\tlimit\n\t\t\t}\n\t\t}\n\t}\n"): typeof import('./graphql').BookClubDiscussionMessagesDocument;
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(source: "\n\tmutation SendDiscussionMessage($discussionId: ID!, $input: SendMessageInput!) {\n\t\tsendMessage(discussionId: $discussionId, input: $input) {\n\t\t\tid\n\t\t}\n\t}\n"): typeof import('./graphql').SendDiscussionMessageDocument;
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(source: "\n\tmutation ToggleMessageReaction($messageId: ID!, $emoji: String, $customEmojiId: Int) {\n\t\ttoggleReaction(messageId: $messageId, emoji: $emoji, customEmojiId: $customEmojiId)\n\t}\n"): typeof import('./graphql').ToggleMessageReactionDocument;
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(source: "\n\tmutation DeleteDiscussionMessage($messageId: ID!) {\n\t\tdeleteMessage(messageId: $messageId) {\n\t\t\tid\n\t\t}\n\t}\n"): typeof import('./graphql').DeleteDiscussionMessageDocument;
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(source: "\n\tquery ThreadParentMessage($id: ID!) {\n\t\tbookClubDiscussionMessage(id: $id) {\n\t\t\tid\n\t\t\tcontent\n\t\t\ttimestamp\n\t\t\teditedAt\n\t\t\tdeletedAt\n\t\t\tisPinnedMessage\n\t\t\tparentMessageId\n\t\t\tmemberId\n\t\t\tthreadChildrenCount\n\t\t\treactions {\n\t\t\t\temoji\n\t\t\t\tcustomEmojiId\n\t\t\t\tcustomEmojiUrl\n\t\t\t\tcount\n\t\t\t\treactedByMe\n\t\t\t}\n\t\t\treplyTo {\n\t\t\t\tid\n\t\t\t\tcontent\n\t\t\t\tmember {\n\t\t\t\t\tdisplayName\n\t\t\t\t\tusername\n\t\t\t\t\tavatarUrl\n\t\t\t\t}\n\t\t\t}\n\t\t\tmember {\n\t\t\t\tid\n\t\t\t\tdisplayName\n\t\t\t\tavatarUrl\n\t\t\t\tusername\n\t\t\t}\n\t\t}\n\t}\n"): typeof import('./graphql').ThreadParentMessageDocument;
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(source: "\n\tquery ThreadReplies($discussionId: ID!, $parentId: ID, $pagination: CursorPagination) {\n\t\tbookClubDiscussionMessages(\n\t\t\tdiscussionId: $discussionId\n\t\t\tparentId: $parentId\n\t\t\tpagination: $pagination\n\t\t) {\n\t\t\tnodes {\n\t\t\t\tid\n\t\t\t\tcontent\n\t\t\t\ttimestamp\n\t\t\t\teditedAt\n\t\t\t\tdeletedAt\n\t\t\t\tisPinnedMessage\n\t\t\t\tparentMessageId\n\t\t\t\tmemberId\n\t\t\t\tthreadChildrenCount\n\t\t\t\treactions {\n\t\t\t\t\temoji\n\t\t\t\t\tcustomEmojiId\n\t\t\t\t\tcount\n\t\t\t\t\treactedByMe\n\t\t\t\t}\n\t\t\t\treplyTo {\n\t\t\t\t\tid\n\t\t\t\t\tcontent\n\t\t\t\t\tmember {\n\t\t\t\t\t\tdisplayName\n\t\t\t\t\t\tusername\n\t\t\t\t\t}\n\t\t\t\t}\n\t\t\t\tmember {\n\t\t\t\t\tid\n\t\t\t\t\tdisplayName\n\t\t\t\t\tavatarUrl\n\t\t\t\t\tusername\n\t\t\t\t}\n\t\t\t}\n\t\t\tcursorInfo {\n\t\t\t\tnextCursor\n\t\t\t\tlimit\n\t\t\t}\n\t\t}\n\t}\n"): typeof import('./graphql').ThreadRepliesDocument;
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(source: "\n\tmutation SendThreadReply($discussionId: ID!, $input: SendMessageInput!) {\n\t\tsendMessage(discussionId: $discussionId, input: $input) {\n\t\t\tid\n\t\t}\n\t}\n"): typeof import('./graphql').SendThreadReplyDocument;
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(source: "\n\tmutation ToggleThreadMessageReaction($messageId: ID!, $emoji: String, $customEmojiId: Int) {\n\t\ttoggleReaction(messageId: $messageId, emoji: $emoji, customEmojiId: $customEmojiId)\n\t}\n"): typeof import('./graphql').ToggleThreadMessageReactionDocument;
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(source: "\n\tmutation DeleteThreadMessage($messageId: ID!) {\n\t\tdeleteMessage(messageId: $messageId) {\n\t\t\tid\n\t\t}\n\t}\n"): typeof import('./graphql').DeleteThreadMessageDocument;
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(source: "\n\tquery ThreadDiscussionInfo($id: ID!) {\n\t\tbookClubDiscussion(id: $id) {\n\t\t\tid\n\t\t\tdisplayName\n\t\t\tisLocked\n\t\t}\n\t}\n"): typeof import('./graphql').ThreadDiscussionInfoDocument;
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(source: "\n\tquery BookClubDetailScreen($id: ID!) {\n\t\tbookClubById(id: $id) {\n\t\t\tid\n\t\t\tname\n\t\t\temoji\n\t\t\tmembership {\n\t\t\t\tid\n\t\t\t\trole\n\t\t\t}\n\t\t\tmoderators {\n\t\t\t\tid\n\t\t\t\tavatarUrl\n\t\t\t\tdisplayName\n\t\t\t}\n\t\t\tpinnedDiscussions {\n\t\t\t\tid\n\t\t\t\t...DiscussionListItem\n\t\t\t}\n\t\t\tcurrentBook {\n\t\t\t\tid\n\t\t\t\t...CurrentBookCard\n\t\t\t\tdiscussions {\n\t\t\t\t\tid\n\t\t\t\t\t...DiscussionListItem\n\t\t\t\t}\n\t\t\t\tentity {\n\t\t\t\t\tid\n\t\t\t\t\treadProgress {\n\t\t\t\t\t\tpercentageCompleted\n\t\t\t\t\t\telapsedSeconds\n\t\t\t\t\t\tstartedAt\n\t\t\t\t\t}\n\t\t\t\t\treadHistory {\n\t\t\t\t\t\t__typename\n\t\t\t\t\t\tcompletedAt\n\t\t\t\t\t}\n\t\t\t\t}\n\t\t\t}\n\t\t\t...PastDiscussionsLink\n\t\t}\n\t}\n"): typeof import('./graphql').BookClubDetailScreenDocument;
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(source: "\n\tquery BookClubSettings($id: ID!) {\n\t\tbookClubById(id: $id) {\n\t\t\tid\n\t\t\tname\n\t\t\tdescription\n\t\t\tisPrivate\n\t\t\temoji\n\t\t\tmembership {\n\t\t\t\tid\n\t\t\t\trole\n\t\t\t}\n\t\t}\n\t}\n"): typeof import('./graphql').BookClubSettingsDocument;
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(source: "\n\tmutation UpdateBookClubSettings($id: ID!, $input: UpdateBookClubInput!) {\n\t\tupdateBookClub(id: $id, input: $input) {\n\t\t\tid\n\t\t}\n\t}\n"): typeof import('./graphql').UpdateBookClubSettingsDocument;
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(source: "\n\tmutation DeleteBookClub($id: ID!) {\n\t\tdeleteBookClub(id: $id) {\n\t\t\tid\n\t\t}\n\t}\n"): typeof import('./graphql').DeleteBookClubDocument;
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(source: "\n\tmutation LeaveBookClub($id: ID!) {\n\t\tleaveBookClub(bookClubId: $id) {\n\t\t\tid\n\t\t}\n\t}\n"): typeof import('./graphql').LeaveBookClubDocument;
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
@@ -692,6 +874,50 @@ export function graphql(source: "\n\tmutation BookMenuDeleteHistory($id: ID!) {\
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
+export function graphql(source: "\n\tquery AddBookSheet($pagination: Pagination, $filters: MediaFilterInput) {\n\t\tmedia(pagination: $pagination, filter: $filters) {\n\t\t\tnodes {\n\t\t\t\tid\n\t\t\t\t...BookGridItem\n\t\t\t}\n\t\t\tpageInfo {\n\t\t\t\t__typename\n\t\t\t\t... on OffsetPaginationInfo {\n\t\t\t\t\ttotalPages\n\t\t\t\t\tcurrentPage\n\t\t\t\t\tpageSize\n\t\t\t\t\tpageOffset\n\t\t\t\t\tzeroBased\n\t\t\t\t}\n\t\t\t}\n\t\t}\n\t}\n"): typeof import('./graphql').AddBookSheetDocument;
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(source: "\n\tfragment BookClubCard on BookClub {\n\t\tid\n\t\tname\n\t\tslug\n\t\tdescription\n\t\tmembersCount\n\t\tmembers {\n\t\t\tid\n\t\t\tdisplayName\n\t\t\tavatarUrl\n\t\t}\n\t\tcurrentBook {\n\t\t\tid\n\t\t\timageUrl\n\t\t\ttitle\n\t\t\tentity {\n\t\t\t\t__typename\n\t\t\t\tid\n\t\t\t\tthumbnail {\n\t\t\t\t\turl\n\t\t\t\t\tmetadata {\n\t\t\t\t\t\taverageColor\n\t\t\t\t\t\tcolors {\n\t\t\t\t\t\t\tcolor\n\t\t\t\t\t\t\tpercentage\n\t\t\t\t\t\t}\n\t\t\t\t\t\tthumbhash\n\t\t\t\t\t}\n\t\t\t\t}\n\t\t\t}\n\t\t}\n\t}\n"): typeof import('./graphql').BookClubCardFragmentDoc;
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(source: "\n\tfragment CurrentBookCard on BookClubBook {\n\t\tid\n\t\ttitle\n\t\tauthor\n\t\timageUrl\n\t\taddedAt\n\t\turl\n\t\tentity {\n\t\t\t__typename\n\t\t\tid\n\t\t\tresolvedName\n\t\t\tthumbnail {\n\t\t\t\turl\n\t\t\t\tmetadata {\n\t\t\t\t\taverageColor\n\t\t\t\t\tcolors {\n\t\t\t\t\t\tcolor\n\t\t\t\t\t\tpercentage\n\t\t\t\t\t}\n\t\t\t\t\tthumbhash\n\t\t\t\t}\n\t\t\t}\n\t\t}\n\t}\n"): typeof import('./graphql').CurrentBookCardFragmentDoc;
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(source: "\n\tmutation AddBookToClub($bookClubId: ID!, $input: AddBookToClubInput!) {\n\t\taddBookToClub(bookClubId: $bookClubId, input: $input) {\n\t\t\tid\n\t\t}\n\t}\n"): typeof import('./graphql').AddBookToClubDocument;
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(source: "\n\tmutation ArchiveCurrentBook($bookClubBookId: ID!) {\n\t\tcompleteBook(bookClubBookId: $bookClubBookId) {\n\t\t\tid\n\t\t}\n\t}\n"): typeof import('./graphql').ArchiveCurrentBookDocument;
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(source: "\n\tfragment PastBookGridItem on BookClubBook {\n\t\tid\n\t\timageUrl\n\t\ttitle\n\t\tentity {\n\t\t\t__typename\n\t\t\tid\n\t\t\tresolvedName\n\t\t\tthumbnail {\n\t\t\t\turl\n\t\t\t\tmetadata {\n\t\t\t\t\taverageColor\n\t\t\t\t\tcolors {\n\t\t\t\t\t\tcolor\n\t\t\t\t\t\tpercentage\n\t\t\t\t\t}\n\t\t\t\t\tthumbhash\n\t\t\t\t}\n\t\t\t}\n\t\t}\n\t\tcompletedAt\n\t}\n"): typeof import('./graphql').PastBookGridItemFragmentDoc;
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(source: "\n\tfragment PastDiscussionsLink on BookClub {\n\t\tpreviousBook {\n\t\t\timageUrl\n\t\t\tentity {\n\t\t\t\t__typename\n\t\t\t\tid\n\t\t\t\tthumbnail {\n\t\t\t\t\turl\n\t\t\t\t\tmetadata {\n\t\t\t\t\t\taverageColor\n\t\t\t\t\t\tcolors {\n\t\t\t\t\t\t\tcolor\n\t\t\t\t\t\t\tpercentage\n\t\t\t\t\t\t}\n\t\t\t\t\t\tthumbhash\n\t\t\t\t\t}\n\t\t\t\t}\n\t\t\t}\n\t\t}\n\t\tpreviousDiscussionsCount\n\t}\n"): typeof import('./graphql').PastDiscussionsLinkFragmentDoc;
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(source: "\n\tquery PreviewBookSheet($id: ID!) {\n\t\tmediaById(id: $id) {\n\t\t\tid\n\t\t\tresolvedName\n\t\t\tthumbnail {\n\t\t\t\turl\n\t\t\t\tmetadata {\n\t\t\t\t\taverageColor\n\t\t\t\t\tcolors {\n\t\t\t\t\t\tcolor\n\t\t\t\t\t\tpercentage\n\t\t\t\t\t}\n\t\t\t\t\tthumbhash\n\t\t\t\t}\n\t\t\t}\n\t\t\tmetadata {\n\t\t\t\tgenres\n\t\t\t\twriters\n\t\t\t}\n\t\t\ttags {\n\t\t\t\tname\n\t\t\t}\n\t\t}\n\t}\n"): typeof import('./graphql').PreviewBookSheetDocument;
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(source: "\n\tquery SuggestionsPickerSheet($bookClubId: ID!, $status: BookClubSuggestionStatus) {\n\t\tbookClubSuggestions(bookClubId: $bookClubId, status: $status) {\n\t\t\tid\n\t\t\ttitle\n\t\t\tauthor\n\t\t\turl\n\t\t\tbookId\n\t\t\tnotes\n\t\t\tsuggestedBy {\n\t\t\t\tuser {\n\t\t\t\t\tusername\n\t\t\t\t}\n\t\t\t}\n\t\t}\n\t}\n"): typeof import('./graphql').SuggestionsPickerSheetDocument;
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(source: "\n\tfragment DiscussionListItem on BookClubDiscussion {\n\t\tid\n\t\tdisplayName\n\t\temoji\n\t\tmessageCount\n\t\tisLocked\n\t\tisArchived\n\t}\n"): typeof import('./graphql').DiscussionListItemFragmentDoc;
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(source: "\n\tquery useEmojis {\n\t\tcustomEmojis {\n\t\t\tid\n\t\t\tname\n\t\t\tisAnimated\n\t\t\turl\n\t\t}\n\t}\n"): typeof import('./graphql').UseEmojisDocument;
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
 export function graphql(source: "\n\tmutation LibraryActionMenuScanLibrary($id: ID!) {\n\t\tscanLibrary(id: $id)\n\t}\n"): typeof import('./graphql').LibraryActionMenuScanLibraryDocument;
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
@@ -773,6 +999,14 @@ export function graphql(source: "\n\tquery BookOverviewScene($id: ID!) {\n\t\tme
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
 export function graphql(source: "\n\tmutation DeleteBookClubConfirmation($id: ID!) {\n\t\tdeleteBookClub(id: $id) {\n\t\t\tid\n\t\t}\n\t}\n"): typeof import('./graphql').DeleteBookClubConfirmationDocument;
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(source: "\n\tfragment BookClubBookItem on BookClubBook {\n\t\tid\n\t\ttitle\n\t\tauthor\n\t\timageUrl\n\t\turl\n\t\tentity {\n\t\t\t__typename\n\t\t\tid\n\t\t\tresolvedName\n\t\t\tmetadata {\n\t\t\t\twriters\n\t\t\t}\n\t\t\tthumbnail {\n\t\t\t\turl\n\t\t\t}\n\t\t}\n\t\tcompletedAt\n\t\taddedAt\n\t}\n"): typeof import('./graphql').BookClubBookItemFragmentDoc;
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(source: "\n\tquery BookClubBooksScene($id: ID!) {\n\t\tbookClubById(id: $id) {\n\t\t\tid\n\t\t\tpreviousBooks {\n\t\t\t\tid\n\t\t\t\t...BookClubBookItem\n\t\t\t}\n\t\t}\n\t}\n"): typeof import('./graphql').BookClubBooksSceneDocument;
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
@@ -956,11 +1190,15 @@ export function graphql(source: "\n\tmutation BookThumbnailSelectorUpload($id: I
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
-export function graphql(source: "\n\tquery BookClubLayout($slug: String!) {\n\t\tbookClubBySlug(slug: $slug) {\n\t\t\tid\n\t\t\tname\n\t\t\tslug\n\t\t\tdescription\n\t\t\tisPrivate\n\t\t\troleSpec\n\t\t\tcreator {\n\t\t\t\tid\n\t\t\t\tdisplayName\n\t\t\t\tavatarUrl\n\t\t\t}\n\t\t\tmembersCount\n\t\t\tmembership {\n\t\t\t\trole\n\t\t\t\tisCreator\n\t\t\t\tavatarUrl\n\t\t\t\t__typename\n\t\t\t}\n\t\t\tschedule {\n\t\t\t\tid\n\t\t\t\tdefaultIntervalDays\n\t\t\t\tbooks {\n\t\t\t\t\tid\n\t\t\t\t\tstartAt\n\t\t\t\t\tendAt\n\t\t\t\t\tdiscussionDurationDays\n\t\t\t\t\timageUrl\n\t\t\t\t\ttitle\n\t\t\t\t\tauthor\n\t\t\t\t\turl\n\t\t\t\t\tentity {\n\t\t\t\t\t\tid\n\t\t\t\t\t\tresolvedName\n\t\t\t\t\t\tthumbnail {\n\t\t\t\t\t\t\turl\n\t\t\t\t\t\t}\n\t\t\t\t\t\tmetadata {\n\t\t\t\t\t\t\twriters\n\t\t\t\t\t\t}\n\t\t\t\t\t}\n\t\t\t\t}\n\t\t\t}\n\t\t\tcreatedAt\n\t\t}\n\t}\n"): typeof import('./graphql').BookClubLayoutDocument;
+export function graphql(source: "\n\tquery BookClubLayout($slug: String!) {\n\t\tbookClubBySlug(slug: $slug) {\n\t\t\tid\n\t\t\tname\n\t\t\tslug\n\t\t\tdescription\n\t\t\tisPrivate\n\t\t\troleSpec\n\t\t\tcreator {\n\t\t\t\tid\n\t\t\t\tdisplayName\n\t\t\t\tavatarUrl\n\t\t\t}\n\t\t\tmembersCount\n\t\t\tmembership {\n\t\t\t\trole\n\t\t\t\tavatarUrl\n\t\t\t\tisCreator\n\t\t\t}\n\t\t\tcurrentBook {\n\t\t\t\tid\n\t\t\t\ttitle\n\t\t\t\tauthor\n\t\t\t\timageUrl\n\t\t\t\tentity {\n\t\t\t\t\tid\n\t\t\t\t\tthumbnail {\n\t\t\t\t\t\turl\n\t\t\t\t\t}\n\t\t\t\t}\n\t\t\t\t...BookClubBookItem\n\t\t\t}\n\t\t\tcreatedAt\n\t\t}\n\t}\n"): typeof import('./graphql').BookClubLayoutDocument;
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
-export function graphql(source: "\n\tquery UserBookClubsScene {\n\t\tbookClubs(all: false) {\n\t\t\tid\n\t\t\tname\n\t\t\tslug\n\t\t\tdescription\n\t\t\tmembersCount\n\t\t\tschedule {\n\t\t\t\tactiveBooks {\n\t\t\t\t\t__typename\n\t\t\t\t}\n\t\t\t}\n\t\t}\n\t}\n"): typeof import('./graphql').UserBookClubsSceneDocument;
+export function graphql(source: "\n\tmutation UpdateBookClub($id: ID!, $input: UpdateBookClubInput!) {\n\t\tupdateBookClub(id: $id, input: $input) {\n\t\t\tid\n\t\t\tname\n\t\t\temoji\n\t\t\tisPrivate\n\t\t\troleSpec\n\t\t\tdescription\n\t\t}\n\t}\n"): typeof import('./graphql').UpdateBookClubDocument;
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(source: "\n\tquery UserBookClubsScene {\n\t\tbookClubs(all: false) {\n\t\t\tid\n\t\t\tname\n\t\t\tslug\n\t\t\tdescription\n\t\t\tmembersCount\n\t\t\tcurrentBook {\n\t\t\t\tid\n\t\t\t}\n\t\t}\n\t}\n"): typeof import('./graphql').UserBookClubsSceneDocument;
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
@@ -1176,7 +1414,15 @@ export function graphql(source: "\n\tmutation DeleteAPIKeyConfirmModal($id: Int!
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
-export function graphql(source: "\n\tmutation UpdateUserProfileForm($input: UpdateUserInput!) {\n\t\tupdateViewer(input: $input) {\n\t\t\tid\n\t\t\tusername\n\t\t\tavatarUrl\n\t\t}\n\t}\n"): typeof import('./graphql').UpdateUserProfileFormDocument;
+export function graphql(source: "\n\tmutation UploadUserAvatar($file: Upload!) {\n\t\tuploadUserAvatar(upload: $file) {\n\t\t\tid\n\t\t\tavatarUrl\n\t\t}\n\t}\n"): typeof import('./graphql').UploadUserAvatarDocument;
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(source: "\n\tmutation DeleteUserAvatar {\n\t\tdeleteUserAvatar {\n\t\t\tid\n\t\t\tavatarUrl\n\t\t}\n\t}\n"): typeof import('./graphql').DeleteUserAvatarDocument;
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(source: "\n\tmutation UpdateUserProfileForm($input: UpdateUserInput!) {\n\t\tupdateViewer(input: $input) {\n\t\t\tid\n\t\t\tusername\n\t\t}\n\t}\n"): typeof import('./graphql').UpdateUserProfileFormDocument;
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
@@ -1237,6 +1483,30 @@ export function graphql(source: "\n\tquery EmailerSendHistory($id: Int!, $fetchU
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
 export function graphql(source: "\n\tquery EmailersList {\n\t\temailers {\n\t\t\tid\n\t\t\t...EmailerListItem\n\t\t}\n\t}\n"): typeof import('./graphql').EmailersListDocument;
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(source: "\n\tquery ServerEmojisSection {\n\t\tcustomEmojis {\n\t\t\tid\n\t\t\tname\n\t\t\tisAnimated\n\t\t\turl\n\t\t}\n\t}\n"): typeof import('./graphql').ServerEmojisSectionDocument;
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(source: "\n\tmutation ServerEmojisSectionUploadEmoji($input: CreateCustomEmojiInput!, $upload: Upload!) {\n\t\tuploadCustomEmoji(input: $input, upload: $upload) {\n\t\t\tid\n\t\t\tname\n\t\t\tisAnimated\n\t\t\turl\n\t\t}\n\t}\n"): typeof import('./graphql').ServerEmojisSectionUploadEmojiDocument;
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(source: "\n\tmutation ServerEmojisSectionRenameEmoji($id: ID!, $input: UpdateCustomEmojiInput!) {\n\t\tupdateCustomEmoji(id: $id, input: $input) {\n\t\t\tid\n\t\t\tname\n\t\t\tisAnimated\n\t\t\turl\n\t\t}\n\t}\n"): typeof import('./graphql').ServerEmojisSectionRenameEmojiDocument;
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(source: "\n\tmutation ServerEmojisSectionDeleteEmoji($id: ID!) {\n\t\tdeleteCustomEmoji(id: $id)\n\t}\n"): typeof import('./graphql').ServerEmojisSectionDeleteEmojiDocument;
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(source: "\n\tmutation ServerPublicURLUpdate($publicUrl: String!) {\n\t\tupdatePublicUrl(publicUrl: $publicUrl) {\n\t\t\tpublicUrl\n\t\t}\n\t}\n"): typeof import('./graphql').ServerPublicUrlUpdateDocument;
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(source: "\n\tquery ServerPublicURL {\n\t\tserverConfig {\n\t\t\tpublicUrl\n\t\t}\n\t}\n"): typeof import('./graphql').ServerPublicUrlDocument;
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */

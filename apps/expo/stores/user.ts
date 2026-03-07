@@ -31,6 +31,7 @@ type MobilePreferencesStore = {
 	locale: AllowedLocale | undefined
 	opdsLayout: ListLayout
 	smartListLayout: ListLayout
+	bookClubsEnabled: boolean
 	/**
 	 * Patch the store with new values.
 	 */
@@ -63,6 +64,7 @@ export const usePreferencesStore = create<MobilePreferencesStore>()(
 			locale: undefined,
 			opdsLayout: 'grid',
 			smartListLayout: 'grid',
+			bookClubsEnabled: false,
 			patch: (data) => set(data),
 		}),
 		{
