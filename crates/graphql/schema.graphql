@@ -937,6 +937,8 @@ type Library {
 	series(take: Int = null, skip: Int = null): [Series!]!
 	seriesAlphabet: JSONObject!
 	stats(allUsers: Boolean): LibraryStats!
+	genres(sort: OrderDirection = null): [String!]!
+	publishers(sort: OrderDirection = null): [String!]!
 	tags: [Tag!]!
 	"""
 	A reference to the thumbnail image for the thumbnail. This will be a fully
@@ -959,6 +961,7 @@ type LibraryConfig {
 	libraryPattern: LibraryPattern!
 	defaultLibraryViewMode: LibraryViewMode!
 	hideSeriesView: Boolean!
+	skipBookOverview: Boolean!
 	processThumbnailColorsEvenWithoutConfig: Boolean!
 	libraryId: String
 	thumbnailConfig: ImageProcessorOptions
@@ -975,6 +978,7 @@ input LibraryConfigInput {
 	libraryPattern: LibraryPattern!
 	defaultLibraryViewMode: LibraryViewMode!
 	hideSeriesView: Boolean!
+	skipBookOverview: Boolean!
 	thumbnailConfig: ImageProcessorOptionsInput
 	processThumbnailColorsEvenWithoutConfig: Boolean!
 	defaultReadingDir: ReadingDirection!
