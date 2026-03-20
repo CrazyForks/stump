@@ -422,7 +422,7 @@ impl MediaMutation {
 					conn,
 					&user.id,
 					id.as_ref(),
-					finished_reading_session::COMPLETION_DEDUP_TIMEOUT_MINUTES,
+					core.config.book_completion_dedup_timeout_secs,
 				)
 				.await?;
 
