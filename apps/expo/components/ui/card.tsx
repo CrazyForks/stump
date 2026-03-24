@@ -28,6 +28,7 @@ type CardProps = ViewProps & {
 
 type RowProps = ViewProps & {
 	label?: string
+	description?: string
 	icon?: LucideIcon
 	disabled?: boolean
 	renderDivider?: boolean
@@ -139,6 +140,7 @@ function Stat({ label, value, suffix }: StatProps) {
 
 function Row({
 	label,
+	description,
 	icon,
 	disabled,
 	renderDivider = true,
@@ -166,7 +168,14 @@ function Row({
 								<Icon as={icon} className="h-6 w-6 text-foreground-muted" />
 							</View>
 						)}
-						<Text className="shrink text-lg">{label}</Text>
+						<View className="shrink gap-0.5">
+							<Text className="shrink text-lg">{label}</Text>
+							{description && (
+								<Text size="sm" className="text-foreground-muted">
+									{description}
+								</Text>
+							)}
+						</View>
 					</View>
 				)}
 				{children}

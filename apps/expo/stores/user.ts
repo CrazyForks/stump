@@ -36,6 +36,8 @@ type MobilePreferencesStore = {
 	opdsLayout: ListLayout
 	smartListLayout: ListLayout
 	bookClubsEnabled: boolean
+	// Note: Will push more analytics to aide in debug efforts
+	enableDebugAnalytics: boolean
 	/**
 	 * Patch the store with new values.
 	 */
@@ -70,6 +72,7 @@ export const usePreferencesStore = create<MobilePreferencesStore>()(
 			opdsLayout: 'grid',
 			smartListLayout: 'grid',
 			bookClubsEnabled: false,
+			enableDebugAnalytics: false,
 			patch: (data) => set(data),
 		}),
 		{

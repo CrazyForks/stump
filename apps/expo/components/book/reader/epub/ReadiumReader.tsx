@@ -1,3 +1,4 @@
+import * as Sentry from '@sentry/react-native'
 import { useSDKSafe } from '@stump/client'
 import { useQuery } from '@tanstack/react-query'
 import setProperty from 'lodash/set'
@@ -21,7 +22,7 @@ import {
 	ReadiumView,
 	ReadiumViewRef,
 } from '~/modules/readium'
-import { useReaderStore } from '~/stores'
+import { usePreferencesStore, useReaderStore } from '~/stores'
 import {
 	convertNativeToc,
 	findTocItemByHref,
@@ -117,6 +118,7 @@ export default function ReadiumReader({
 
 	const controlsVisible = useReaderStore((state) => state.showControls)
 	const setControlsVisible = useReaderStore((state) => state.setShowControls)
+	const enableDebugAnalytics = usePreferencesStore((state) => state.enableDebugAnalytics)
 
 	const hasReachedEndRef = useRef(false)
 
@@ -391,23 +393,57 @@ export default function ReadiumReader({
 
 			if (!hasReachedEndRef.current && !incognito && isLikelyLastLocator) {
 				hasReachedEndRef.current = true
+				if (enableDebugAnalytics) {
+					Sentry.captureMessage('handleLocationChanged -> isLastReadiumLocator', {
+						level: 'debug',
+						extra: {
+							totalProgression,
+							position: locator.locations?.position,
+							positionsCount: store.positions?.length,
+							positions: store.positions,
+							href: locator.href,
+							locator,
+						},
+					})
+				}
 				setProperty(locator, 'locations.totalProgression', 1.0)
 				onReachedEnd?.(locator)
 			} else if (!incognito && totalProgression != null) {
 				onLocationChanged(locator, totalProgression)
 			}
 		},
-		[onLocationChanged, onReachedEnd, incognito, store, controlsVisible, setControlsVisible],
+		[
+			onLocationChanged,
+			onReachedEnd,
+			incognito,
+			store,
+			controlsVisible,
+			setControlsVisible,
+			enableDebugAnalytics,
+		],
 	)
 
 	const handleReachedEnd = useCallback(
 		(event: { nativeEvent: ReadiumLocator }) => {
 			if (!hasReachedEndRef.current && !incognito) {
 				hasReachedEndRef.current = true
+				if (enableDebugAnalytics) {
+					Sentry.captureMessage('handleReachedEnd -> not already reached end', {
+						level: 'debug',
+						extra: {
+							totalProgression: event.nativeEvent.locations?.totalProgression,
+							position: event.nativeEvent.locations?.position,
+							positionsCount: store.positions?.length,
+							positions: store.positions,
+							href: event.nativeEvent.href,
+							locator: event.nativeEvent,
+						},
+					})
+				}
 				onReachedEnd?.(event.nativeEvent)
 			}
 		},
-		[onReachedEnd, incognito],
+		[onReachedEnd, incognito, enableDebugAnalytics, store.positions],
 	)
 
 	const handleMiddleTouch = useCallback(() => {

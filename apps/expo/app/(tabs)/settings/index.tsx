@@ -9,6 +9,7 @@ import {
 	AutoSyncLocalData,
 	DefaultServer,
 	DeleteDatabase,
+	EnableDebugAnalytics,
 	ImageCacheActions,
 	MaskURLs,
 	PerformanceMonitor,
@@ -63,6 +64,7 @@ export default function Screen() {
 					<PerformanceMonitor />
 					<ReduceAnimations />
 					<MaskURLs />
+					<EnableDebugAnalytics />
 				</Card>
 
 				<ContactInformation />
