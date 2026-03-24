@@ -417,9 +417,11 @@ impl MediaMutation {
 				active_session.into(),
 			)))
 		} else {
+			let txn = conn.begin().await?;
+
 			let recent_completion =
 				finished_reading_session::Entity::recent_completed_record(
-					conn,
+					&txn,
 					&user.id,
 					id.as_ref(),
 					core.config.book_completion_dedup_timeout_secs,
@@ -429,7 +431,8 @@ impl MediaMutation {
 			// TODO: See if this creates too much churn in practice
 			if let Some(existing_session) = recent_completion {
 				// Already completed recently - delete active session but return existing finished session
-				let _ = active_session.delete(conn).await?;
+				let _ = active_session.delete(&txn).await?;
+				txn.commit().await?;
 				return Ok(ReadingProgressOutput::Finished(Box::new(
 					existing_session.into(),
 				)));
@@ -438,15 +441,12 @@ impl MediaMutation {
 			let finished_reading_session = finished_reading_session::ActiveModel {
 				user_id: Set(user.id.clone()),
 				media_id: Set(id.to_string()),
-				started_at: Set(active_session
-					.updated_at
-					.unwrap_or_else(|| chrono::Utc::now().into())),
+				started_at: Set(active_session.started_at),
 				completed_at: Set(chrono::Utc::now().into()),
 				elapsed_seconds: Set(active_session.elapsed_seconds),
 				..Default::default()
 			};
 
-			let txn = conn.begin().await?;
 			let finished_reading_session = insert_finished_reading_session(
 				Some(active_session),
 				finished_reading_session,
