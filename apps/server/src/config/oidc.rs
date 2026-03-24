@@ -139,11 +139,12 @@ pub async fn exchange_code_for_claims(
 		.id_token()
 		.ok_or(APIError::OIDCMissingToken)?;
 
-	let token_verifier = client
-		.id_token_verifier()
-		.set_other_audience_verifier_fn(move |aud| {
-			extra_audiences.iter().any(|a| a.as_str() == aud.as_str())
-		});
+	let token_verifier =
+		client
+			.id_token_verifier()
+			.set_other_audience_verifier_fn(move |aud| {
+				extra_audiences.iter().any(|a| a.as_str() == aud.as_str())
+			});
 	let id_token_claims = id_token.claims(&token_verifier, nonce_verifier)?;
 
 	Ok(OidcClaims {
