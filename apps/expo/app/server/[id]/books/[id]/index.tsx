@@ -453,6 +453,7 @@ export default function Screen() {
 									pathname: `/server/${serverID}/books/${bookID}/read`,
 								})
 							}
+							variant="brand"
 						>
 							{renderRead()}
 						</Button>

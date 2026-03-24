@@ -10,7 +10,8 @@ import { DottedLine } from './DottedLine'
 import InfoRow from './InfoRow'
 
 type Identifiers = {
-	stumpId: string
+	identifier?: string | null
+	stumpId?: string | null
 	amazon?: string | null
 	calibre?: string | null
 	google?: string | null
@@ -62,7 +63,10 @@ export default function IdentifiersSheet({ identifiers }: Props) {
 			>
 				<ScrollView className="flex-1 gap-2 px-4 py-6">
 					<Card label="Identifiers">
-						<InfoRow label="Stump" value={identifiers.stumpId} />
+						{identifiers.stumpId && <InfoRow label="Stump" value={identifiers.stumpId} />}
+						{identifiers.identifier && (
+							<InfoRow label="Identifier" value={identifiers.identifier} />
+						)}
 						{identifiers.amazon && <InfoRow label="Amazon" value={identifiers.amazon} />}
 						{identifiers.calibre && <InfoRow label="Calibre" value={identifiers.calibre} />}
 						{identifiers.google && <InfoRow label="Google" value={identifiers.google} />}
