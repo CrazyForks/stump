@@ -4569,7 +4569,7 @@ export type RecentlyAddedSeriesHorizontalQuery = { __typename?: 'Query', recentl
       & { ' $fragmentRefs'?: { 'RecentlyAddedSeriesItemFragment': RecentlyAddedSeriesItemFragment } }
     )>, pageInfo: { __typename: 'CursorPaginationInfo', currentCursor?: string | null, nextCursor?: string | null, limit: number } | { __typename: 'OffsetPaginationInfo' } } };
 
-export type BookGridItemFragment = { __typename?: 'Media', id: string, resolvedName: string, thumbnail: { __typename?: 'ImageRef', url: string, height?: number | null, width?: number | null, metadata?: { __typename?: 'ImageMetadata', averageColor?: string | null, thumbhash?: string | null, colors: Array<{ __typename?: 'ImageColor', color: string, percentage: any }> } | null }, readProgress?: { __typename?: 'ActiveReadingSession', percentageCompleted?: any | null } | null } & { ' $fragmentName'?: 'BookGridItemFragment' };
+export type BookGridItemFragment = { __typename?: 'Media', id: string, resolvedName: string, thumbnail: { __typename?: 'ImageRef', url: string, height?: number | null, width?: number | null, metadata?: { __typename?: 'ImageMetadata', averageColor?: string | null, thumbhash?: string | null, colors: Array<{ __typename?: 'ImageColor', color: string, percentage: any }> } | null }, readProgress?: { __typename?: 'ActiveReadingSession', percentageCompleted?: any | null } | null, readHistory: Array<{ __typename?: 'FinishedReadingSession', completedAt: any }> } & { ' $fragmentName'?: 'BookGridItemFragment' };
 
 export type BookListItemFragment = { __typename?: 'Media', id: string, resolvedName: string, thumbnail: { __typename?: 'ImageRef', url: string, height?: number | null, width?: number | null, metadata?: { __typename?: 'ImageMetadata', averageColor?: string | null, thumbhash?: string | null, colors: Array<{ __typename?: 'ImageColor', color: string, percentage: any }> } | null } } & { ' $fragmentName'?: 'BookListItemFragment' };
 
@@ -6060,6 +6060,9 @@ export const BookGridItemFragmentDoc = new TypedDocumentString(`
   readProgress {
     percentageCompleted
   }
+  readHistory {
+    completedAt
+  }
 }
     `, {"fragmentName":"BookGridItem"}) as unknown as TypedDocumentString<BookGridItemFragment, unknown>;
 export const BookListItemFragmentDoc = new TypedDocumentString(`
@@ -7350,6 +7353,9 @@ export const BooksScreenDocument = new TypedDocumentString(`
   readProgress {
     percentageCompleted
   }
+  readHistory {
+    completedAt
+  }
 }`) as unknown as TypedDocumentString<BooksScreenQuery, BooksScreenQueryVariables>;
 export const BookSearchScreenDocument = new TypedDocumentString(`
     query BookSearchScreen($filter: MediaFilterInput!, $pagination: Pagination!) {
@@ -7386,6 +7392,9 @@ export const BookSearchScreenDocument = new TypedDocumentString(`
   }
   readProgress {
     percentageCompleted
+  }
+  readHistory {
+    completedAt
   }
 }`) as unknown as TypedDocumentString<BookSearchScreenQuery, BookSearchScreenQueryVariables>;
 export const BookClubContextLayoutDocument = new TypedDocumentString(`
@@ -7911,6 +7920,9 @@ export const SeriesBooksScreenDocument = new TypedDocumentString(`
   }
   readProgress {
     percentageCompleted
+  }
+  readHistory {
+    completedAt
   }
 }`) as unknown as TypedDocumentString<SeriesBooksScreenQuery, SeriesBooksScreenQueryVariables>;
 export const SeriesScreenDocument = new TypedDocumentString(`
@@ -8540,6 +8552,9 @@ export const AddBookSheetDocument = new TypedDocumentString(`
   }
   readProgress {
     percentageCompleted
+  }
+  readHistory {
+    completedAt
   }
 }`) as unknown as TypedDocumentString<AddBookSheetQuery, AddBookSheetQueryVariables>;
 export const AddBookToClubDocument = new TypedDocumentString(`
