@@ -2375,6 +2375,7 @@ input SeriesMetadataFilterInput {
 	booktype: FieldFilterString = null
 	volume: NumericFilterI32 = null
 	status: FieldFilterString = null
+	year: NumericFilterI32 = null
 	_and: [SeriesMetadataFilterInput!] = null
 	_not: [SeriesMetadataFilterInput!] = null
 	_or: [SeriesMetadataFilterInput!] = null
@@ -2703,6 +2704,8 @@ type StumpConfig {
 	pdfPrerenderRange: Int!
 	"Whether to enable high-quality rendering with smoothing (slower but better quality)."
 	pdfHighQuality: Boolean!
+	"The number of seconds after which a book can be re-completed"
+	bookCompletionDedupTimeoutSecs: Int!
 }
 
 type Subscription {

@@ -3400,6 +3400,7 @@ export type SeriesMetadataFilterInput = {
   summary?: InputMaybe<FieldFilterString>;
   title?: InputMaybe<FieldFilterString>;
   volume?: InputMaybe<NumericFilterI32>;
+  year?: InputMaybe<NumericFilterI32>;
 };
 
 export type SeriesMetadataInput = {
@@ -3678,6 +3679,8 @@ export type StumpConfig = {
   accessTokenTtl: Scalars['Int']['output'];
   /** A list of origins for CORS. */
   allowedOrigins: Array<Scalars['String']['output']>;
+  /** The number of seconds after which a book can be re-completed */
+  bookCompletionDedupTimeoutSecs: Scalars['Int']['output'];
   /** The client directory. */
   clientDir: Scalars['String']['output'];
   /** The configuration root for the Stump application, contains thumbnails, cache, and logs. */
