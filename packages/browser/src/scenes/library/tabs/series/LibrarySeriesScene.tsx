@@ -11,6 +11,7 @@ import {
 import { useQueryClient } from '@tanstack/react-query'
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import { Helmet } from 'react-helmet'
+import { useShallow } from 'zustand/react/shallow'
 
 import { DynamicCardGrid, GridSizeSlider } from '@/components/container'
 import {
@@ -263,12 +264,15 @@ export default function LibrarySeriesScene() {
 	)
 	const layoutKey = `library-${id}-series`
 
-	const { layoutMode, setLayout, columns, setColumns } = useSeriesLayout(layoutKey, (state) => ({
-		columns: state.columns,
-		layoutMode: state.layout,
-		setColumns: state.setColumns,
-		setLayout: state.setLayout,
-	}))
+	const { layoutMode, setLayout, columns, setColumns } = useSeriesLayout(
+		layoutKey,
+		useShallow((state) => ({
+			columns: state.columns,
+			layoutMode: state.layout,
+			setColumns: state.setColumns,
+			setLayout: state.setLayout,
+		})),
+	)
 
 	const { sdk } = useSDK()
 	const { data, isLoading } = useGraphQL(

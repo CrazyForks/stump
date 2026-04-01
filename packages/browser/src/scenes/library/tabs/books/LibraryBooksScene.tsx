@@ -4,6 +4,7 @@ import { graphql, InterfaceLayout, MediaFilterInput, MediaOrderBy } from '@stump
 import { useQueryClient } from '@tanstack/react-query'
 import { Suspense, useCallback, useEffect, useMemo, useState } from 'react'
 import { Helmet } from 'react-helmet'
+import { useShallow } from 'zustand/react/shallow'
 
 import { BookCard, BookTable } from '@/components/book'
 import { defaultBookColumnSort } from '@/components/book/table'
@@ -178,12 +179,15 @@ function LibraryBooksScene() {
 
 	const layoutKey = `library-${library.id}-books`
 
-	const { layoutMode, setLayout, columns, setColumns } = useBooksLayout(layoutKey, (state) => ({
-		columns: state.columns,
-		layoutMode: state.layout,
-		setColumns: state.setColumns,
-		setLayout: state.setLayout,
-	}))
+	const { layoutMode, setLayout, columns, setColumns } = useBooksLayout(
+		layoutKey,
+		useShallow((state) => ({
+			columns: state.columns,
+			layoutMode: state.layout,
+			setColumns: state.setColumns,
+			setLayout: state.setLayout,
+		})),
+	)
 
 	const {
 		preferences: { enableAlphabetSelect },
