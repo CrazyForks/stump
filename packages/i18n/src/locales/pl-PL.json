@@ -309,9 +309,9 @@
 				"resizeMethod": {
 					"label": "Metoda skalowania",
 					"options": {
-						"scaleEvenlyByFactor": "Skalowane równomiernie",
+						"scaleEvenlyByFactor": "Skalowanie równomierne",
 						"exact": "Dokładny wymiar",
-						"scaleDimension": "Skalowane automatycznie",
+						"scaleDimension": "Skalowanie automatyczne",
 						"none": "Żadne"
 					}
 				},
@@ -331,7 +331,7 @@
 					}
 				},
 				"scaleDimension": {
-					"label": "Skalowane automatycznie",
+					"label": "Skalowanie automatyczne",
 					"description": "Ustaw szerokość lub wysokość miniatury, a druga wartość zostanie wyskalowana automatycznie tak, aby zachować oryginalny współczynnik kształtu",
 					"dimension": {
 						"label": "Wymiar",
@@ -366,11 +366,11 @@
 					"addButton": "Dodaj regułę",
 					"ignoreParents": {
 						"title": "Pomijaj wszystkie katalogi nadrzędne",
-						"label": "Wzorce pomijania"
+						"label": "Ignoruj nadrzędne"
 					},
 					"ignoreSubdirs": {
-						"title": "Pomijaj wszystkie podkatalogi",
-						"label": "Pomijaj podkatalogi"
+						"title": "Ignoruj wszystkie podkatalogi",
+						"label": "Ignoruj podrzędne"
 					}
 				},
 				"invalidGlob": "Nieprawidłowy wzorzec",
@@ -505,7 +505,7 @@
 					"processMetadata": "Przetwarzaj metadane",
 					"generateFileHashes": "Generuj skróty plików",
 					"generateKoreaderHashes": "Generuj skróty KoReader",
-					"scaleEvenlyByFactor": "Skalowane równomiernie",
+					"scaleEvenlyByFactor": "Skalowanie równomierne",
 					"exact": "Dokładny wymiar",
 					"scaleDimension": "O stałych wymiarach"
 				}
@@ -1296,9 +1296,9 @@
 					},
 					"heading": "Język i ustawienia regionalne",
 					"subtitle": [
-						"Stump obsługuje wiele języków i ustawień regionalnych, ustaw swoje preferencje poniżej. Proszę rozważ pomoc w poprawie jakości",
+						"Stump obsługuje wiele języków i ustawień regionalnych, ustaw swoje preferencje poniżej. Jeśli jesteś w stanie, proszę rozważ pomoc w poprawie jakości",
 						"tłumaczeń Stump",
-						"jeśli jesteś w stanie!"
+						"!"
 					]
 				}
 			}
@@ -1837,7 +1837,7 @@
 		"server/users": {
 			"helmet": "Zarządzanie użytkownikami",
 			"title": "Użytkownicy",
-			"description": "Zarządzanie użytkownikami na tym serwerze",
+			"description": "Zarządzaj użytkownikami na tym serwerze",
 			"createUser": {
 				"helmet": "Dodaj użytkownika",
 				"title": "Dodaj użytkownika",
@@ -1852,7 +1852,7 @@
 				"accessControl": {
 					"heading": "Kontrola i ograniczenia dostępu",
 					"subtitle": [
-						"Skonfiguruj wszelkie ograniczenia, które chcesz zastosować do tego użytkownika. Aby uzyskać więcej informacji o kontroli dostępu, zobacz",
+						"Skonfiguruj wszelkie ograniczenia, które chcesz zastosować dla tego użytkownika. Aby uzyskać więcej informacji o kontroli dostępu, zobacz",
 						"dokumentację"
 					],
 					"ageRestriction": {
@@ -1861,7 +1861,7 @@
 						"placeholder": "13",
 						"enforceUnset": {
 							"label": "Wymuś na nieokreślonych",
-							"description": "Jeśli opcja jest włączona, użytkownicy będą ograniczeni do dostępu do treści bez dostępnych ocen wiekowych"
+							"description": "Jeśli opcja ta jest włączona, użytkownik nie będzie miał dostępu do treści bez ocen wiekowych"
 						}
 					},
 					"tagRestriction": {
@@ -1931,7 +1931,7 @@
 					"email": {
 						"label": "Wysyłka poczty elektronicznej",
 						"send": {
-							"label": "Wysyłaj wiadomości poczty elektronicznej",
+							"label": "Wysyłanie wiadomości poczty elektronicznej",
 							"description": "Pozwala użytkownikowi wysyłać wiadomości e-mail z serwera na którykolwiek ze skonfigurowanych aliasów"
 						},
 						"arbitrary_send": {
@@ -2361,15 +2361,15 @@
 			"description": "Pozwala użytkownikowi na wysyłanie niestandardowych wiadomości e-mail na dowolny adres"
 		},
 		"EMAIL_SEND": {
-			"label": "Wysyłaj wiadomości poczty elektronicznej",
+			"label": "Wysyłanie wiadomości poczty elektronicznej",
 			"description": "Pozwala użytkownikowi na wysyłanie wiadomości e-mail przez system"
 		},
 		"FILE_EXPLORER": {
-			"label": "Przeglądarka plików",
+			"label": "Przeglądanie plików",
 			"description": "Pozwala użytkownikowi na przeglądanie i eksploracje systemu plików serwera"
 		},
 		"MANAGE_LIBRARY": {
-			"label": "Zarządzaj bibliotekami",
+			"label": "Zarządzanie bibliotekami",
 			"description": "Pozwala użytkownikowi na zarządzanie ustawieniami biblioteki i konfiguracją"
 		},
 		"MANAGE_NOTIFIER": {
@@ -2413,11 +2413,11 @@
 			"description": "Pozwala użytkownikowi na przesyłanie plików na serwer"
 		},
 		"MANAGE_JOBS": {
-			"label": "Zarządzaj zadaniami",
+			"label": "Zarządzanie zadaniami",
 			"description": "Pozwala użytkownikowi na zarządzanie dowolnym zadaniem w kolejce"
 		},
 		"EDIT_METADATA": {
-			"label": "Edycja metadanych",
+			"label": "Edytowanie metadanych",
 			"description": "Pozwala użytkownikowi na edycję metadanych książek i serii"
 		},
 		"WRITE_BACK_METADATA": {
