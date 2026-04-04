@@ -34,14 +34,10 @@ struct AttachmentSenderImpl {
 }
 
 impl AttachmentSenderImpl {
-	pub fn new(
-		encryption_key: String,
-		templates_dir: PathBuf,
-		emailer: emailer::Model,
-	) -> Result<Self> {
+	pub fn new(encryption_key: String, emailer: emailer::Model) -> Result<Self> {
 		let emailer_client_config = build_emailer_client_config(encryption_key, emailer)?;
 		Ok(Self {
-			emailer_client: EmailerClient::new(emailer_client_config, templates_dir),
+			emailer_client: EmailerClient::new(emailer_client_config),
 		})
 	}
 }
@@ -62,13 +58,20 @@ pub async fn send_attachment_email(
 	conn: &DatabaseConnection,
 	user: &AuthUser,
 	encryption_key: String,
-	templates_dir: PathBuf,
 	input: SendAttachmentEmailsInput,
 ) -> Result<(usize, Vec<String>)> {
 	let emailer = get_emailer(conn).await?;
-	let emailer_client =
-		AttachmentSenderImpl::new(encryption_key, templates_dir, emailer.clone())?;
+	let emailer_client = AttachmentSenderImpl::new(encryption_key, emailer.clone())?;
 	send_attachment_email_for_emailer(conn, user, input, emailer, emailer_client).await
+}
+
+pub async fn send_test_email(
+	config: EmailerClientConfig,
+	recipient: String,
+) -> Result<()> {
+	let client = EmailerClient::new(config);
+	client.send_test_email(&recipient).await?;
+	Ok(())
 }
 
 async fn send_attachment_email_for_emailer<Sender>(
@@ -236,13 +239,28 @@ async fn book_to_attachment_with_content(
 		_ => {},
 	}
 
-	let content_type = ContentType::from_bytes_with_fallback(&content[..5], &extension)
-		.mime_type()
-		.parse::<EmailContentType>()
-		.map_err(|e| {
-			tracing::warn!(?e, "Failed to parse content type");
-			"Failed to parse content type".to_string()
-		})?;
+	let stump_content_type =
+		ContentType::from_bytes_with_fallback(&content[..5], &extension);
+	let mime_str = stump_content_type.mime_type();
+
+	tracing::debug!(
+		?file_name,
+		?extension,
+		?stump_content_type,
+		%mime_str,
+		"Resolved content type for attachment"
+	);
+
+	let content_type = mime_str.parse::<EmailContentType>().map_err(|e| {
+		tracing::warn!(
+			?e,
+			?file_name,
+			?extension,
+			%mime_str,
+			"Failed to parse content type into email ContentType"
+		);
+		"Failed to parse content type".to_string()
+	})?;
 
 	let attachment_meta = AttachmentMetaModel::new(
 		file_name.clone(),

@@ -22,14 +22,6 @@ The version of the Stump API to use. This should really be left alone and **not*
 
 This corresponds to the `api_version` configuration option in the `Stump.toml` file.
 
-### EMAIL_TEMPLATES_DIR
-
-The directory where Stump will look for email templates. This is only required if you want to use custom email templates. By default, Stump will look for email templates in the `templates` directory in the root of the configuration directory. E.g., if your configuration directory is `~/.stump`, Stump will look for email templates in `~/.stump/templates`.
-
-| Type   | Default Value            |
-| ------ | ------------------------ |
-| String | `{config_dir}/templates` |
-
 ### ENABLE_KOREADER_SYNC
 
 Whether or not to enable the KoReader sync integration. This is a special integration that allows KoReader to sync with Stump. To learn more about this integration, visit the [KoReader](/guides/integrations/koreader) guide.
@@ -119,6 +111,14 @@ A **comma-delineated** list of allowed origins for the Stump API. If you're tryi
 This corresponds to the `allowed_origins` configuration option in the `Stump.toml` file, but will be stored as a valid array in the configuration file.
 
 **Be sure to replace `{machine_ip}` and `{configured_port}` with the appropriate values for your environment.**
+
+### STUMP_BOOK_COMPLETION_DEDUP_TIMEOUT_SECS
+
+The number of seconds after which a book can be re-completed.
+
+| Type    | Default Value   |
+| ------- | --------------- |
+| Integer | `86400` (1 day) |
 
 ### STUMP_CLIENT_DIR
 
@@ -229,6 +229,16 @@ Whether or not to disable local username/password authentication when OIDC is en
 | Type    | Default Value |
 | ------- | ------------- |
 | Boolean | `false`       |
+
+### STUMP_OIDC_EXTRA_AUDIENCES
+
+A **comma-separated** list of additional trusted audiences for ID token verification. This is required when using providers like Zitadel that inject extra values (e.g. the project ID) into the JWT `aud` claim. See the [OIDC](/guides/access-control/oidc) guide for more information.
+
+| Type   | Default Value |
+| ------ | ------------- |
+| String | N/A           |
+
+**Example:** `360960386461073457,another-audience`
 
 ### STUMP_PDF_CACHE_PAGES
 

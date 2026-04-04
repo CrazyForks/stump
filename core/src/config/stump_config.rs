@@ -23,6 +23,7 @@ pub mod env_keys {
 	pub const PORT_KEY: &str = "STUMP_PORT";
 	pub const VERBOSITY_KEY: &str = "STUMP_VERBOSITY";
 	pub const PRETTY_LOGS_KEY: &str = "STUMP_PRETTY_LOGS";
+	pub const COLORFUL_LOGS_KEY: &str = "STUMP_COLORFUL_LOGS";
 	pub const DB_PATH_KEY: &str = "STUMP_DB_PATH";
 	pub const CLIENT_KEY: &str = "STUMP_CLIENT_DIR";
 	pub const ORIGINS_KEY: &str = "STUMP_ALLOWED_ORIGINS";
@@ -44,7 +45,6 @@ pub mod env_keys {
 	pub const PDF_CACHE_PAGES_KEY: &str = "STUMP_PDF_CACHE_PAGES";
 	pub const PDF_PRERENDER_RANGE_KEY: &str = "STUMP_PDF_PRERENDER_RANGE";
 	pub const PDF_HIGH_QUALITY_KEY: &str = "STUMP_PDF_HIGH_QUALITY";
-	// OIDC configuration keys
 	pub const OIDC_ENABLED_KEY: &str = "STUMP_OIDC_ENABLED";
 	pub const OIDC_CLIENT_ID_KEY: &str = "STUMP_OIDC_CLIENT_ID";
 	pub const OIDC_CLIENT_SECRET_KEY: &str = "STUMP_OIDC_CLIENT_SECRET";
@@ -52,6 +52,9 @@ pub mod env_keys {
 	pub const OIDC_SCOPES_KEY: &str = "STUMP_OIDC_SCOPES";
 	pub const OIDC_ALLOW_REGISTRATION_KEY: &str = "STUMP_OIDC_ALLOW_REGISTRATION";
 	pub const OIDC_DISABLE_LOCAL_AUTH_KEY: &str = "STUMP_OIDC_DISABLE_LOCAL_AUTH";
+	pub const OIDC_EXTRA_AUDIENCES_KEY: &str = "STUMP_OIDC_EXTRA_AUDIENCES";
+	pub const BOOK_COMPLETION_DEDUP_TIMEOUT_SECS_KEY: &str =
+		"STUMP_BOOK_COMPLETION_DEDUP_TIMEOUT_SECS";
 }
 use env_keys::*;
 
@@ -72,6 +75,7 @@ pub mod defaults {
 	pub const DEFAULT_PDF_CACHE_PAGES: bool = true; // Enable page caching by default
 	pub const DEFAULT_PDF_PRERENDER_RANGE: u32 = 5; // Pre-render 5 pages before/after current
 	pub const DEFAULT_PDF_HIGH_QUALITY: bool = true; // Enable high-quality rendering by default
+	pub const DEFAULT_BOOK_COMPLETION_DEDUP_TIMEOUT_SECS: i64 = 60 * 60 * 24; // 1 day
 }
 use defaults::*;
 
@@ -129,6 +133,11 @@ pub struct StumpConfig {
 	#[env_key(PRETTY_LOGS_KEY)]
 	pub pretty_logs: bool,
 
+	/// Whether or not to include ANSI color codes in log files.
+	#[default_value(false)]
+	#[env_key(COLORFUL_LOGS_KEY)]
+	pub colorful_logs: bool,
+
 	/// An optional custom path for the database.
 	#[default_value(None)]
 	#[env_key(DB_PATH_KEY)]
@@ -139,12 +148,6 @@ pub struct StumpConfig {
 	#[debug_value(env!("CARGO_MANIFEST_DIR").to_string() + "/../web/dist")]
 	#[env_key(CLIENT_KEY)]
 	pub client_dir: String,
-
-	/// An optional custom path for the templates directory.
-	#[default_value(None)]
-	#[debug_value(Some(env!("CARGO_MANIFEST_DIR").to_string() + "/../../crates/email/templates"))]
-	#[env_key("EMAIL_TEMPLATES_DIR")]
-	pub custom_templates_dir: Option<String>,
 
 	/// The configuration root for the Stump application, contains thumbnails, cache, and logs.
 	#[debug_value(super::get_default_config_dir())]
@@ -267,6 +270,11 @@ pub struct StumpConfig {
 	#[graphql(skip)]
 	#[default_value(None)]
 	pub oidc: Option<OidcConfig>,
+
+	/// The number of seconds after which a book can be re-completed
+	#[default_value(DEFAULT_BOOK_COMPLETION_DEDUP_TIMEOUT_SECS)]
+	#[env_key(BOOK_COMPLETION_DEDUP_TIMEOUT_SECS_KEY)]
+	pub book_completion_dedup_timeout_secs: i64,
 }
 
 impl StumpConfig {
@@ -304,6 +312,7 @@ impl StumpConfig {
 		let cache_dir = self.get_cache_dir();
 		let thumbs_dir = self.get_thumbnails_dir();
 		let avatars_dir = self.get_avatars_dir();
+		let emojis_dir = self.get_emojis_dir();
 		let pdf_cache_dir = self.get_pdf_cache_dir();
 		if !cache_dir.exists() {
 			std::fs::create_dir(cache_dir).unwrap();
@@ -313,6 +322,9 @@ impl StumpConfig {
 		}
 		if !avatars_dir.exists() {
 			std::fs::create_dir(avatars_dir).unwrap();
+		}
+		if !emojis_dir.exists() {
+			std::fs::create_dir(emojis_dir).unwrap();
 		}
 		if !pdf_cache_dir.exists() {
 			std::fs::create_dir_all(pdf_cache_dir).unwrap();
@@ -352,17 +364,14 @@ impl StumpConfig {
 		PathBuf::from(&self.config_dir).join("thumbnails")
 	}
 
-	/// Returns a `PathBuf` to the Stump templates directory.
-	pub fn get_templates_dir(&self) -> PathBuf {
-		self.custom_templates_dir.clone().map_or_else(
-			|| PathBuf::from(&self.config_dir).join("templates"),
-			PathBuf::from,
-		)
-	}
-
 	/// Returns a `PathBuf` to the Stump avatars directory
 	pub fn get_avatars_dir(&self) -> PathBuf {
 		PathBuf::from(&self.config_dir).join("avatars")
+	}
+
+	/// Returns a `PathBuf` to the Stump custom emojis directory
+	pub fn get_emojis_dir(&self) -> PathBuf {
+		PathBuf::from(&self.config_dir).join("emojis")
 	}
 
 	/// Returns a `PathBuf` to the PDF page cache directory
@@ -426,9 +435,10 @@ mod tests {
 			port: Some(1337),
 			verbosity: Some(3),
 			pretty_logs: Some(true),
+			colorful_logs: None,
 			db_path: Some("not_a_real_path".to_string()),
 			client_dir: Some("not_a_real_dir".to_string()),
-			custom_templates_dir: None,
+
 			enable_opds_progression: Some(false),
 			config_dir: None,
 			allowed_origins: Some(vec!["origin1".to_string(), "origin2".to_string()]),
@@ -452,6 +462,7 @@ mod tests {
 			pdf_prerender_range: None,
 			pdf_high_quality: None,
 			oidc: None,
+			book_completion_dedup_timeout_secs: None,
 		};
 		partial_config.apply_to_config(&mut config);
 
@@ -472,10 +483,11 @@ mod tests {
 				port: Some(1337),
 				verbosity: Some(3),
 				pretty_logs: Some(true),
+				colorful_logs: Some(false),
 				db_path: Some("not_a_real_path".to_string()),
 				client_dir: Some("not_a_real_dir".to_string()),
 				config_dir: Some(config_dir),
-				custom_templates_dir: None,
+
 				allowed_origins: Some(vec!["origin1".to_string(), "origin2".to_string()]),
 				pdfium_path: Some("not_a_path_to_pdfium".to_string()),
 				enable_swagger: Some(false),
@@ -500,6 +512,9 @@ mod tests {
 				pdf_prerender_range: Some(DEFAULT_PDF_PRERENDER_RANGE),
 				pdf_high_quality: Some(DEFAULT_PDF_HIGH_QUALITY),
 				oidc: None,
+				book_completion_dedup_timeout_secs: Some(
+					DEFAULT_BOOK_COMPLETION_DEDUP_TIMEOUT_SECS
+				),
 			}
 		);
 
@@ -536,6 +551,7 @@ mod tests {
 						port: 1337,
 						verbosity: 2,
 						pretty_logs: true,
+						colorful_logs: false,
 						db_path: None,
 						client_dir: "./client".to_string(),
 						config_dir,
@@ -550,7 +566,7 @@ mod tests {
 						refresh_token_ttl: DEFAULT_REFRESH_TOKEN_TTL,
 						expired_session_cleanup_interval:
 							DEFAULT_SESSION_EXPIRY_CLEANUP_INTERVAL,
-						custom_templates_dir: None,
+
 						max_scanner_concurrency: DEFAULT_MAX_SCANNER_CONCURRENCY,
 						max_thumbnail_concurrency: DEFAULT_MAX_THUMBNAIL_CONCURRENCY,
 						max_image_upload_size: DEFAULT_MAX_IMAGE_UPLOAD_SIZE,
@@ -563,6 +579,8 @@ mod tests {
 						pdf_prerender_range: DEFAULT_PDF_PRERENDER_RANGE,
 						pdf_high_quality: DEFAULT_PDF_HIGH_QUALITY,
 						oidc: None,
+						book_completion_dedup_timeout_secs:
+							DEFAULT_BOOK_COMPLETION_DEDUP_TIMEOUT_SECS,
 					}
 				);
 			},

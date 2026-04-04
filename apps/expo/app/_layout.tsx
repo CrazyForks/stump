@@ -22,7 +22,6 @@ import darkSplash from '~/assets/splash/dark.json'
 import lightSplash from '~/assets/splash/light.json'
 import { FloatingQueueButton } from '~/components/downloadQueue'
 import { PerformanceMonitor } from '~/components/PerformanceMonitor'
-import { BottomSheet } from '~/components/ui/bottom-sheet'
 import { db } from '~/db'
 import migrations from '~/drizzle/migrations'
 import { reactNavigationIntegration } from '~/index'
@@ -66,7 +65,7 @@ export default function RootLayout() {
 	const [isAnimationReady, setIsAnimationReady] = React.useState(false)
 	const [isReady, setIsReady] = React.useState(false)
 
-	const { error } = useMigrations(db, migrations)
+	const { error, success } = useMigrations(db, migrations)
 
 	const animation = React.useRef<LottieView>(null)
 	const { hideStatusBar, hideNavigationBar } = useHideSystemBars()
@@ -131,12 +130,13 @@ export default function RootLayout() {
 	}, [])
 
 	React.useEffect(() => {
+		if (!success) return
 		const manager = getDownloadQueueManager()
 		manager.initialize().catch((err) => {
 			console.error('Failed to initialize download queue manager:', err)
 			Sentry.captureException(err)
 		})
-	}, [])
+	}, [success])
 
 	let isDarkEpubTheme: boolean = isDarkColorScheme
 	if (epubThemeColors?.background && isReadingEbook) {
@@ -185,78 +185,76 @@ export default function RootLayout() {
 		<GestureHandlerRootView style={{ flex: 1 }}>
 			<ThemeProvider value={isDarkColorScheme ? DARK_THEME : LIGHT_THEME}>
 				{performanceMonitor && <PerformanceMonitor style={{ top: insets.top || 12 }} />}
-				<BottomSheet.Provider>
-					<KeyboardProvider>
-						<SystemBars
-							style={isDarkBackground ? 'light' : 'dark'}
-							hidden={{ statusBar: hideStatusBar, navigationBar: hideNavigationBar }}
-						/>
-						<Stack
-							// https://github.com/expo/expo/issues/15244 ?
-							// screenOptions={{
-							// 	statusBarHidden: shouldHideStatusBar,
-							// }}
-							screenOptions={{
+				<KeyboardProvider>
+					<SystemBars
+						style={isDarkBackground ? 'light' : 'dark'}
+						hidden={{ statusBar: hideStatusBar, navigationBar: hideNavigationBar }}
+					/>
+					<Stack
+						// https://github.com/expo/expo/issues/15244 ?
+						// screenOptions={{
+						// 	statusBarHidden: shouldHideStatusBar,
+						// }}
+						screenOptions={{
+							animation: animationEnabled ? 'default' : 'none',
+							contentStyle: {
+								backgroundColor: colors.background.DEFAULT,
+							},
+						}}
+					>
+						<Stack.Screen
+							name="(tabs)"
+							options={{
+								headerShown: false,
+								title: '',
 								animation: animationEnabled ? 'default' : 'none',
+							}}
+						/>
+						<Stack.Screen
+							name="server/[id]"
+							options={{
+								headerShown: false,
+								title: '',
+								animation: animationEnabled ? 'default' : 'none',
+								autoHideHomeIndicator: hideNavigationBar,
 								contentStyle: {
 									backgroundColor: colors.background.DEFAULT,
 								},
 							}}
-						>
-							<Stack.Screen
-								name="(tabs)"
-								options={{
-									headerShown: false,
-									title: '',
-									animation: animationEnabled ? 'default' : 'none',
-								}}
-							/>
-							<Stack.Screen
-								name="server/[id]"
-								options={{
-									headerShown: false,
-									title: '',
-									animation: animationEnabled ? 'default' : 'none',
-									autoHideHomeIndicator: hideNavigationBar,
-									contentStyle: {
-										backgroundColor: colors.background.DEFAULT,
-									},
-								}}
-							/>
-							<Stack.Screen
-								name="opds/[id]"
-								options={{
-									headerShown: false,
-									animation: animationEnabled ? 'default' : 'none',
-								}}
-							/>
-							<Stack.Screen
-								name="opds-legacy/[id]"
-								options={{
-									headerShown: false,
-									animation: animationEnabled ? 'default' : 'none',
-								}}
-							/>
+						/>
+						<Stack.Screen
+							name="opds/[id]"
+							options={{
+								headerShown: false,
+								animation: animationEnabled ? 'default' : 'none',
+							}}
+						/>
+						<Stack.Screen
+							name="opds-legacy/[id]"
+							options={{
+								headerShown: false,
+								animation: animationEnabled ? 'default' : 'none',
+							}}
+						/>
 
-							<Stack.Screen
-								name="offline"
-								options={{
-									headerShown: false,
-									title: '',
-									animation: animationEnabled ? 'default' : 'none',
-									autoHideHomeIndicator: hideNavigationBar,
-									presentation:
-										disableDismissGesture && Platform.OS === 'ios' ? 'fullScreenModal' : undefined,
-									contentStyle: {
-										backgroundColor: colors.background.DEFAULT,
-									},
-								}}
-							/>
-						</Stack>
-						<FloatingQueueButton />
-						<PortalHost />
-					</KeyboardProvider>
-				</BottomSheet.Provider>
+						<Stack.Screen
+							name="offline"
+							options={{
+								headerShown: false,
+								title: '',
+								animation: animationEnabled ? 'default' : 'none',
+								autoHideHomeIndicator: hideNavigationBar,
+								presentation:
+									disableDismissGesture && Platform.OS === 'ios' ? 'fullScreenModal' : undefined,
+								contentStyle: {
+									backgroundColor: colors.background.DEFAULT,
+								},
+							}}
+						/>
+					</Stack>
+					<FloatingQueueButton />
+					<PortalHost />
+				</KeyboardProvider>
 
 				<Toaster
 					position="bottom-center"

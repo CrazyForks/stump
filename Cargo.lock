@@ -300,7 +300,7 @@ dependencies = [
  "fnv",
  "futures-channel",
  "futures-util",
- "handlebars 6.4.0",
+ "handlebars",
  "http 1.2.0",
  "indexmap 2.11.4",
  "lru",
@@ -1263,7 +1263,7 @@ checksum = "b94f61472cee1439c0b966b47e3aca9ae07e45d070759512cd390ea2bebc6675"
 
 [[package]]
 name = "cli"
-version = "0.1.0"
+version = "0.1.1"
 dependencies = [
  "bcrypt",
  "clap 4.5.48",
@@ -2255,13 +2255,11 @@ dependencies = [
 
 [[package]]
 name = "email"
-version = "0.1.0"
+version = "0.1.1"
 dependencies = [
  "async-graphql",
- "handlebars 5.1.2",
  "lettre",
  "serde",
- "serde_json",
  "thiserror 2.0.17",
  "tracing",
 ]
@@ -2518,7 +2516,7 @@ dependencies = [
 
 [[package]]
 name = "filter-gen"
-version = "0.1.0"
+version = "0.1.1"
 dependencies = [
  "heck 0.5.0",
  "itertools 0.14.0",
@@ -3087,7 +3085,7 @@ dependencies = [
 
 [[package]]
 name = "graphql"
-version = "0.1.0"
+version = "0.1.1"
 dependencies = [
  "alphanumeric-sort",
  "async-graphql",
@@ -3197,20 +3195,6 @@ dependencies = [
  "cfg-if",
  "crunchy",
  "zerocopy 0.8.27",
-]
-
-[[package]]
-name = "handlebars"
-version = "5.1.2"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "d08485b96a0e6393e9e4d1b8d48cf74ad6c063cd905eb33f42c1ce3f0377539b"
-dependencies = [
- "log",
- "pest",
- "pest_derive",
- "serde",
- "serde_json",
- "thiserror 1.0.63",
 ]
 
 [[package]]
@@ -8243,7 +8227,7 @@ dependencies = [
 
 [[package]]
 name = "stump-config-gen"
-version = "0.1.0"
+version = "0.1.1"
 dependencies = [
  "itertools 0.14.0",
  "proc-macro2",
@@ -8257,7 +8241,7 @@ dependencies = [
 
 [[package]]
 name = "stump_core"
-version = "0.1.0"
+version = "0.1.1"
 dependencies = [
  "alphanumeric-sort",
  "async-channel",
@@ -8323,7 +8307,7 @@ dependencies = [
 
 [[package]]
 name = "stump_desktop"
-version = "0.1.0"
+version = "0.1.1"
 dependencies = [
  "chrono",
  "discord-rich-presence",
@@ -8344,7 +8328,7 @@ dependencies = [
 
 [[package]]
 name = "stump_server"
-version = "0.1.0"
+version = "0.1.1"
 dependencies = [
  "alphanumeric-sort",
  "async-graphql",
