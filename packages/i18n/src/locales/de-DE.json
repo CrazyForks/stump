@@ -7,7 +7,7 @@
 	},
 	"authScene": {
 		"claimHeading": "Initialisiere deinen Server",
-		"claimText": "Dieser Stump-Server ist noch nicht initialisiert. Benutze das untenstehende Formular, um ein Konto zu erstellen. Danach erhältst du vollen Zugriff auf alle Serverfunktionen.",
+		"claimText": "Dieser Stump Server ist noch nicht initialisiert. Benutze das untenstehende Formular, um ein Konto zu erstellen. Danach erhältst du vollen Zugriff auf alle Serverfunktionen.",
 		"form": {
 			"validation": {
 				"missingUsername": "Ein Benutzername ist erforderlich",
@@ -780,7 +780,7 @@
 			"identifierIsbn": "ISBN",
 			"identifierMobiAsin": "Mobi ASIN",
 			"identifierUuid": "Buch UUID",
-			"genres": "Genre",
+			"genres": "Genres",
 			"inkers": "Zeichner",
 			"language": "Sprache",
 			"letterers": "Schriftsteller",
@@ -1310,7 +1310,7 @@
 			"description": "Passe das Aussehen und die Bedienung der Anwendung an",
 			"sections": {
 				"themeAndAppearance": {
-					"label": "Theme und Erscheinung",
+					"label": "Design und Erscheinung",
 					"description": "Die grundlegenden Erscheinungseinstellungen für Stump"
 				},
 				"themeSelect": {
@@ -1328,7 +1328,7 @@
 						"autumn": "Herbst",
 						"cosmic": "Kosmisch",
 						"pumpkin": "Kürbis",
-						"midnight": "Midnight",
+						"midnight": "Mitternacht",
 						"matrix": "Matrix"
 					}
 				},
@@ -2147,51 +2147,51 @@
 			}
 		},
 		"server/tags": {
-			"helmet": "Tag management",
+			"helmet": "Tag-Verwaltung",
 			"title": "Tags",
-			"description": "Create and manage tags for organizing your content",
+			"description": "Erstelle und verwalte Tags für die Organisation deiner Inhalte",
 			"sections": {
 				"table": {
 					"title": "Tags",
-					"description": "All tags available on this server",
+					"description": "Alle auf diesem Server verfügbaren Tags",
 					"empty": {
-						"title": "No tags",
-						"action": "Create your first tag to get started"
+						"title": "Keine Tags",
+						"action": "Erstelle deinen ersten Tag um loszulegen"
 					},
 					"columns": {
 						"name": "Name"
 					},
 					"actionMenu": {
-						"rename": "Rename"
+						"rename": "Umbenennen"
 					}
 				},
 				"createTag": {
-					"trigger": "Create tag",
+					"trigger": "Tag erstellen",
 					"modal": {
-						"heading": "Create new tag",
-						"description": "Tags can be assigned to books, series, and libraries",
+						"heading": "Erstelle einen neuen Tag",
+						"description": "Tags können Büchern, Serien und Bibliotheken zugewiesen werden",
 						"name": {
 							"label": "Name",
-							"placeholder": "Enter tag name"
+							"placeholder": "Tag-Name eingeben"
 						},
-						"submit": "Create"
+						"submit": "Erstellen"
 					}
 				},
 				"renameTag": {
 					"modal": {
-						"heading": "Rename tag",
-						"description": "Change the name of this tag across all assigned items",
+						"heading": "Tag umbenennen",
+						"description": "Ändere den Namen dieses Tags über alle zugewiesenen Elemente",
 						"name": {
 							"label": "Name",
-							"placeholder": "Enter new tag name"
+							"placeholder": "Neuen Tag-Namen eingeben"
 						},
-						"submit": "Rename"
+						"submit": "Umbenennen"
 					}
 				},
 				"deleteTag": {
-					"title": "Delete tag",
-					"description": "This tag will be removed from all books, series, and libraries. This cannot be undone.",
-					"confirm": "Delete"
+					"title": "Tag löschen",
+					"description": "Dieser Tag wird von allen Büchern, Serien und Bibliotheken entfernt. Dies kann nicht rückgängig gemacht werden.",
+					"confirm": "Löschen"
 				}
 			}
 		}
@@ -2483,238 +2483,238 @@
 	"mobileApp": {
 		"addOrEditServer": {
 			"addServer": {
-				"title": "Add Server",
-				"subtitle": "Configure a new server to access your content"
+				"title": "Server hinzufügen",
+				"subtitle": "Konfiguriere einen neuen Server, um auf deine Inhalte zuzugreifen"
 			},
 			"editServer": {
-				"title": "Edit Server",
-				"subtitle": "Edit Server"
+				"title": "Server bearbeiten",
+				"subtitle": "Server bearbeiten"
 			},
-			"kind": "Kind",
+			"kind": "Art",
 			"customHeaders": {
-				"label": "Custom Headers",
-				"addHeader": "Add header",
-				"invalidHeader": "Invalid header"
+				"label": "Benutzerdefinierte Header",
+				"addHeader": "Header hinzufügen",
+				"invalidHeader": "Ungültiger Header"
 			},
 			"auth": {
-				"label": "Auth",
+				"label": "Authentifizierung",
 				"default": {
 					"label": "Login",
-					"description": "You will be prompted to login when accessing content as needed"
+					"description": "Du wirst aufgefordert, dich nach Bedarf anzumelden, wenn du auf Inhalte zugreifst"
 				},
 				"token": {
 					"label": "Token",
-					"placeholder": "Raw token"
+					"placeholder": "Raw Token"
 				},
-				"basic": "Basic"
+				"basic": "Einfach"
 			},
-			"serverNamePlaceholder": "My Server",
-			"catalogUrl": "Catalog URL",
-			"failedToConnect": "Failed to connect to server",
-			"didConnect": "Connected",
-			"checkConnection": "Check connection",
-			"setAsDefaultServer": "Set as default server",
-			"enableOPDS": "Enable OPDS",
+			"serverNamePlaceholder": "Mein Server",
+			"catalogUrl": "Katalog URL",
+			"failedToConnect": "Die Verbindung zum Server ist fehlgeschlagen",
+			"didConnect": "Verbunden",
+			"checkConnection": "Verbindung überprüfen",
+			"setAsDefaultServer": "Als Standardserver festlegen",
+			"enableOPDS": "OPDS aktivieren",
 			"validation": {
-				"nameAlreadyExists": "Name already exists",
-				"cannotSetAuthorizationHeader": "Cannot set Authorization header"
+				"nameAlreadyExists": "Name ist bereits vorhanden",
+				"cannotSetAuthorizationHeader": "Authorisierungsheader kann nicht gesetzt werden"
 			}
 		},
 		"bookActions": {
 			"markAsRead": {
-				"label": "Mark as read",
-				"confirmation": "Are you sure you want to mark {{bookTitle}} as read?"
+				"label": "Als gelesen markieren",
+				"confirmation": "Bist du dir sicher, dass du {{bookTitle}} als gelesen markieren möchtest?"
 			},
 			"clearProgress": {
-				"label": "Clear progress",
-				"confirmation": "Are you sure you want to clear your progress for {{bookTitle}}?"
+				"label": "Fortschritt löschen",
+				"confirmation": "Bist du dir sicher, dass du den Fortschritt für {{bookTitle}} löschen möchtest?"
 			},
 			"deleteBook": {
-				"label": "Delete book",
-				"confirmation": "Are you sure you want to delete {{bookTitle}}?"
+				"label": "Buch löschen",
+				"confirmation": "Bist du dir sicher, dass du {{bookTitle}} löschen möchtest?"
 			},
-			"seeDetails": "See Details"
+			"seeDetails": "Details anzeigen"
 		},
 		"bookMetadata": {
-			"ageRating": "Age Rating",
-			"downloadedAt": "Downloaded",
+			"ageRating": "Altersfreigabe",
+			"downloadedAt": "Heruntergeladen",
 			"format": "Format",
 			"genres": "Genres",
-			"language": "Language",
-			"publisher": "Publisher",
-			"size": "Size",
-			"volume": "Volume",
-			"year": "Year"
+			"language": "Sprache",
+			"publisher": "Verlag",
+			"size": "Größe",
+			"volume": "Band",
+			"year": "Jahr"
 		},
 		"common": {
-			"cancel": "Cancel",
-			"chapter": "Chapter",
-			"clear": "Clear",
-			"confirm": "Confirm",
+			"cancel": "Abbrechen",
+			"chapter": "Kapitel",
+			"clear": "Löschen",
+			"confirm": "Bestätigen",
 			"details": "Details",
-			"delete": "Delete",
+			"delete": "Löschen",
 			"downloads": "Downloads",
-			"edit": "Edit",
-			"enabled": "Enabled",
-			"enable": "Enable",
-			"error": "Error",
+			"edit": "Bearbeiten",
+			"enabled": "Aktiviert",
+			"enable": "Aktivieren",
+			"error": "Fehler",
 			"name": "Name",
-			"none": "None",
-			"options": "Options",
-			"page": "Page",
-			"pages": "Pages",
-			"password": "Password",
-			"progress": "Progress",
-			"readTime": "Read time",
-			"readMore": "Read more",
-			"save": "Save",
-			"select": "Select",
-			"settings": "Settings",
-			"servers": "Servers",
-			"thisBook": "this book",
-			"thisServer": "this server",
-			"unknown": "Unknown",
-			"unknownTitle": "Untitled",
+			"none": "Keine",
+			"options": "Optionen",
+			"page": "Seite",
+			"pages": "Seiten",
+			"password": "Passwort",
+			"progress": "Fortschritt",
+			"readTime": "Lesezeit",
+			"readMore": "Mehr lesen",
+			"save": "Speichern",
+			"select": "Auswählen",
+			"settings": "Einstellungen",
+			"servers": "Server",
+			"thisBook": "dieses Buch",
+			"thisServer": "dieser Server",
+			"unknown": "Unbekannt",
+			"unknownTitle": "Unbenannt",
 			"url": "URL",
-			"username": "Username",
-			"value": "Value",
+			"username": "Benutzername",
+			"value": "Wert",
 			"version": "Version"
 		},
 		"emptyState": {
-			"noStumpServers": "No Stump servers added",
-			"noOPDSServers": "No OPDS servers added",
-			"noServers": "No servers have been configured",
-			"cta": "Get started by adding a server to access your book collections",
-			"seeDocumentation": "See Documentation"
+			"noStumpServers": "Keine Stump Server hinzugefügt",
+			"noOPDSServers": "Keine OPDS Server hinzugefügt",
+			"noServers": "Keine Server wurden konfiguriert",
+			"cta": "Lege los mit einem Server hinzuzufügen, um auf deine Buchsammlungen zuzugreifen",
+			"seeDocumentation": "Siehe Dokumentation"
 		},
 		"tabs": {
-			"servers": "Servers",
-			"localLibrary": "Library",
-			"settings": "Settings"
+			"servers": "Server",
+			"localLibrary": "Bibliothek",
+			"settings": "Einstellungen"
 		},
 		"localLibrary": {
-			"title": "Local Library",
+			"title": "Lokale Bibliothek",
 			"emptyState": {
 				"all": {
-					"title": "Nothing to read yet",
-					"description": "Once you have books for offline reading, they will appear here"
+					"title": "Noch nichts zu lesen",
+					"description": "Sobald du Bücher zum Offline-Lesen hast, werden sie hier erscheinen"
 				},
 				"imported": {
-					"title": "No imported books",
-					"description": "Import books to read them offline"
+					"title": "Keine importierten Bücher",
+					"description": "Bücher zum Offline-Lesen importieren"
 				},
 				"server": {
-					"title": "No downloaded books",
-					"description": "Download books from your library to read them offline"
+					"title": "Keine heruntergeladenen Bücher",
+					"description": "Lade Bücher aus deiner Bibliothek herunter, um diese offline zu lesen"
 				}
 			},
 			"downloadQueue": {
-				"downloading": "Downloading",
-				"failed": "Failed",
-				"nothingDownloading": "Nothing is being downloaded",
-				"noActiveDownloads": "No active downloads",
-				"noFailedDownloads": "No failed downloads",
-				"downloadStarting": "Starting..."
+				"downloading": "Wird heruntergeladen",
+				"failed": "Fehlgeschlagen",
+				"nothingDownloading": "Es wird nichts heruntergeladen",
+				"noActiveDownloads": "Keine aktiven Downloads",
+				"noFailedDownloads": "Keine fehlgeschlagenen Downloads",
+				"downloadStarting": "Wird gestartet..."
 			},
 			"downloadsHeaderMenu": {
 				"deleteAllDownloads": {
-					"label": "Delete Books",
-					"confirmation": "Are you sure you want to delete your local library?",
-					"disclaimer": "This action cannot be undone."
+					"label": "Bücher löschen",
+					"confirmation": "Bist du sicher, dass du deine lokale Bibliothek löschen möchtest?",
+					"disclaimer": "Diese Aktion kann nicht rückgängig gemacht werden."
 				},
-				"seeProblems": "See Problems ({{problemCount}})",
-				"hideCurated": "Hide Curated",
-				"showCurated": "Show Curated",
-				"attemptSync": "Attempt Sync"
+				"seeProblems": "Siehe Probleme ({{problemCount}})",
+				"hideCurated": "Kuratiert ausblenden",
+				"showCurated": "Kuratiert anzeigen",
+				"attemptSync": "Versuche Synchronisierung"
 			},
 			"downloadsHeaderSortMenu": {
 				"sortBy": {
 					"NAME": "Name",
-					"ADDED_AT": "Date Added",
-					"SERIES": "Series"
+					"ADDED_AT": "Datum Hinzugefügt",
+					"SERIES": "Serien"
 				},
 				"sortDirection": {
-					"ASC": "Ascending",
-					"DESC": "Descending"
+					"ASC": "Aufsteigend",
+					"DESC": "Absteigend"
 				},
 				"sortDirectionText": {
 					"ASC": "A → Z",
 					"DESC": "Z → A"
 				},
 				"sortDirectionDate": {
-					"ASC": "Oldest First",
-					"DESC": "Newest First"
+					"ASC": "Älteste Zuerst",
+					"DESC": "Neueste Zuerst"
 				},
 				"sourceFilter": {
-					"all": "All Books",
-					"server": "Downloaded",
-					"imported": "Imported"
+					"all": "Alle Bücher",
+					"server": "Heruntergeladen",
+					"imported": "Importiert"
 				}
 			},
 			"downloadProblemsSheet": {
-				"title": "Failed Downloads",
-				"noFailedDownloads": "No failed downloads",
-				"retryAll": "Retry All",
-				"dismissAll": "Dismiss All"
+				"title": "Fehlgeschlagene Downloads",
+				"noFailedDownloads": "Keine fehlgeschlagenen Downloads",
+				"retryAll": "Alle erneut versuchen",
+				"dismissAll": "Alle verwerfen"
 			}
 		},
 		"settings": {
 			"preferences": {
-				"label": "Preferences",
+				"label": "Präferenzen",
 				"appTheme": {
-					"label": "Theme",
+					"label": "Design",
 					"options": {
-						"light": "Light",
-						"dark": "Dark"
+						"light": "Hell",
+						"dark": "Dunkel"
 					}
 				},
-				"appPrimaryColor": "Accent",
-				"appLanguage": "Language",
-				"defaultServer": "Default Server",
-				"thumbnailRatio": "Thumbnail Ratio",
+				"appPrimaryColor": "Akzent",
+				"appLanguage": "Sprache",
+				"defaultServer": "Standardserver",
+				"thumbnailRatio": "Vorschaubildverhältnis",
 				"thumbnailPlaceholder": {
-					"label": "Thumbnail Placeholder",
+					"label": "Vorschaubild-Platzhalter",
 					"options": {
-						"grayscale": "Grayscale",
-						"averageColor": "Average color",
-						"colorful": "Colorful",
+						"grayscale": "Graustufen",
+						"averageColor": "Durchschnittsfarbe",
+						"colorful": "Farbenfroh",
 						"thumbhash": "Thumbhash"
 					}
 				},
 				"thumbnailResizeMode": {
-					"label": "Thumbnail Resize",
+					"label": "Vorschaubildgrößenanpassung",
 					"options": {
 						"cover": "Cover",
-						"stretch": "Stretch",
-						"fit": "Fit"
+						"stretch": "Strecken",
+						"fit": "Anpassen"
 					}
 				}
 			},
 			"reading": {
-				"label": "Reading",
-				"preferNativePdf": "Prefer Native PDF",
-				"preferMinimalReader": "Prefer Minimal Reader",
-				"disableDismissGesture": "Disable Dismiss Gesture"
+				"label": "Lesen",
+				"preferNativePdf": "Native PDF bevorzugen",
+				"preferMinimalReader": "Minimalen Leser bevorzugen",
+				"disableDismissGesture": "Deaktiviere Zurück-Geste"
 			},
 			"stump": {
 				"label": "Stump",
-				"description": "Stump features are optional and can be turned off if you do not need them",
-				"bookClubsEnabled": "Book Club Features"
+				"description": "Stump-Funktionen sind optional und können deaktiviert, wenn du diese nicht benötigst",
+				"bookClubsEnabled": "Buchclubfunktionen"
 			},
-			"autoSyncLocalData": "Auto-Sync Local Data",
+			"autoSyncLocalData": "Lokale Daten automatisch synchronisieren",
 			"management": {
-				"label": "Management",
+				"label": "Verwaltung",
 				"dataUsage": {
-					"label": "Data Usage",
-					"nonStumpData": "Non-Stump data",
-					"serversTotal": "Servers total",
-					"totalFiles": "Total files",
-					"totalSize": "Total size",
+					"label": "Datennutzung",
+					"nonStumpData": "Nicht-Stump Daten",
+					"serversTotal": "Server insgesamt",
+					"totalFiles": "Dateien gesamt",
+					"totalSize": "Gesamtgröße",
 					"deleteDownloads": {
-						"label": "Delete Downloads",
-						"confirmation": "Are you sure you want to delete all downloads from {{serverName}}?",
+						"label": "Downloads löschen",
+						"confirmation": "Bist du dir sicher, dass du alle Downloads von {{serverName}} löschen möchtest?",
 						"deleteFailed": {
-							"title": "Deletion Failed",
+							"title": "Löschen fehlgeschlagen",
 							"description": "There was an error deleting all downloads from {{serverName}}"
 						}
 					},
@@ -2730,8 +2730,8 @@
 				"label": "Debug",
 				"clearCache": {
 					"memory": {
-						"button": "Memory",
-						"success": "Memory cache cleared"
+						"button": "Speicher",
+						"success": "Speicher Cache geleert"
 					},
 					"disk": {
 						"button": "Disk",
@@ -2739,95 +2739,95 @@
 					}
 				},
 				"deleteDatabase": {
-					"label": "Delete Database",
+					"label": "Datenbank löschen",
 					"success": {
-						"title": "Database deleted",
-						"description": "Please restart the app"
+						"title": "Datenbank gelöscht",
+						"description": "Bitte starte die App neu"
 					},
 					"error": {
-						"title": "Deletion failed",
-						"description": "There was an error deleting the database"
+						"title": "Löschen fehlgeschlagen",
+						"description": "Es ist ein Fehler beim Löschen der Datenbank aufgetreten"
 					}
 				},
-				"performanceMonitor": "Performance Monitor",
-				"reduceAnimations": "Reduce Animations",
-				"maskUrls": "Mask URLs",
+				"performanceMonitor": "Leistungsüberwachung",
+				"reduceAnimations": "Animationen verringern",
+				"maskUrls": "URLs verstecken",
 				"debugAnalytics": {
-					"label": "Debug Analytics",
-					"description": "Send additional debug-related events to help troubleshoot issues"
+					"label": "Debug-Analysen",
+					"description": "Sende zusätzliche Debug-bezogene Ereignisse, um bei der Fehlerbehebung zu helfen"
 				}
 			},
 			"contactInfo": {
-				"label": "Contact",
-				"email": "Email",
+				"label": "Kontakt",
+				"email": "E-Mail",
 				"discord": "Discord",
 				"github": "GitHub"
 			},
 			"supportInfo": {
-				"buildInformation": "Build Information",
+				"buildInformation": "Versionsinformationen",
 				"version": "Version: {{version}}",
-				"suuportIdentifier": "Support Identifier: {{supportID}}"
+				"suuportIdentifier": "Support-Identifikator: {{supportID}}"
 			}
 		},
 		"readerSettings": {
-			"title": "Reader Settings",
+			"title": "Readereinstellungen",
 			"sections": {
-				"mode": "Mode",
-				"imageOptions": "Image Options",
-				"controls": "Controls"
+				"mode": "Modus",
+				"imageOptions": "Bildoptionen",
+				"controls": "Steuerung"
 			},
 			"readingMode": {
-				"label": "Flow",
+				"label": "Fließend",
 				"options": {
-					"PAGED": "Paged",
-					"CONTINUOUS_HORIZONTAL": "Scroll (Horizontal)",
-					"CONTINUOUS_VERTICAL": "Scroll (Vertical)"
+					"PAGED": "Geseitigt",
+					"CONTINUOUS_HORIZONTAL": "Scrollen (Horizontal)",
+					"CONTINUOUS_VERTICAL": "Scrollen (Vertikal)"
 				}
 			},
 			"readingDirection": {
-				"label": "Direction",
+				"label": "Richtung",
 				"options": {
-					"RTL": "Right to left",
-					"LTR": "Left to right"
+					"RTL": "Rechts nach links",
+					"LTR": "Links nach rechts"
 				}
 			},
 			"doublePageBehavior": {
-				"label": "Double Paged",
+				"label": "Zweiseitig",
 				"options": {
-					"always": "Always",
+					"always": "Immer",
 					"auto": "Auto",
-					"off": "Off"
+					"off": "Aus"
 				}
 			},
-			"separateSecondPage": "Separate Second Page",
+			"separateSecondPage": "Separate zweite Seite",
 			"imageScaling": {
-				"label": "Scaling",
+				"label": "Skalierung",
 				"options": {
 					"AUTO": "Auto",
-					"HEIGHT": "Fit Height",
-					"WIDTH": "Fit Width",
-					"NONE": "None"
+					"HEIGHT": "Höhe anpassen",
+					"WIDTH": "Breite anpassen",
+					"NONE": "Keine"
 				}
 			},
-			"allowDownscaling": "Downscaling",
-			"tapSidesToNavigate": "Tap Sides to Navigate",
+			"allowDownscaling": "Herabskalieren",
+			"tapSidesToNavigate": "Seiten zum Navigieren antippen",
 			"footerControls": {
 				"label": "Footer",
 				"options": {
-					"images": "Image Gallery",
-					"slider": "Slider"
+					"images": "Bildergalerie",
+					"slider": "Schieberegler"
 				}
 			}
 		},
 		"savedServerActions": {
-			"clearCache": "Clear Cache",
+			"clearCache": "Cache leeren",
 			"discardTokens": {
-				"label": "Discard Tokens",
-				"description": "Affects login tokens only"
+				"label": "Token verwerfen",
+				"description": "Betrifft nur Login-Tokens"
 			},
 			"deleteServer": {
-				"title": "Delete Server",
-				"confirmation": "Are you sure you want to delete {{serverName}}?"
+				"title": "Server löschen",
+				"confirmation": "Bist du dir sicher, dass du {{serverName}} löschen möchtest?"
 			}
 		}
 	}
