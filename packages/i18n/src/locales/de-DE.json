@@ -7,7 +7,7 @@
 	},
 	"authScene": {
 		"claimHeading": "Initialisiere deinen Server",
-		"claimText": "Dieser Stump-Server ist noch nicht initialisiert. Benutze das untenstehende Formular, um ein Konto zu erstellen. Danach erhältst du vollen Zugriff auf alle Serverfunktionen.",
+		"claimText": "Dieser Stump Server ist noch nicht initialisiert. Benutze das untenstehende Formular, um ein Konto zu erstellen. Danach erhältst du vollen Zugriff auf alle Serverfunktionen.",
 		"form": {
 			"validation": {
 				"missingUsername": "Ein Benutzername ist erforderlich",
@@ -54,7 +54,7 @@
 		},
 		"emailBook": {
 			"heading": "E-Mail das Buch",
-			"description": "Sende dieses Buch zu einem Gerät oder einer E-mail-Adresse",
+			"description": "Sende dieses Buch zu einem Gerät oder einer E-Mail-Adresse",
 			"form": {
 				"email": {
 					"label": "E-Mail",
@@ -261,8 +261,8 @@
 					"description": "Verberge den Serienreiter in der Bibliotheksnavigation"
 				},
 				"skipBookOverview": {
-					"label": "Skip book overview",
-					"description": "Open the reader directly when selecting books in this library"
+					"label": "Buchübersicht überspringen",
+					"description": "Öffne den Reader direkt bei der Auswahl von Büchern in dieser Bibliotheken"
 				},
 				"options": {
 					"series": {
@@ -468,8 +468,8 @@
 					"description": "Die Details zu dieser Bibliothek, einschließlich Name, Pfad und Beschreibung"
 				},
 				{
-					"label": "Scannt",
-					"heading": "Scannt",
+					"label": "Scannen",
+					"heading": "Scannen",
 					"description": "Einstellungen in Bezug, wie Stump diese Bibliothek scannt"
 				},
 				{
@@ -547,7 +547,7 @@
 			"options": {
 				"general": "Allgemein",
 				"reading": "Lesen",
-				"scanning": "Wird gescannt",
+				"scanning": "Scannen",
 				"thumbnails": "Vorschaubilder",
 				"ignore-rules": "Dateien ignorieren",
 				"analysis": "Analyse",
@@ -700,7 +700,21 @@
 						"label": "Bibliothek bereinigen",
 						"text": "Bist du sicher, dass du diese Bibliothek bereinigen möchtest?"
 					},
-					"emptyText": "Es gab nichts zu reinigen"
+					"emptyText": "Es gab nichts zu reinigen",
+					"missingEntitiesTable": {
+						"columns": {
+							"id": "ID",
+							"path": "Pfad",
+							"type": "Typ"
+						},
+						"types": {
+							"BOOK": "Buch",
+							"SERIES": "Serien",
+							"LIBRARY": "Bibliothek"
+						},
+						"emptyHeading": "Nichts fehlt für diese Bibliothek",
+						"emptySubtitle": "Alle in der Datenbank gespeicherten Dateien wurden auf der Festplatte gefunden"
+					}
 				},
 				"deleteLibrary": {
 					"heading": "Bibliothek löschen",
@@ -766,7 +780,7 @@
 			"identifierIsbn": "ISBN",
 			"identifierMobiAsin": "Mobi ASIN",
 			"identifierUuid": "Buch UUID",
-			"genres": "Genre",
+			"genres": "Genres",
 			"inkers": "Zeichner",
 			"language": "Sprache",
 			"letterers": "Schriftsteller",
@@ -929,10 +943,10 @@
 									"teams": "Teams",
 									"genres": "Genre",
 									"coverArtists": "Cover-Künstler",
-									"ageRating": "Age rating",
-									"year": "Year",
-									"month": "Month",
-									"day": "Day"
+									"ageRating": "Altersfreigabe",
+									"year": "Jahr",
+									"month": "Monat",
+									"day": "Tag"
 								}
 							},
 							"series": {
@@ -955,7 +969,7 @@
 									"volume": "Band",
 									"metaType": "Typ",
 									"ageRating": "Altersfreigabe",
-									"year": "Start year"
+									"year": "Startjahr"
 								}
 							},
 							"library": {
@@ -1240,6 +1254,7 @@
 				"access": "Zugriff",
 				"email": "E-Mail",
 				"notifications": "Benachrichtigungen",
+				"tags": "Tags",
 				"label": "Verwaltung"
 			}
 		},
@@ -1263,14 +1278,14 @@
 					},
 					"avatarPicker": {
 						"label": "Avatar",
-						"heading": "Upload avatar",
-						"subtitle": "You can upload any image to use as your avatar for social features in Stump",
-						"dropzone": "Drop an image or click to select",
-						"changeImage": "Change Image",
-						"removeImage": "Remove Image",
-						"removeSelection": "Remove uploaded image",
-						"uploadFailed": "Failed to upload avatar",
-						"removeFailed": "Failed to remove avatar"
+						"heading": "Avatar hochladen",
+						"subtitle": "Du kannst jedes Bild hochladen, um dieses als Avatar für soziale Funktionen in Stump zu verwenden",
+						"dropzone": "Bild hier ablegen oder zum Auswählen klicken",
+						"changeImage": "Bild ändern",
+						"removeImage": "Bild entfernen",
+						"removeSelection": "Hochgeladenes Bild entfernen",
+						"uploadFailed": "Avatar konnte nicht hochgeladen werden",
+						"removeFailed": "Avatar konnte nicht entfernt werden"
 					},
 					"buttons": {
 						"confirm": "Änderungen speichern"
@@ -1295,7 +1310,7 @@
 			"description": "Passe das Aussehen und die Bedienung der Anwendung an",
 			"sections": {
 				"themeAndAppearance": {
-					"label": "Theme und Erscheinung",
+					"label": "Design und Erscheinung",
 					"description": "Die grundlegenden Erscheinungseinstellungen für Stump"
 				},
 				"themeSelect": {
@@ -1313,6 +1328,7 @@
 						"autumn": "Herbst",
 						"cosmic": "Kosmisch",
 						"pumpkin": "Kürbis",
+						"midnight": "Mitternacht",
 						"matrix": "Matrix"
 					}
 				},
@@ -1696,11 +1712,11 @@
 					}
 				},
 				"helpfulLinks": {
-					"title": "Helpful links",
-					"description": "Links to resources that may be helpful for managing your Stump server instance",
+					"title": "Hilfreiche Links",
+					"description": "Links zu Ressourcen, die bei der Verwaltung Ihrer Stump Serverinstanz hilfreich sein könnten",
 					"links": {
-						"documentation": "Documentation",
-						"changelog": "Changelog"
+						"documentation": "Dokumentation",
+						"changelog": "Änderungsprotokoll"
 					}
 				},
 				"serverPublicUrl": {
@@ -1708,25 +1724,25 @@
 					"description": "Die URL, über die von außen auf den Server zugegriffen werden kann, sofern verfügbar. Dies aktiviert Einladungslinks und andere Funktionen"
 				},
 				"customEmojis": {
-					"title": "Custom emojis",
-					"description": "Upload and manage custom image emojis for your server",
-					"dropzone": "Drop an image or click to select",
+					"title": "Benutzerdefinierte Emojis",
+					"description": "Verwalte und lade benutzerdefinierte Bild-Emojis für deinen Server hoch",
+					"dropzone": "Ein Bild hier ablegen oder zum Auswählen klicken",
 					"input": {
-						"label": "Emoji name",
-						"placeholder": "e.g. party_parrot"
+						"label": "Emoji-Name",
+						"placeholder": "z.B. party_papagei"
 					},
 					"deleteModal": {
-						"title": "Delete emoji",
-						"description": "Are you sure you want to delete this emoji?"
+						"title": "Emoji löschen",
+						"description": "Bist du sicher dieses Emoji löschen zu wollen?"
 					},
-					"noCustomEmojis": "No custom emojis have been added yet",
-					"invalidName": "Please enter a valid name for your emoji",
-					"uploadError": "Failed to upload emoji",
-					"uploadSuccess": "Emoji uploaded",
-					"renameSuccess": "Emoji renamed",
-					"renameError": "Failed to rename emoji",
-					"deleteSuccess": "Emoji deleted",
-					"deleteError": "Failed to delete emoji"
+					"noCustomEmojis": "Bisher wurden keine benutzerdefinierten Emojis hinzugefügt",
+					"invalidName": "Bitte gebe einen gültigen Namen für dein Emoji ein",
+					"uploadError": "Emoji konnte nicht hochgeladen werden",
+					"uploadSuccess": "Emoji hochgeladen",
+					"renameSuccess": "Emoji umbenannt",
+					"renameError": "Emoji konnte nicht umbenannt werden",
+					"deleteSuccess": "Emoji gelöscht",
+					"deleteError": "Emoji konnte nicht gelöscht werden"
 				}
 			}
 		},
@@ -2109,13 +2125,13 @@
 					"update": "E-Mail aktualisieren"
 				},
 				"testEmailer": {
-					"button": "Send test email",
-					"recipientLabel": "Test recipient",
-					"recipientDescription": "An email address to send the test email to",
-					"success": "Test email sent successfully",
+					"button": "Test-E-Mail verschicken",
+					"recipientLabel": "Testempfänger",
+					"recipientDescription": "Eine E-Mail-Adresse an die, die Test-E-Mail gesendet werden soll",
+					"success": "Test-E-Mail erfolgreich gesendet",
 					"error": {
-						"title": "Failed to send test email",
-						"description": "Check your SMTP settings and try again"
+						"title": "Das Versenden der Test-E-Mail ist fehlgeschlagen",
+						"description": "Überprüfe deine SMTP-Einstellungen und versuche es erneut"
 					}
 				}
 			},
@@ -2128,6 +2144,55 @@
 				"helmet": "Mailserver aktualisieren",
 				"title": "Mailserver aktualisieren",
 				"description": "Details dieses SMTP-Mailservers aktualisieren"
+			}
+		},
+		"server/tags": {
+			"helmet": "Tag-Verwaltung",
+			"title": "Tags",
+			"description": "Erstelle und verwalte Tags für die Organisation deiner Inhalte",
+			"sections": {
+				"table": {
+					"title": "Tags",
+					"description": "Alle auf diesem Server verfügbaren Tags",
+					"empty": {
+						"title": "Keine Tags",
+						"action": "Erstelle deinen ersten Tag um loszulegen"
+					},
+					"columns": {
+						"name": "Name"
+					},
+					"actionMenu": {
+						"rename": "Umbenennen"
+					}
+				},
+				"createTag": {
+					"trigger": "Tag erstellen",
+					"modal": {
+						"heading": "Erstelle einen neuen Tag",
+						"description": "Tags können Büchern, Serien und Bibliotheken zugewiesen werden",
+						"name": {
+							"label": "Name",
+							"placeholder": "Tag-Name eingeben"
+						},
+						"submit": "Erstellen"
+					}
+				},
+				"renameTag": {
+					"modal": {
+						"heading": "Tag umbenennen",
+						"description": "Ändere den Namen dieses Tags über alle zugewiesenen Elemente",
+						"name": {
+							"label": "Name",
+							"placeholder": "Neuen Tag-Namen eingeben"
+						},
+						"submit": "Umbenennen"
+					}
+				},
+				"deleteTag": {
+					"title": "Tag löschen",
+					"description": "Dieser Tag wird von allen Büchern, Serien und Bibliotheken entfernt. Dies kann nicht rückgängig gemacht werden.",
+					"confirm": "Löschen"
+				}
 			}
 		}
 	},
@@ -2252,7 +2317,7 @@
 	"common": {
 		"add": "Hinzufügen",
 		"cancel": "Abbrechen",
-		"clear": "Clear",
+		"clear": "Löschen",
 		"confirm": "Bestätigen",
 		"delete": "Löschen",
 		"enter": "Enter",
@@ -2265,7 +2330,7 @@
 		"update": "Aktualisieren",
 		"upload": "Hochladen",
 		"uploading": "Wird hochgeladen",
-		"uploadingEllipsis": "Uploading...",
+		"uploadingEllipsis": "Wird hochgeladen...",
 		"unimplemented": "Diese Funktionalität ist noch nicht implementiert! Schaue später wieder vorbei",
 		"limitedFunctionality": "Das ist noch nicht vollständig implementiert und es fehlen noch ein paar Funktionen! Schaue später wieder vorbei",
 		"logIn": "Anmelden",
@@ -2280,9 +2345,9 @@
 		"scan": "Scannen",
 		"somethingWentWrong": "Etwas ist falsch gelaufen",
 		"fileUpload": {
-			"someRejected": "Some files were rejected. Please check the file types and try again",
-			"tooManyFiles": "You have selected too many files",
-			"noValidFiles": "No valid files were selected"
+			"someRejected": "Einige Dateien wurden abgelehnt. Bitte überprüfe die Dateitypen und versuche es erneut",
+			"tooManyFiles": "Du hast zu viele Dateien ausgewählt",
+			"noValidFiles": "Es wurden keine gültigen Dateien ausgewählt"
 		}
 	},
 	"userPermissions": {
@@ -2411,8 +2476,359 @@
 			"description": "Erlaubt dem Benutzer Metadatenänderungen zurück auf die Quelldateien zu schreiben"
 		},
 		"EDIT_THUMBNAILS": {
-			"label": "Edit thumbnails",
-			"description": "Allows the user to edit thumbnails for books and series"
+			"label": "Vorschaubilder bearbeiten",
+			"description": "Erlaubt dem Benutzer Vorschaubilder für Bücher und Serien zu bearbeiten"
+		}
+	},
+	"mobileApp": {
+		"addOrEditServer": {
+			"addServer": {
+				"title": "Server hinzufügen",
+				"subtitle": "Konfiguriere einen neuen Server, um auf deine Inhalte zuzugreifen"
+			},
+			"editServer": {
+				"title": "Server bearbeiten",
+				"subtitle": "Server bearbeiten"
+			},
+			"kind": "Art",
+			"customHeaders": {
+				"label": "Benutzerdefinierte Header",
+				"addHeader": "Header hinzufügen",
+				"invalidHeader": "Ungültiger Header"
+			},
+			"auth": {
+				"label": "Authentifizierung",
+				"default": {
+					"label": "Login",
+					"description": "Du wirst aufgefordert, dich nach Bedarf anzumelden, wenn du auf Inhalte zugreifst"
+				},
+				"token": {
+					"label": "Token",
+					"placeholder": "Raw Token"
+				},
+				"basic": "Einfach"
+			},
+			"serverNamePlaceholder": "Mein Server",
+			"catalogUrl": "Katalog URL",
+			"failedToConnect": "Die Verbindung zum Server ist fehlgeschlagen",
+			"didConnect": "Verbunden",
+			"checkConnection": "Verbindung überprüfen",
+			"setAsDefaultServer": "Als Standardserver festlegen",
+			"enableOPDS": "OPDS aktivieren",
+			"validation": {
+				"nameAlreadyExists": "Name ist bereits vorhanden",
+				"cannotSetAuthorizationHeader": "Authorisierungsheader kann nicht gesetzt werden"
+			}
+		},
+		"bookActions": {
+			"markAsRead": {
+				"label": "Als gelesen markieren",
+				"confirmation": "Bist du dir sicher, dass du {{bookTitle}} als gelesen markieren möchtest?"
+			},
+			"clearProgress": {
+				"label": "Fortschritt löschen",
+				"confirmation": "Bist du dir sicher, dass du den Fortschritt für {{bookTitle}} löschen möchtest?"
+			},
+			"deleteBook": {
+				"label": "Buch löschen",
+				"confirmation": "Bist du dir sicher, dass du {{bookTitle}} löschen möchtest?"
+			},
+			"seeDetails": "Details anzeigen"
+		},
+		"bookMetadata": {
+			"ageRating": "Altersfreigabe",
+			"downloadedAt": "Heruntergeladen",
+			"format": "Format",
+			"genres": "Genres",
+			"language": "Sprache",
+			"publisher": "Verlag",
+			"size": "Größe",
+			"volume": "Band",
+			"year": "Jahr"
+		},
+		"common": {
+			"cancel": "Abbrechen",
+			"chapter": "Kapitel",
+			"clear": "Löschen",
+			"confirm": "Bestätigen",
+			"details": "Details",
+			"delete": "Löschen",
+			"downloads": "Downloads",
+			"edit": "Bearbeiten",
+			"enabled": "Aktiviert",
+			"enable": "Aktivieren",
+			"error": "Fehler",
+			"name": "Name",
+			"none": "Keine",
+			"options": "Optionen",
+			"page": "Seite",
+			"pages": "Seiten",
+			"password": "Passwort",
+			"progress": "Fortschritt",
+			"readTime": "Lesezeit",
+			"readMore": "Mehr lesen",
+			"save": "Speichern",
+			"select": "Auswählen",
+			"settings": "Einstellungen",
+			"servers": "Server",
+			"thisBook": "dieses Buch",
+			"thisServer": "dieser Server",
+			"unknown": "Unbekannt",
+			"unknownTitle": "Unbenannt",
+			"url": "URL",
+			"username": "Benutzername",
+			"value": "Wert",
+			"version": "Version"
+		},
+		"emptyState": {
+			"noStumpServers": "Keine Stump Server hinzugefügt",
+			"noOPDSServers": "Keine OPDS Server hinzugefügt",
+			"noServers": "Keine Server wurden konfiguriert",
+			"cta": "Lege los mit einem Server hinzuzufügen, um auf deine Buchsammlungen zuzugreifen",
+			"seeDocumentation": "Siehe Dokumentation"
+		},
+		"tabs": {
+			"servers": "Server",
+			"localLibrary": "Bibliothek",
+			"settings": "Einstellungen"
+		},
+		"localLibrary": {
+			"title": "Lokale Bibliothek",
+			"emptyState": {
+				"all": {
+					"title": "Noch nichts zu lesen",
+					"description": "Sobald du Bücher zum Offline-Lesen hast, werden sie hier erscheinen"
+				},
+				"imported": {
+					"title": "Keine importierten Bücher",
+					"description": "Bücher zum Offline-Lesen importieren"
+				},
+				"server": {
+					"title": "Keine heruntergeladenen Bücher",
+					"description": "Lade Bücher aus deiner Bibliothek herunter, um diese offline zu lesen"
+				}
+			},
+			"downloadQueue": {
+				"downloading": "Wird heruntergeladen",
+				"failed": "Fehlgeschlagen",
+				"nothingDownloading": "Es wird nichts heruntergeladen",
+				"noActiveDownloads": "Keine aktiven Downloads",
+				"noFailedDownloads": "Keine fehlgeschlagenen Downloads",
+				"downloadStarting": "Wird gestartet..."
+			},
+			"downloadsHeaderMenu": {
+				"deleteAllDownloads": {
+					"label": "Bücher löschen",
+					"confirmation": "Bist du sicher, dass du deine lokale Bibliothek löschen möchtest?",
+					"disclaimer": "Diese Aktion kann nicht rückgängig gemacht werden."
+				},
+				"seeProblems": "Siehe Probleme ({{problemCount}})",
+				"hideCurated": "Kuratiert ausblenden",
+				"showCurated": "Kuratiert anzeigen",
+				"attemptSync": "Versuche Synchronisierung"
+			},
+			"downloadsHeaderSortMenu": {
+				"sortBy": {
+					"NAME": "Name",
+					"ADDED_AT": "Datum Hinzugefügt",
+					"SERIES": "Serien"
+				},
+				"sortDirection": {
+					"ASC": "Aufsteigend",
+					"DESC": "Absteigend"
+				},
+				"sortDirectionText": {
+					"ASC": "A → Z",
+					"DESC": "Z → A"
+				},
+				"sortDirectionDate": {
+					"ASC": "Älteste Zuerst",
+					"DESC": "Neueste Zuerst"
+				},
+				"sourceFilter": {
+					"all": "Alle Bücher",
+					"server": "Heruntergeladen",
+					"imported": "Importiert"
+				}
+			},
+			"downloadProblemsSheet": {
+				"title": "Fehlgeschlagene Downloads",
+				"noFailedDownloads": "Keine fehlgeschlagenen Downloads",
+				"retryAll": "Alle erneut versuchen",
+				"dismissAll": "Alle verwerfen"
+			}
+		},
+		"settings": {
+			"preferences": {
+				"label": "Präferenzen",
+				"appTheme": {
+					"label": "Design",
+					"options": {
+						"light": "Hell",
+						"dark": "Dunkel"
+					}
+				},
+				"appPrimaryColor": "Akzent",
+				"appLanguage": "Sprache",
+				"defaultServer": "Standardserver",
+				"thumbnailRatio": "Vorschaubildverhältnis",
+				"thumbnailPlaceholder": {
+					"label": "Vorschaubild-Platzhalter",
+					"options": {
+						"grayscale": "Graustufen",
+						"averageColor": "Durchschnittsfarbe",
+						"colorful": "Farbenfroh",
+						"thumbhash": "Thumbhash"
+					}
+				},
+				"thumbnailResizeMode": {
+					"label": "Vorschaubildgrößenanpassung",
+					"options": {
+						"cover": "Cover",
+						"stretch": "Strecken",
+						"fit": "Anpassen"
+					}
+				}
+			},
+			"reading": {
+				"label": "Lesen",
+				"preferNativePdf": "Native PDF bevorzugen",
+				"preferMinimalReader": "Minimalen Leser bevorzugen",
+				"disableDismissGesture": "Deaktiviere Zurück-Geste"
+			},
+			"stump": {
+				"label": "Stump",
+				"description": "Stump-Funktionen sind optional und können deaktiviert, wenn du diese nicht benötigst",
+				"bookClubsEnabled": "Buchclubfunktionen"
+			},
+			"autoSyncLocalData": "Lokale Daten automatisch synchronisieren",
+			"management": {
+				"label": "Verwaltung",
+				"dataUsage": {
+					"label": "Datennutzung",
+					"nonStumpData": "Nicht-Stump Daten",
+					"serversTotal": "Server insgesamt",
+					"totalFiles": "Dateien gesamt",
+					"totalSize": "Gesamtgröße",
+					"deleteDownloads": {
+						"label": "Downloads löschen",
+						"confirmation": "Bist du dir sicher, dass du alle Downloads von {{serverName}} löschen möchtest?",
+						"deleteFailed": {
+							"title": "Löschen fehlgeschlagen",
+							"description": "Es gab einen Fehler beim Löschen aller Downloads von {{serverName}}"
+						}
+					},
+					"noDownloads": "Keine heruntergeladenen Dateien für diesen Server",
+					"storedPreferences": {
+						"label": "Gespeicherte Präferenzen",
+						"description": "Sonstige Daten wie Buchpräferenzen, Lesezeiten, etc"
+					},
+					"clearPreferences": "Präferenzen löschen"
+				}
+			},
+			"debug": {
+				"label": "Debug",
+				"clearCache": {
+					"memory": {
+						"button": "Speicher",
+						"success": "Speicher-Cache geleert"
+					},
+					"disk": {
+						"button": "Festplatte",
+						"success": "Festplatten-Cache geleert"
+					}
+				},
+				"deleteDatabase": {
+					"label": "Datenbank löschen",
+					"success": {
+						"title": "Datenbank gelöscht",
+						"description": "Bitte starte die App neu"
+					},
+					"error": {
+						"title": "Löschen fehlgeschlagen",
+						"description": "Es ist ein Fehler beim Löschen der Datenbank aufgetreten"
+					}
+				},
+				"performanceMonitor": "Leistungsüberwachung",
+				"reduceAnimations": "Animationen verringern",
+				"maskUrls": "URLs verstecken",
+				"debugAnalytics": {
+					"label": "Debug-Analysen",
+					"description": "Sende zusätzliche Debug-bezogene Ereignisse, um bei der Fehlerbehebung zu helfen"
+				}
+			},
+			"contactInfo": {
+				"label": "Kontakt",
+				"email": "E-Mail",
+				"discord": "Discord",
+				"github": "GitHub"
+			},
+			"supportInfo": {
+				"buildInformation": "Versionsinformationen",
+				"version": "Version: {{version}}",
+				"suuportIdentifier": "Support-Identifikator: {{supportID}}"
+			}
+		},
+		"readerSettings": {
+			"title": "Readereinstellungen",
+			"sections": {
+				"mode": "Modus",
+				"imageOptions": "Bildoptionen",
+				"controls": "Steuerung"
+			},
+			"readingMode": {
+				"label": "Fließend",
+				"options": {
+					"PAGED": "Geseitigt",
+					"CONTINUOUS_HORIZONTAL": "Scrollen (Horizontal)",
+					"CONTINUOUS_VERTICAL": "Scrollen (Vertikal)"
+				}
+			},
+			"readingDirection": {
+				"label": "Richtung",
+				"options": {
+					"RTL": "Rechts nach links",
+					"LTR": "Links nach rechts"
+				}
+			},
+			"doublePageBehavior": {
+				"label": "Zweiseitig",
+				"options": {
+					"always": "Immer",
+					"auto": "Auto",
+					"off": "Aus"
+				}
+			},
+			"separateSecondPage": "Separate zweite Seite",
+			"imageScaling": {
+				"label": "Skalierung",
+				"options": {
+					"AUTO": "Auto",
+					"HEIGHT": "Höhe anpassen",
+					"WIDTH": "Breite anpassen",
+					"NONE": "Keine"
+				}
+			},
+			"allowDownscaling": "Herabskalieren",
+			"tapSidesToNavigate": "Seiten zum Navigieren antippen",
+			"footerControls": {
+				"label": "Footer",
+				"options": {
+					"images": "Bildergalerie",
+					"slider": "Schieberegler"
+				}
+			}
+		},
+		"savedServerActions": {
+			"clearCache": "Cache leeren",
+			"discardTokens": {
+				"label": "Token verwerfen",
+				"description": "Betrifft nur Login-Tokens"
+			},
+			"deleteServer": {
+				"title": "Server löschen",
+				"confirmation": "Bist du dir sicher, dass du {{serverName}} löschen möchtest?"
+			}
 		}
 	}
 }

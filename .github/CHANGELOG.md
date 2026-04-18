@@ -1,3 +1,58 @@
+<a name="0.1.2"></a>
+## 0.1.2 (2026-04-16)
+
+### Added
+
+- ✨ Tags management page ([#1040](https://github.com/stumpapp/stump/issues/1040)) [[a500ffd](https://github.com/stumpapp/stump/commit/a500ffdacfe870de128e86be26889aa34c3d1b61)]
+- ✨ Darkreader support and new &#x60;Midnight&#x60; theme ([#1038](https://github.com/stumpapp/stump/issues/1038)) [[e28f568](https://github.com/stumpapp/stump/commit/e28f5687ed7d8dd52fde796f74a22726399165de)]
+
+### Changed
+
+- 🚨 Fix prettier lints [[7995b61](https://github.com/stumpapp/stump/commit/7995b61a0b5c451fb4aa6aee789e6516b04ca0b1)]
+- ♻️ Adjust darkreader meta tag behavior ([#1043](https://github.com/stumpapp/stump/issues/1043)) [[0b7118b](https://github.com/stumpapp/stump/commit/0b7118bd7f3b0cefb7120eb64f020443d571738a)]
+- 🔧 rerun build script when GIT_REV or BUILD_CHANNEL changes ([#1039](https://github.com/stumpapp/stump/issues/1039)) [[361b1c5](https://github.com/stumpapp/stump/commit/361b1c530781c70c11f28a24b53b0ea6af8d31a6)]
+- ⬆️ Bump @typescript-eslint/parser from 8.48.1 to 8.58.0 ([#1022](https://github.com/stumpapp/stump/issues/1022)) [[957bba8](https://github.com/stumpapp/stump/commit/957bba88d71d3e762879b1df3a2b248d41e963ee)]
+- ⬆️ Bump @graphql-codegen/near-operation-file-preset ([#1023](https://github.com/stumpapp/stump/issues/1023)) [[4291615](https://github.com/stumpapp/stump/commit/42916153a204d8f1a469d23c70cc5645c683c8fd)]
+- ⬆️ Bump jest and @types/jest ([#1020](https://github.com/stumpapp/stump/issues/1020)) [[b08557d](https://github.com/stumpapp/stump/commit/b08557d2de03b091f449851df3d477692b0b843f)]
+- ⬆️ Bump @react-native-community/slider from 5.0.1 to 5.1.2 ([#1026](https://github.com/stumpapp/stump/issues/1026)) [[6c77226](https://github.com/stumpapp/stump/commit/6c77226373f0f4d24c12635825bc16e022f2464f)]
+- ⬆️ Bump @rn-primitives/tabs from 1.2.0 to 1.4.0 ([#1027](https://github.com/stumpapp/stump/issues/1027)) [[c9e5902](https://github.com/stumpapp/stump/commit/c9e590284a414a95dd97a4d761bc22f8c0e17ac2)]
+- ⬆️ Bump eslint-plugin-prettier from 5.5.4 to 5.5.5 ([#1024](https://github.com/stumpapp/stump/issues/1024)) [[6ea6769](https://github.com/stumpapp/stump/commit/6ea6769634fc9af53c69d67b5e1f1d93328a098e)]
+- ⬆️ Bump zustand from 4.5.7 to 5.0.12 ([#997](https://github.com/stumpapp/stump/issues/997)) [[e150227](https://github.com/stumpapp/stump/commit/e1502278ad58d4f8cb8478c26dc487e5cf78964f)]
+- ⬆️ Bump i18next from 23.16.8 to 26.0.1 ([#1004](https://github.com/stumpapp/stump/issues/1004)) [[77c7aa7](https://github.com/stumpapp/stump/commit/77c7aa734f844145345d5391690cfd32c1693608)]
+- ⬆️ Upgrade tailwind ([#1016](https://github.com/stumpapp/stump/issues/1016)) [[c618747](https://github.com/stumpapp/stump/commit/c618747baace06b4c0eafb8b9251786ff5c234e5)]
+
+### Removed
+
+- ➖ Replace &#x60;once_cell::Lazy&#x60; with &#x60;std::sync::LazyLock&#x60; ([#1075](https://github.com/stumpapp/stump/issues/1075)) [[851a245](https://github.com/stumpapp/stump/commit/851a2458174a1550745ae74edb2823e3088e5259)]
+- 🔥 Remove Prisma-to-SeaORM backfilling [[9ded63d](https://github.com/stumpapp/stump/commit/9ded63df5116b4de876298f716b05a21e5d82012)]
+
+### Fixed
+
+- 🐛 Fix conversion of thumbnail config for &#x60;resizeMethod&#x60; of &#x60;null&#x60; ([#1070](https://github.com/stumpapp/stump/issues/1070)) [[4191b52](https://github.com/stumpapp/stump/commit/4191b52970b34fc08d600505e88e1b4ac9846b40)]
+- 🐛 Fix unique constraint violation during OIDC account migration ([#1059](https://github.com/stumpapp/stump/issues/1059)) [[ea7e079](https://github.com/stumpapp/stump/commit/ea7e079faf22f9275bd69b551c4c6f881686f10f)]
+- 💚 Update binary CI checkout actions ([#1048](https://github.com/stumpapp/stump/issues/1048)) [[1591f91](https://github.com/stumpapp/stump/commit/1591f91b3cc453087516595127edf67185f3e775)]
+- 🐛 Fix manifest cleanup in docker build ([#991](https://github.com/stumpapp/stump/issues/991)) [[49a8d14](https://github.com/stumpapp/stump/commit/49a8d141c7ecda69e95185085accb05b4e6feb5a)]
+
+### Miscellaneous
+
+-  Merge remote-tracking branch &#x27;origin/main&#x27; into release/v0.1.2 [[d5a48ca](https://github.com/stumpapp/stump/commit/d5a48ca48694fcac5614cc704bce7894d68c6b09)]
+- 🩹 Ensure OIDC migration remaps preferences ([#1067](https://github.com/stumpapp/stump/issues/1067)) [[1520ee3](https://github.com/stumpapp/stump/commit/1520ee31a4834106ceb3f64f68aed6617f54af62)]
+- 🌐 (German): Update translations ([#1061](https://github.com/stumpapp/stump/issues/1061)) [[202e7fc](https://github.com/stumpapp/stump/commit/202e7fcf2990c77422dc0aff37540401e67ec803)]
+- 📝 Update documentation, fix landing page style resolution [[b5034ce](https://github.com/stumpapp/stump/commit/b5034ceaaafb26054c8d3965357a13add9b05f51)]
+- 📝 Update 0.1.0 documentation language [[601686b](https://github.com/stumpapp/stump/commit/601686b134f325e257e7f7835ed93a657ef978af)]
+- 🌐 (German): Update translations ([#1058](https://github.com/stumpapp/stump/issues/1058)) [[8e8925e](https://github.com/stumpapp/stump/commit/8e8925ef449d8fd1d5adb948d862ed05aab2270f)]
+- 🌐 (Polish) Update translations ([#1050](https://github.com/stumpapp/stump/issues/1050)) [[48273d9](https://github.com/stumpapp/stump/commit/48273d9cdb57d19dfe900da1112b5e90b325dd12)]
+- 🌐 Update translations ([#1045](https://github.com/stumpapp/stump/issues/1045)) [[ba9aa2e](https://github.com/stumpapp/stump/commit/ba9aa2ebaa80cb750736e49a0744f3bce503bae8)]
+- 🔀 Merge remote-tracking branch &#x27;origin/experimental&#x27; into nightly [[6a1e36a](https://github.com/stumpapp/stump/commit/6a1e36afee137f04efd630efd6df8f5570af071f)]
+- 🌐 Update translations ([#1033](https://github.com/stumpapp/stump/issues/1033)) [[b6cda00](https://github.com/stumpapp/stump/commit/b6cda00b38c53675d9eba438907e288aad85013d)]
+- 🌐 (expo): Start localization support ([#1037](https://github.com/stumpapp/stump/issues/1037)) [[cdd0e65](https://github.com/stumpapp/stump/commit/cdd0e65e417fbdc35ec2ea0fd59201c322a9563b)]
+- 🔨 Use the same Rust version from the Nix flake ([#1034](https://github.com/stumpapp/stump/issues/1034)) [[421e71f](https://github.com/stumpapp/stump/commit/421e71ffb3c68b899d3c436873652daf46b292ba)]
+-  Merge remote-tracking branch &#x27;origin/nightly&#x27; into experimental [[2751763](https://github.com/stumpapp/stump/commit/275176382257c26907ecc7b4ea1c01b08ec60460)]
+- 🌐 Update translations ([#1030](https://github.com/stumpapp/stump/issues/1030)) [[58f170e](https://github.com/stumpapp/stump/commit/58f170e312f89ff20b911303edd6050f0b501014)]
+- 🌐 Update translations ([#1010](https://github.com/stumpapp/stump/issues/1010)) [[4b7bb22](https://github.com/stumpapp/stump/commit/4b7bb229b7e4f83a6212164505618708151446a3)]
+-  Merge remote-tracking branch &#x27;origin/nightly&#x27; into experimental [[a27583a](https://github.com/stumpapp/stump/commit/a27583a536fe866ebd66d0890f30f67c47ad76a4)]
+
+
 <a name="0.1.1"></a>
 ## 0.1.1 (2026-04-01)
 

@@ -1723,6 +1723,11 @@ export type Mutation = {
   removeBookClubMember: BookClubMember;
   /** Remove your own suggestion (only before it's resolved) */
   removeSuggestion: BookClubBookSuggestion;
+  /**
+   * Rename a tag. Returns the updated tag, or an error if the tag was not found or the new
+   * name already exists.
+   */
+  renameTag: Tag;
   /** Reorder uncompleted books in the club's queue. Completed books cannot be reordered since they are effectively archived */
   reorderBooks: BookClub;
   resetLibraryMetadata: Library;
@@ -2203,6 +2208,12 @@ export type MutationRemoveBookClubMemberArgs = {
 
 export type MutationRemoveSuggestionArgs = {
   suggestionId: Scalars['ID']['input'];
+};
+
+
+export type MutationRenameTagArgs = {
+  id: Scalars['Int']['input'];
+  name: Scalars['String']['input'];
 };
 
 
@@ -5852,6 +5863,33 @@ export type PersistedLogsQueryVariables = Exact<{
 
 
 export type PersistedLogsQuery = { __typename?: 'Query', logs: { __typename?: 'PaginatedLogResponse', nodes: Array<{ __typename?: 'Log', id: number, timestamp: any, level: LogLevel, message: string, jobId?: string | null, context?: string | null }>, pageInfo: { __typename: 'CursorPaginationInfo' } | { __typename: 'OffsetPaginationInfo', totalPages: number, currentPage: number, pageSize: number, pageOffset: number, zeroBased: boolean } } };
+
+export type CreateTagModalMutationVariables = Exact<{
+  tags: Array<Scalars['String']['input']> | Scalars['String']['input'];
+}>;
+
+
+export type CreateTagModalMutation = { __typename?: 'Mutation', createTags: Array<{ __typename?: 'Tag', id: number, name: string }> };
+
+export type DeleteTagConfirmModalMutationVariables = Exact<{
+  tags: Array<Scalars['String']['input']> | Scalars['String']['input'];
+}>;
+
+
+export type DeleteTagConfirmModalMutation = { __typename?: 'Mutation', deleteTags: Array<{ __typename?: 'Tag', id: number, name: string }> };
+
+export type RenameTagModalMutationVariables = Exact<{
+  id: Scalars['Int']['input'];
+  name: Scalars['String']['input'];
+}>;
+
+
+export type RenameTagModalMutation = { __typename?: 'Mutation', renameTag: { __typename?: 'Tag', id: number, name: string } };
+
+export type TagTableQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type TagTableQuery = { __typename?: 'Query', tags: Array<{ __typename?: 'Tag', id: number, name: string }> };
 
 export type UserStatsQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -11176,6 +11214,38 @@ export const PersistedLogsDocument = new TypedDocumentString(`
   }
 }
     `) as unknown as TypedDocumentString<PersistedLogsQuery, PersistedLogsQueryVariables>;
+export const CreateTagModalDocument = new TypedDocumentString(`
+    mutation CreateTagModal($tags: [String!]!) {
+  createTags(tags: $tags) {
+    id
+    name
+  }
+}
+    `) as unknown as TypedDocumentString<CreateTagModalMutation, CreateTagModalMutationVariables>;
+export const DeleteTagConfirmModalDocument = new TypedDocumentString(`
+    mutation DeleteTagConfirmModal($tags: [String!]!) {
+  deleteTags(tags: $tags) {
+    id
+    name
+  }
+}
+    `) as unknown as TypedDocumentString<DeleteTagConfirmModalMutation, DeleteTagConfirmModalMutationVariables>;
+export const RenameTagModalDocument = new TypedDocumentString(`
+    mutation RenameTagModal($id: Int!, $name: String!) {
+  renameTag(id: $id, name: $name) {
+    id
+    name
+  }
+}
+    `) as unknown as TypedDocumentString<RenameTagModalMutation, RenameTagModalMutationVariables>;
+export const TagTableDocument = new TypedDocumentString(`
+    query TagTable {
+  tags {
+    id
+    name
+  }
+}
+    `) as unknown as TypedDocumentString<TagTableQuery, TagTableQueryVariables>;
 export const UserStatsDocument = new TypedDocumentString(`
     query UserStats {
   userCount
