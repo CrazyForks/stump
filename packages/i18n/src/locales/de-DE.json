@@ -686,7 +686,7 @@
 					"description": "Rufe Metadaten für die Medien in dieser Bibliothek ab",
 					"noProviders": {
 						"title": "Es sind keine Metadatenanbieter verfügbar",
-						"description": "You can configure metadata providers in the metadata integration settings"
+						"description": "Du kannst Metadaten-Anbieter in den Metadaten-Integrationseinstellungen konfigurieren"
 					},
 					"fetchButton": "Hintergrundabruf starten",
 					"fetchError": "Fehler beim Starten des Metadatenabrufs"
@@ -838,24 +838,24 @@
 	},
 	"metadataMatching": {
 		"section": {
-			"heading": "Pending matches",
-			"description": "Review metadata matches fetched from external providers"
+			"heading": "Ausstehende Treffer",
+			"description": "Überprüfe Metadaten-Treffer, die von externen Anbietern abgerufen wurden"
 		},
 		"confidenceBadge": {
 			"label": "Vertrauen"
 		},
-		"includeField": "Include this field",
-		"excludeField": "Exclude this field",
+		"includeField": "Dieses Feld einschließen",
+		"excludeField": "Dieses Feld ausschließen",
 		"fieldLocked": "Dieses Feld ist gesperrt",
 		"reviewDialog": {
 			"previewEditor": {
-				"noCandidates": "No candidates available for this record",
-				"noComparableFields": "No comparable fields found",
+				"noCandidates": "Keine Kandidaten für diesen Eintrag verfügbar",
+				"noComparableFields": "Keine vergleichbaren Felder gefunden",
 				"headers": {
 					"field": "Feld",
 					"current": "Aktuell",
 					"external": "Extern",
-					"resolved": "Resolved"
+					"resolved": "Aufgelöst"
 				},
 				"toolbar": {
 					"candidatePosition": "Kandidat {{position}} von {{total}}",
@@ -1393,8 +1393,8 @@
 					"heading": "Spracheinstellungen",
 					"subtitle": [
 						"Stump unterstützt mehrere Sprachen, die hierunter eingestellt werden können. Bitte überlege dir mitzuhelfen die Qualität von den",
-						"Stump-Übersetzungen ",
-						"zu verbessern, wenn du dazu in der Lage bist!"
+						"Stump-Übersetzungen",
+						" zu verbessern, wenn du dazu in der Lage bist!"
 					]
 				}
 			}
