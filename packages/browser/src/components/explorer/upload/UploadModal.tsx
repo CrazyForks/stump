@@ -213,7 +213,7 @@ export default function UploadModal() {
 		if (isUploading) {
 			return (
 				<>
-					<span className="rounded-lg p-4 flex items-center justify-center border border-edge bg-background-surface/80">
+					<span className="p-4 flex items-center justify-center rounded-lg border border-border bg-muted/80">
 						<ProgressSpinner className="h-7 w-7" />
 					</span>
 
@@ -221,7 +221,7 @@ export default function UploadModal() {
 						<Heading size="xs" className="space-x-1 flex items-center justify-center">
 							{t('common.uploading')}{' '}
 							{uploadProgress > 0 && (
-								<span className="text-foreground-muted">({uploadProgress}%)</span>
+								<span className="text-muted-foreground">({uploadProgress}%)</span>
 							)}
 						</Heading>
 						<div className="mt-2 h-4 w-64 flex items-center justify-center">
@@ -230,7 +230,6 @@ export default function UploadModal() {
 								isIndeterminate={uploadProgress === 0}
 								className="h-1.5 rounded-lg"
 								max={100}
-								variant="primary"
 							/>
 						</div>
 					</div>
@@ -240,8 +239,8 @@ export default function UploadModal() {
 			const Icon = displayedType === 'books' ? Book : FolderArchive
 			return (
 				<>
-					<span className="rounded-lg p-4 flex items-center justify-center border border-edge bg-background-surface/80">
-						<Icon className="h-8 w-8 text-foreground-muted" />
+					<span className="p-4 flex items-center justify-center rounded-lg border border-border bg-muted/80">
+						<Icon className="h-8 w-8 text-muted-foreground" />
 					</span>
 
 					<div className="text-center">
@@ -285,8 +284,8 @@ export default function UploadModal() {
 						<div
 							{...getRootProps()}
 							className={cn(
-								'space-y-4 rounded-lg p-4 flex shrink-0 grow cursor-pointer flex-col items-center justify-center border border-dashed border-edge-subtle ring-2 ring-transparent ring-offset-2 ring-offset-background-overlay outline-none!',
-								{ 'ring-edge-brand': isFocused },
+								'space-y-4 p-4 flex shrink-0 grow cursor-pointer flex-col items-center justify-center rounded-lg border border-dashed border-border ring-2 ring-transparent ring-offset-2 ring-offset-background outline-none!',
+								{ 'ring-ring/50': isFocused },
 							)}
 						>
 							<input {...getInputProps()} />
@@ -294,7 +293,6 @@ export default function UploadModal() {
 							{renderDropContent()}
 						</div>
 
-						{/* Conditionally render the series name input */}
 						{uploadType === 'series' && (
 							<div className="mt-2">
 								<Heading size="xs">Series name</Heading>
@@ -314,7 +312,7 @@ export default function UploadModal() {
 						<Accordion type="single" collapsible>
 							<Accordion.Item
 								value="files"
-								className="rounded-lg px-4 py-2 border-none bg-background-surface/80"
+								className="px-4 py-2 rounded-lg border-none bg-muted/80"
 							>
 								<Accordion.Trigger
 									noUnderline
@@ -333,7 +331,7 @@ export default function UploadModal() {
 										{files.slice(0, visibleCount).map((file, idx) => (
 											<div
 												key={file.name}
-												className="group gap-x-2 rounded-lg p-2 flex items-center border border-edge"
+												className="group gap-x-2 p-2 flex items-center rounded-lg border border-border"
 											>
 												<Text size="sm" className="line-clamp-1">
 													{file.name}
@@ -356,7 +354,7 @@ export default function UploadModal() {
 											</div>
 										))}
 										{files.length > visibleCount && (
-											<div className="p-2 text-xs text-center text-foreground-muted italic">
+											<div className="p-2 text-xs text-foreground-muted text-center italic">
 												...and {files.length - visibleCount} more files (scroll to load more)
 											</div>
 										)}
@@ -367,10 +365,10 @@ export default function UploadModal() {
 					</div>
 
 					<Dialog.Footer>
-						<Button variant="default" onClick={() => setUploadType(undefined)}>
+						<Button variant="outline" onClick={() => setUploadType(undefined)}>
 							{t('common.cancel')}
 						</Button>
-						<Button variant="primary" disabled={!files.length} onClick={onUploadClicked}>
+						<Button disabled={!files.length} onClick={onUploadClicked}>
 							{t('common.upload')}
 						</Button>
 					</Dialog.Footer>
