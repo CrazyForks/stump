@@ -304,9 +304,8 @@ function CheckIcon({ color }: { color: string }) {
 	return Platform.select({
 		ios: (
 			<SymbolView
-				name={{ ios: 'checkmark.circle.fill' }}
-				// @ts-expect-error android should not be required
-				weight={{ ios: 'medium' }}
+				name="checkmark.circle.fill"
+				weight="medium"
 				size={30}
 				type="palette"
 				colors={['white', color]}
